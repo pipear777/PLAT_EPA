@@ -57,8 +57,8 @@ const router = Router();
  */
 router.post(
   '/newUser',
- validarJWT,
- validarRoles('SuperAdministrador'),
+ //validarJWT,
+ //validarRoles('SuperAdministrador'),
   [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('email', 'El correo es obligatorio').isEmail(),

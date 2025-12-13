@@ -57,7 +57,7 @@ export const DashboardLayout = () => {
           </div>
         </nav>
         <GlobalButton variant="danger" onClick={logout} className="p-1.5 w-3/4 block mx-auto">
-          Cerrar Sesión
+          Cerrar Sesión :V
         </GlobalButton>
       </div>
 
