@@ -1,0 +1,5 @@
+# Ignorar dependencias locales, artefactos de build y variables de entorno
+node_modules
+dist
+.env
+.git

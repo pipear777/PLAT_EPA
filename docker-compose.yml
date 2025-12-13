@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  database:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+  backend:
+    image: desarrollo147/plat_epa-backend:latest
+    container_name: backend-api
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    restart: always
+
+  frontend:
+    image: desarrollo147/plat_epa-front:latest
+    container_name: frontend-app
+    ports:
+      - "5500:80"
+    depends_on:
+      - backend
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup
+    restart: always
+
+volumes:
+  mongo-data:
