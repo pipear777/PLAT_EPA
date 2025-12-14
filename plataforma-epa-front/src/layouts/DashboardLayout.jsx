@@ -52,7 +52,7 @@ export const DashboardLayout = () => {
               to={aseoRoutesList.reports}
             >
               <NotebookPen size={20} />
-              Reportes
+              Reportes :V
             </Link>
           </div>
         </nav>
