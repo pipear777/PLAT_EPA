@@ -14,7 +14,7 @@ services:
     image: desarrollo147/plat_epa-backend:latest
     container_name: backend-api
     env_file:
-      - .env.docker
+      - ./PLAT-EPA_BackendFinal/.env.docker
     ports:
       - "5000:5000"
     depends_on:
@@ -27,7 +27,7 @@ services:
     image: desarrollo147/plat_epa-front:latest
     container_name: frontend-app
     env_file:
-      - .env.produccion
+      - ./plataforma-epa-front/.env.produccion
     ports:
       - "5500:80"
     depends_on:
