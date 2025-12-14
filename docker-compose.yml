@@ -16,16 +16,16 @@ services:
     image: desarrollo147/plat_epa-backend:latest
     container_name: backend-api
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/epadatabase
-      - PORT=5000
-      - SECRET_JWT_SEED=Esto-Es-UnA-PalbR@_SecretA12345678
-      - REFRESH_JWT_SEED=mi_clave_super_segura_refresh
-      - EMAIL_USER=desarrollo.tic@epa.gov.co
-      - EMAIL_PASS=kdgqzmfwyfcwmfqv
-      - INICIO_JORNADA=6
-      - FIN_JORNADA=18
-      - CORS_ORIGIN=*
-      - NODE_ENV=production
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT}
+      - SECRET_JWT_SEED=${SECRET_JWT_SEED}
+      - REFRESH_JWT_SEED=${REFRESH_JWT_SEED}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - INICIO_JORNADA=${INICIO_JORNADA}
+      - FIN_JORNADA=${FIN_JORNADA}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - NODE_ENV=${NODE_ENV}
     ports:
       - "5000:5000"
     depends_on:
