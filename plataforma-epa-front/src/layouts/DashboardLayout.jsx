@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { UserCheck, House, ClipboardClock, Users, NotebookPen } from 'lucide-react';
 import { GlobalButton } from '@/components';
 import { useAuth } from '@/context/AuthContext';
-import logo from '../assets/logoepa.png';
+import logo from '../assets/logo-epa.png';
 import { aseoRoutesList } from '@/routes';
 
 const currentYear = new Date().getFullYear();
