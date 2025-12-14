@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
-    "test": "jest --detectOpenHandles --forceExit"
+   "start": "node server.js",
+    "dev": "node -e \"require('fs').copyFileSync('.env.local','.env')\" && nodemon server.js",
+    "dev:docker": "node -e \"require('fs').copyFileSync('.env.docker','.env')\" && nodemon server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

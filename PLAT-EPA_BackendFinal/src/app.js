@@ -10,6 +10,20 @@ const swaggerSpec = require('../swagger');
 const cookieParser = require('cookie-parser');
 const os = require('os');
 
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log('🔍 VARIABLES DE ENTORNO CARGADAS:');
+console.log('   MONGO_URI:', process.env.MONGO_URI ? '✅' : '❌');
+console.log('   PORT:', process.env.PORT ? '✅' : '❌');
+console.log('   SECRET_JWT_SEED:', process.env.SECRET_JWT_SEED ? '✅' : '❌');
+console.log('   REFRESH_JWT_SEED:', process.env.REFRESH_JWT_SEED ? '✅' : '❌');
+console.log('   EMAIL_USER:', process.env.EMAIL_USER ? '✅' : '❌');
+console.log('   EMAIL_PASS:', process.env.EMAIL_PASS ? '✅' : '❌');
+console.log('   INICIO_JORNADA:', process.env.INICIO_JORNADA ? '✅' : '❌');
+console.log('   FIN_JORNADA:', process.env.FIN_JORNADA ? '✅' : '❌');
+console.log('   CORS_ORIGIN:', process.env.CORS_ORIGIN ? '✅' : '❌');
+console.log('   NODE_ENV:', process.env.NODE_ENV ? '✅' : '❌');
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
 const app = express();
 const PORT =  process.env.PORT || 5000;
 

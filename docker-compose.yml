@@ -8,17 +8,30 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - app-network
     restart: always
 
   backend:
     image: desarrollo147/plat_epa-backend:latest
     container_name: backend-api
-    env_file:
-      - .env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/epadatabase
+      - PORT=5000
+      - SECRET_JWT_SEED=Esto-Es-UnA-PalbR@_SecretA12345678
+      - REFRESH_JWT_SEED=mi_clave_super_segura_refresh
+      - EMAIL_USER=desarrollo.tic@epa.gov.co
+      - EMAIL_PASS=kdgqzmfwyfcwmfqv
+      - INICIO_JORNADA=6
+      - FIN_JORNADA=18
+      - CORS_ORIGIN=*
+      - NODE_ENV=production
     ports:
       - "5000:5000"
     depends_on:
       - database
+    networks:
+      - app-network
     restart: always
 
   frontend:
@@ -28,6 +41,8 @@ services:
       - "5500:80"
     depends_on:
       - backend
+    networks:
+      - app-network
     restart: always
 
   watchtower:
@@ -40,3 +55,7 @@ services:
 
 volumes:
   mongo-data:
+
+networks:
+  app-network:
+    driver: bridge

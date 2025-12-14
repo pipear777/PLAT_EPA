@@ -13,38 +13,69 @@ const { enviarBienvenidaUsuario } = require('../services/email.service');
 
 const crearUsuario = async (req, res = response) => {
   const { name, email, password, rol, identificacion } = req.body;
+  
   if (!identificacion) {
     return res.status(400).json({ ok: false, msg: 'La identificación es obligatoria' });
   }
+  
   try {
+    // Verificar email duplicado
     let usuario = await Usuario.findOne({ email });
     if (usuario) {
       return res.status(400).json({ ok: false, msg: 'El correo ya está registrado' });
     }
 
+    // Verificar identificación duplicada
     usuario = await Usuario.findOne({ identificacion });
     if (usuario) {
       return res.status(400).json({ ok: false, msg: 'La identificación ya está registrada' });
     }
     
-    usuario = new Usuario({ name, email, password, rol: rol || 'Usuario', identificacion });
-    const salt = await bcrypt.genSalt();
+    // Crear nuevo usuario
+    usuario = new Usuario({ 
+      name, 
+      email, 
+      password, 
+      rol: rol || 'Usuario', 
+      identificacion 
+    });
+    
+    // Hashear password
+    const salt = await bcrypt.genSalt(10);
     usuario.password = await bcrypt.hash(password, salt);
+    
+    // Guardar en BD
     await usuario.save();
 
-    // Enviar correo de bienvenida (no bloquea la respuesta si falla)
-    enviarBienvenidaUsuario(usuario.email, usuario.name);
+    // Enviar correo de bienvenida (sin bloquear)
+    enviarBienvenidaUsuario(usuario.email, usuario.name).catch(err => 
+      console.error('Error enviando email:', err)
+    );
 
     res.status(201).json({
       ok: true,
       uid: usuario.id,
       name: usuario.name,
       rol: usuario.rol
-
     });
+    
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ ok: false, msg: 'Por favor hable con el administrador' });
+    console.error('Error en crearUsuario:', error); // 👈 Cambia esto
+    
+    // Manejar errores de validación de Mongoose
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        ok: false, 
+        msg: 'Error de validación',
+        errors: Object.values(error.errors).map(e => e.message)
+      });
+    }
+    
+    res.status(500).json({ 
+      ok: false, 
+      msg: 'Por favor hable con el administrador',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 

@@ -1,3 +1,30 @@
-# Ignore environment files
+# Variables de entorno
 .env
-docker-compose.yml
+.env.*
+*.env
+PLAT-EPA_BackendFinal/.env*
+plataforma-epa-front/.env*
+
+# Dependencias
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Build
+dist/
+build/
+coverage/
+*.log
+
+# Docker
+*.tar.gz
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

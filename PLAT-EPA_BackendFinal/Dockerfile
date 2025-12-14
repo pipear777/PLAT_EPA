@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-# Instala utilidades mínimas (opcional pero útil)
+# Instala utilidades mínimas
 RUN apk add --no-cache curl
 
 # Directorio de trabajo
@@ -18,7 +18,7 @@ COPY . .
 # Puerto del backend
 EXPOSE 5000
 
-# Variables de entorno (se inyectan desde docker-compose / prod)
+# Variables de entorno
 ENV NODE_ENV=production
 
 # Comando de arranque

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export const authClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true, // Manda el refreshToken por cookie.
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
