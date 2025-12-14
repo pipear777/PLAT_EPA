@@ -45,6 +45,8 @@ services:
       - SYS_ADMIN
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_API_VERSION=1.52
     command: --interval 30 --cleanup
     restart: unless-stopped
 
