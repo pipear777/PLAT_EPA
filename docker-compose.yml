@@ -39,6 +39,10 @@ services:
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
+    security_opt:
+      - apparmor=unconfined
+    cap_add:
+      - SYS_ADMIN
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30 --cleanup
