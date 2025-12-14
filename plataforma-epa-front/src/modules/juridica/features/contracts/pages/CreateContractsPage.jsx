@@ -58,7 +58,7 @@ export const CreateContractsPage = () => {
           onClick={openContractTypeModal}
         >
           <FilePlus />
-          Crear Tipo de Contrato
+          Crear Tipo de Contrato Nuevo
         </GlobalButton>
       </div>
       <div className="flex flex-col gap-4 items-center">
