@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   database:
     image: mongo:6
@@ -15,17 +13,8 @@ services:
   backend:
     image: desarrollo147/plat_epa-backend:latest
     container_name: backend-api
-    environment:
-      - MONGO_URI=${MONGO_URI}
-      - PORT=${PORT}
-      - SECRET_JWT_SEED=${SECRET_JWT_SEED}
-      - REFRESH_JWT_SEED=${REFRESH_JWT_SEED}
-      - EMAIL_USER=${EMAIL_USER}
-      - EMAIL_PASS=${EMAIL_PASS}
-      - INICIO_JORNADA=${INICIO_JORNADA}
-      - FIN_JORNADA=${FIN_JORNADA}
-      - CORS_ORIGIN=${CORS_ORIGIN}
-      - NODE_ENV=${NODE_ENV}
+    env_file:
+      - .env.docker
     ports:
       - "5000:5000"
     depends_on:
@@ -37,6 +26,8 @@ services:
   frontend:
     image: desarrollo147/plat_epa-front:latest
     container_name: frontend-app
+    env_file:
+      - .env.produccion
     ports:
       - "5500:80"
     depends_on:
