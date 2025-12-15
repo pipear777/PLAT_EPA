@@ -111,8 +111,7 @@ export const AseoLayout = () => {
                 <p>{auth.user.rol}</p>
               )}
             </div>
-          </div>
-          
+          </div>          
         </header>
 
         <main className="relative bg-gray-200 flex-1 overflow-auto p-4">

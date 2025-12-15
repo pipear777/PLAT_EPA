@@ -17,11 +17,15 @@ import {
   superadminRoutesList,
 } from '@/routes';
 import logo from '@/assets/logoepa.png';
+import { ROLES } from '@/constants';
 
 const currentYear = new Date().getFullYear();
 
 export const SuperadminLayout = () => {
   const { auth, logout } = useAuth();
+
+  const isSuperAdmin = auth?.user?.rol === ROLES.SUPER_ADMIN;
+  const isNormalUser = auth?.user?.rol === ROLES.USER_ASEO;
 
   return (
     <div className="flex h-screen">
@@ -90,14 +94,14 @@ export const SuperadminLayout = () => {
 
       <div className="flex flex-col w-full">
         <header className="bg-epaColor1 flex p-6">
-          <div className='w-2/10'></div>
+          <div className="w-2/10"></div>
           <h2 className="w-full text-white text-center font-bold text-3xl">
             Plataforma EPA - Modulo Administrador
           </h2>
           <div className="w-2/10 flex text-white text-sm items-center justify-end gap-2">
             <UserStar />
-            <div className="text-right">
-              <p className="px-2">{auth.user.name}</p>
+            <div>
+              <p className="text-center">{auth.user.name}</p>
               <Link to={superadminRoutesList.superadminDashboard}>
                 <p className="bg-white px-2 text-epaColor1 font-semibold underline rounded-sm">
                   {auth.user.rol}
