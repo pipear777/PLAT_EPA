@@ -35,13 +35,11 @@ services:
     restart: always
 
   watchtower:
-    image: containrrr/watchtower:latest
+    image: containrrr/watchtower:1.7.1
     container_name: watchtower
     privileged: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - DOCKER_API_VERSION=1.52
     command: --interval 30 --cleanup
     restart: unless-stopped
 
