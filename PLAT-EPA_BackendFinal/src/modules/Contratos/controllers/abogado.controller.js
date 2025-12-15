@@ -5,7 +5,8 @@ const crearAbogado = async (req, res) => {
   try {
     const { 
      nombreCompletoAbogado,
-      identificacion 
+      identificacion,
+      EstadoAbogado
     } = req.body;
 
     if (!nombreCompletoAbogado || !identificacion) {
@@ -14,12 +15,15 @@ const crearAbogado = async (req, res) => {
       });
     }
 
+    if (EstadoAbogado && !['Activo', 'Inactivo'].includes(EstadoAbogado)) {
+      return res.status(400).json({
+        message: 'El estado del abogado debe ser "Activo" o "Inactivo".'
+      });
+    }
+
     const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
-    if (
-      !soloLetras.test(nombreCompletoAbogado) ||
-      (nombreCompletoAbogado && !soloLetras.test(nombreCompletoAbogado)) 
-    ) {
+    if (!soloLetras.test(nombreCompletoAbogado)) {
       return res.status(400).json({
         message: 'Los nombres y los apellidos solo deben contener letras'
       });

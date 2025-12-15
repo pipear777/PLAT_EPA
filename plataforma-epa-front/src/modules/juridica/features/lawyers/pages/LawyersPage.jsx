@@ -65,7 +65,7 @@ export const LawyersPage = () => {
               {lawyers.map((l) => (
                 <tr key={l._id} className="hover:bg-gray-100 transition-colors">
                   <td className="pl-2">{l.identificacion}</td>
-                  <td className="pl-2">{l.nombreAbogado}</td>
+                  <td className="pl-2">{l.nombreCompletoAbogado}</td>
                   <td className="pl-2">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold
@@ -119,7 +119,7 @@ export const LawyersPage = () => {
               <GlobalInput
                 as="input"
                 label="Nombre Completo*"
-                data="nombreAbogado"
+                data="nombreCompletoAbogado"
                 register={register}
                 errors={errors}
                 rules={{
@@ -190,7 +190,7 @@ export const LawyersPage = () => {
         <GlobalInput
           as="input"
           label="Nombre Completo"
-          data="nombreAbogado"
+          data="nombreCompletoAbogado"
           register={registerUpdate}
           errors={errorsUpdate}
           rules={{

@@ -58,7 +58,7 @@ export const CreateContractsPage = () => {
           onClick={openContractTypeModal}
         >
           <FilePlus />
-          Crear Tipo de Contrato Nuevo
+          Crear Tipo de Contrato
         </GlobalButton>
       </div>
       <div className="flex flex-col gap-4 items-center">
@@ -165,7 +165,7 @@ export const CreateContractsPage = () => {
               <option value="">Selecciona una opcion</option>
               {lawyers.map((l) => (
                 <option key={l._id} value={l._id}>
-                  {l.nombreAbogado}
+                  {l.nombreCompletoAbogado}
                 </option>
               ))}
             </GlobalInput>
