@@ -67,7 +67,6 @@ export const JuridicaProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await contractsServices.getAllContracts(page, limit, filters);
-      console.log('📦 Contratos desde backend:', response);
       setContracts(response.data);
       setCurrentPage(response.page);
       setTotalPages(response.totalPages || 1);
