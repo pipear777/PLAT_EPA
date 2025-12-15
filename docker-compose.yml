@@ -34,15 +34,6 @@ services:
       - app-network
     restart: always
 
-  watchtower:
-    image: containrrr/watchtower:1.7.1
-    container_name: watchtower
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 --cleanup
-    restart: unless-stopped
-
 volumes:
   mongo-data:
 
