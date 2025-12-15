@@ -17,15 +17,11 @@ import {
   superadminRoutesList,
 } from '@/routes';
 import logo from '@/assets/logoepa.png';
-import { ROLES } from '@/constants';
 
 const currentYear = new Date().getFullYear();
 
 export const SuperadminLayout = () => {
   const { auth, logout } = useAuth();
-
-  const isSuperAdmin = auth?.user?.rol === ROLES.SUPER_ADMIN;
-  const isNormalUser = auth?.user?.rol === ROLES.USER_ASEO;
 
   return (
     <div className="flex h-screen">
