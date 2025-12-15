@@ -99,7 +99,7 @@ export const LawyersPage = () => {
         <div className="fixed inset-0 bg-epaColor1/50 flex items-center justify-center">
           <div className="flex flex-col gap-4 w-[500px] p-6 bg-white rounded-2xl">
             <h3 className="text-4xl font-extrabold text-epaColor1 text-center">
-              Crear Abogado Nuevo
+              Crear Abogado 
             </h3>
 
             <form
