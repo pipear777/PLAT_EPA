@@ -41,6 +41,7 @@ export const GetContractsPage = () => {
     loading,
     loadingFilter,
     loadingModifications,
+    modifications,
     modificationsContractModal,
     objetoExpandido,
     process,
@@ -364,6 +365,7 @@ export const GetContractsPage = () => {
           isOpen={detailsContractModal}
           closeDetailsContractModal={closeModals}
           contractData={selectedContract}
+          modifications={modifications}
         />
 
         <UpdateModal

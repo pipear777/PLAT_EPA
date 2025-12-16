@@ -5,7 +5,9 @@ export const DetailsContractModal = ({
   contractData,
   isOpen,
   closeDetailsContractModal,
+  modifications,
 }) => {
+  
   return (
     <AnimatePresence>
       {isOpen && (
@@ -81,8 +83,12 @@ export const DetailsContractModal = ({
                 <strong>Objeto:</strong> {contractData.objeto}
               </span>
               <span>
-                <strong>Valor del Contrato:</strong>
+                <strong>Valor inicial del Contrato:</strong>
                 {contractData.ValorContrato}
+              </span>
+              <span>
+                <strong>Valor actual del Contrato:</strong>
+                {contractData.valorActual}
               </span>
               <span
                 className={`px-1 py-1 rounded-lg text-black font-semibold

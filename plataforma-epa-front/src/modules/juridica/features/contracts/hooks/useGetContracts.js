@@ -24,7 +24,8 @@ export const useGetContracts = () => {
   const [hoverEye, setHoverEye] = useState(false);
   const [detailsContractModal, setDetailsContractModal] = useState(false);
   const [loadingFilter, setLoadingFilter] = useState(false);
-  const [modificationsContractModal, setModificationsContractModal] = useState(false);
+  const [modificationsContractModal, setModificationsContractModal] =
+    useState(false);
   const [loadingModifications, setLoadingModifications] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -33,11 +34,11 @@ export const useGetContracts = () => {
   const [selectedContract, setSelectedContract] = useState(null);
 
   const [selectedContractId, setSelectedContractId] = useState('');
-  const [selectedModificationsId, setSelectedModificationsId] = useState([]);
   const [selectedConsecutive, setSelectedConsecutive] = useState('');
   const [selectedContractType, setSelectedContractType] = useState('');
   const [summaries, setSummaries] = useState('');
   const [filterValue, setFilterValue] = useState('');
+  const [modifications, setModifications] = useState([]);
   const [alertModal, setAlertModal] = useState({
     open: false,
     message: '',
@@ -90,14 +91,7 @@ export const useGetContracts = () => {
 
   const openDetailsContractModal = (id) => {
     const selectedContract = contracts.find((c) => c._id === id);
-
-    setSelectedModificationsId(
-      selectedContract.modificaciones.map((modificationsId) => (modificationsId))
-    );
-
-    console.log(selectedModificationsId);
-    
-
+    getModifications(selectedContract.modificaciones);
     setSelectedContract(selectedContract);
     setDetailsContractModal(true);
   };
@@ -157,10 +151,13 @@ export const useGetContracts = () => {
   const onSubmitModificationsContract = async (modificationsData) => {
     setLoadingModifications(true);
 
-    console.log(modificationsData);    
-    
+    console.log(modificationsData);
+
     try {
-      await contractsServices.addModifications(selectedContractId, modificationsData);
+      await contractsServices.addModifications(
+        selectedContractId,
+        modificationsData
+      );
 
       setAlertModal({
         open: true,
@@ -180,8 +177,21 @@ export const useGetContracts = () => {
     }
   };
 
-  // const getModifications = async () => {
-  // }
+  // Obtener las modificaciones de cada contrato
+  const getModifications = async (arrayModifications) => {
+    try {
+      const response = await Promise.all(
+        arrayModifications.map((id) =>
+          contractsServices.getModifications(id)
+        )
+      );
+      // console.log(response);
+      
+      setModifications(response);
+    } catch (error) {
+      console.error(error);      
+    }
+  };
 
   // Confirm Modal
   const openConfirmModal = (id) => {
@@ -276,6 +286,7 @@ export const useGetContracts = () => {
     loading,
     loadingFilter,
     loadingModifications,
+    modifications,
     modificationsContractModal,
     objetoExpandido,
     process,

@@ -79,6 +79,7 @@ export const contractsServices = {
   getModifications: async (id) => {
     try {
       const response = await apiClient.get(`/modificaciones/listar/${id}`);
+      console.log(response);      
       return response.data
     } catch (error) {
       throw new Error(handleAxiosError(error, 'Error listando modificaciones ❌'));
