@@ -146,7 +146,6 @@ const listarModificaciones = async (req, res) => {
   }
 };
 
-
 module.exports = {
   addModificacion,
   listarModificaciones,
