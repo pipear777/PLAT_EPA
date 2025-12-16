@@ -5,6 +5,7 @@ const {
   listarModificacionesService
 } = require("../services/modificacion.service");
 const contratoModel = require("../models/model.contratos");
+const mongoose = require('mongoose');
 
  const addModificacion = async (req, res) => {
   try {
@@ -107,25 +108,43 @@ const contratoModel = require("../models/model.contratos");
   }
 };
 
- const listarModificaciones = async (req, res) => {
+const listarModificaciones = async (req, res) => {
   try {
     const { contratoId } = req.params;
 
-    const modificaciones = await listarModificacionesService(contratoId);
+    const { contrato, modificaciones } = await listarModificacionesService(contratoId);
 
+    // 🔹 Si no hay modificaciones
+    if (modificaciones.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        total: 0,
+        contratoId: contrato._id,
+        numeroContrato: contrato.NumeroContrato,
+        message: "Este contrato no tiene modificaciones",
+        data: [],
+      });
+    }
+
+    // 🔹 Si hay modificaciones
     return res.status(200).json({
       ok: true,
+      total: modificaciones.length,
+      contratoId: contrato._id,
+      numeroContrato: contrato.NumeroContrato,
       data: modificaciones,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error("Error al listar modificaciones:", error);
+    
+    const statusCode = error.status || 500;
+    
+    return res.status(statusCode).json({
       ok: false,
-      message: "Error al obtener las modificaciones",
-      error: error.message,
+      message: error.message || "Error al listar modificaciones",
     });
   }
 };
-
 
 
 module.exports = {
