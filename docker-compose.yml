@@ -1,7 +1,6 @@
 services:
   database:
     image: mongo:6
-    container_name: mongodb
     volumes:
       - mongo-data:/data/db
     networks:
@@ -10,7 +9,6 @@ services:
 
   backend:
     image: desarrollo147/plat_epa-backend:latest
-    container_name: backend-api
     env_file:
       - ./PLAT-EPA_BackendFinal/.env.docker
     ports:
@@ -23,7 +21,6 @@ services:
 
   frontend:
     image: desarrollo147/plat_epa-front:latest
-    container_name: frontend-app
     env_file:
       - ./plataforma-epa-front/.env.produccion
     ports:
