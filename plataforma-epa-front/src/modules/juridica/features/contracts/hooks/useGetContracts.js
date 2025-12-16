@@ -24,10 +24,7 @@ export const useGetContracts = () => {
   const [hoverEye, setHoverEye] = useState(false);
   const [detailsContractModal, setDetailsContractModal] = useState(false);
   const [loadingFilter, setLoadingFilter] = useState(false);
-  const [modificationsContractModal, setModificationsContractModal] =
-    useState(false);
-  const [showProrroga, setShowProrroga] = useState(false);
-  const [showAdicion, setShowAdicion] = useState(false);
+  const [modificationsContractModal, setModificationsContractModal] = useState(false);
   const [loadingModifications, setLoadingModifications] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -36,6 +33,7 @@ export const useGetContracts = () => {
   const [selectedContract, setSelectedContract] = useState(null);
 
   const [selectedContractId, setSelectedContractId] = useState('');
+  const [selectedModificationsId, setSelectedModificationsId] = useState([]);
   const [selectedConsecutive, setSelectedConsecutive] = useState('');
   const [selectedContractType, setSelectedContractType] = useState('');
   const [summaries, setSummaries] = useState('');
@@ -93,6 +91,13 @@ export const useGetContracts = () => {
   const openDetailsContractModal = (id) => {
     const selectedContract = contracts.find((c) => c._id === id);
 
+    setSelectedModificationsId(
+      selectedContract.modificaciones.map((modificationsId) => (modificationsId))
+    );
+
+    console.log(selectedModificationsId);
+    
+
     setSelectedContract(selectedContract);
     setDetailsContractModal(true);
   };
@@ -146,42 +151,16 @@ export const useGetContracts = () => {
   // Modificaciones
   const openModificationsModal = (id) => {
     setSelectedContractId(id);
-    const selectedContract = contracts.find((c) => c._id === id);
-
-    const formatDate = (dateString) => dateString?.split('T')[0] || '';
-
-    if (selectedContract) {
-      setSelectedConsecutive(selectedContract.consecutivo);
-      setSelectedContractType(selectedContract.tipoContrato.nombre);
-      resetModifications({
-        identificacionOnit: selectedContract.identificacionOnit || '',
-        NombreContratista: selectedContract.NombreContratista || '',
-        TelefonoContratista: selectedContract.TelefonoContratista || '',
-        proceso: selectedContract.proceso._id,
-        CorreoDependencia: selectedContract.CorreoDependencia || '',
-        tipoContrato: selectedContract.tipoContrato._id || '',
-        AbogadoAsignado: selectedContract.AbogadoAsignado._id || '',
-        objeto: selectedContract.objeto || '',
-        ValorContrato: selectedContract.ValorContrato || '',
-        FechaInicio: formatDate(selectedContract.FechaInicio),
-        FechaFinalizacion: formatDate(selectedContract.FechaFinalizacion),
-      });
-    }
     setModificationsContractModal(true);
   };
 
   const onSubmitModificationsContract = async (modificationsData) => {
-    const payload = {
-      ...modificationsData,
-      contratoId: selectedContractId,
-      adicion: Boolean(modificationsData.adicion),
-      prorroga: Boolean(modificationsData.prorroga),
-    };
-
     setLoadingModifications(true);
 
+    console.log(modificationsData);    
+    
     try {
-      await contractsServices.addModifications(selectedContractId, payload);
+      await contractsServices.addModifications(selectedContractId, modificationsData);
 
       setAlertModal({
         open: true,
@@ -201,12 +180,12 @@ export const useGetContracts = () => {
     }
   };
 
+  // const getModifications = async () => {
+  // }
+
   // Confirm Modal
   const openConfirmModal = (id) => {
     setSelectedContractId(id);
-    const selectedContract = contracts.find((c) => c._id === id);
-
-    setSelectedContract(selectedContract);
     setConfirmModal(true);
   };
 
@@ -307,8 +286,6 @@ export const useGetContracts = () => {
     selectedContractType,
     summaries,
     updateModal,
-    showAdicion,
-    showProrroga,
 
     //Methods
     closeModals,
@@ -320,7 +297,6 @@ export const useGetContracts = () => {
     handleSubmitModifications,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
-    watchModifications,
     openConfirmModal,
     openDetailsContractModal,
     openEye,
@@ -330,7 +306,6 @@ export const useGetContracts = () => {
     registerModifications,
     setFilterValue,
     setObjetoExpandido,
-    setShowAdicion,
-    setShowProrroga,
+    watchModifications,
   };
 };

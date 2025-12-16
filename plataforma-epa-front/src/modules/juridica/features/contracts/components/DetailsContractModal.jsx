@@ -109,69 +109,22 @@ export const DetailsContractModal = ({
               contractData.modificaciones?.adicion ||
               contractData.modificaciones?.prorroga ? (
                 <>
-                  {/* Mostrar Tipo de Modificación si existe */}
+                  {/* Mostrar Tipo de Modificación si existe
                   {contractData.modificaciones?.TipoModificacion && (
                     <p className="text-gray-700 mb-3">
                       <strong>Tipo de Modificación:</strong>{' '}
                       {contractData.modificaciones.TipoModificacion}
                     </p>
-                  )}
+                  )} */}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Columna izquierda */}
-                    {(contractData.modificaciones?.adicion ||
-                      contractData.modificaciones?.valorContratoconAdicion) && (
-                      <div className="flex flex-col gap-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                        {contractData.modificaciones?.adicion && (
-                          <span>
-                            <strong>Adición:</strong>{' '}
-                            {contractData.modificaciones.adicion}
-                          </span>
-                        )}
-                        {contractData.modificaciones?.prorroga && (
-                          <span>
-                            <strong>Valor Adición:</strong>{' '}
-                            {contractData.modificaciones.prorroga}
-                          </span>
-                        )}
-                        {contractData.modificaciones
-                          ?.valorContratoconAdicion && (
-                          <span>
-                            <strong>Valor Actual:</strong>{' '}
-                            {
-                              contractData.modificaciones
-                                .valorContratoconAdicion
-                            }
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Columna derecha */}
-                    {(contractData.modificaciones?.tiempoProrroga ||
-                      contractData.modificaciones?.fechaFinalProrroga) && (
-                      <div className="flex flex-col gap-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                        {contractData.modificaciones?.adicion && (
-                          <span>
-                            <strong>Prórroga:</strong>{' '}
-                            {contractData.modificaciones.adicion}
-                          </span>
-                        )}
-                        {contractData.modificaciones?.tiempoProrroga && (
-                          <span>
-                            <strong>Tiempo Prórroga:</strong>{' '}
-                            {contractData.modificaciones.tiempoProrroga}
-                          </span>
-                        )}
-                        {contractData.modificaciones?.fechaFinalProrroga && (
-                          <span>
-                            <strong>Fecha Final:</strong>{' '}
-                            {contractData.modificaciones.fechaFinalProrroga}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                    <div>
+                      <span>
+                <strong>Valor del Contrato:</strong>
+                {contractData.modificaciones.valo}
+              </span>
+                    </div>
+                  </div> 
                 </>
               ) : (
                 <p className="text-gray-600 italic text-center py-4">

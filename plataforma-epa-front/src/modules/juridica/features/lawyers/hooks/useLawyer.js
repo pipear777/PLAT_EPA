@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { lawyersServices } from '../services';
 import { useJuridica } from '@/modules/juridica/context';
+import { useAuth } from '@/context';
 
 export const useLawyer = () => {
+  const { auth } = useAuth();
   const { lawyers, updateLawyers } = useJuridica();
   const [alertModal, setAlertModal] = useState({
     open: false,
@@ -14,6 +16,8 @@ export const useLawyer = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [selectedLawyerId, setSelectedLawyerId] = useState('');
   const [selectedNameLawyer, setSelectedNameLawyer] = useState('');
+
+  const rol = auth?.user?.rol;
 
   const {
     register,
@@ -111,6 +115,7 @@ export const useLawyer = () => {
     modal,
     selectedNameLawyer,
     updateModal,
+    rol,
 
     // Methods
     closeModals,
