@@ -93,7 +93,7 @@ const crearModificacion = async (data) => {
     throw error;
   }
 
-  // 🔹 VALIDACIÓN DE PRÓRROGA
+ 
   if (prorroga && fechaFinalProrroga) {
     if (new Date(fechaFinalProrroga) <= new Date(contrato.FechaFinalizacion)) {
       const error = new Error(
