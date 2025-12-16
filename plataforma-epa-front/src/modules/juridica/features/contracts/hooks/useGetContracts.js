@@ -91,7 +91,7 @@ export const useGetContracts = () => {
 
   const openDetailsContractModal = (id) => {
     const selectedContract = contracts.find((c) => c._id === id);
-    getModifications(selectedContract.modificaciones);
+    getModifications(selectedContract._id);
     setSelectedContract(selectedContract);
     setDetailsContractModal(true);
   };
@@ -178,16 +178,11 @@ export const useGetContracts = () => {
   };
 
   // Obtener las modificaciones de cada contrato
-  const getModifications = async (arrayModifications) => {
+  const getModifications = async (id) => {
     try {
-      const response = await Promise.all(
-        arrayModifications.map((id) =>
-          contractsServices.getModifications(id)
-        )
-      );
-      // console.log(response);
-      
-      setModifications(response);
+      const response = await contractsServices.getModifications(id);
+      console.log(response.data);      
+      setModifications(response.data);
     } catch (error) {
       console.error(error);      
     }
