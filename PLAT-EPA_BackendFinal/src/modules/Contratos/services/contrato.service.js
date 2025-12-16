@@ -440,11 +440,15 @@ const anularContratoService = async (id, usuario = {}) => {
   const contrato = await Contrato.findById(id);
 
   if (!contrato) {
-    throw new Error("Contrato no encontrado ❌");
+   const error = new Error("Contrato no encontrado");
+    error.status = 404;
+    throw error;
   }
 
   if (contrato.EstadoContrato === 'Anulado') {
-    throw new Error("El contrato ya está anulado ❗");
+   const error = new Error("El contrato ya está anulado");
+    error.status = 400;
+    throw error;
   }
 
   const usuarioNombre = usuario.name || usuario.toString() || 'Sistema';
@@ -465,11 +469,6 @@ const anularContratoService = async (id, usuario = {}) => {
   });
 
   await contrato.save();
-
-  // Opcional: Si se centraliza el envío de correo, se podría llamar desde aquí.
-  // if (contrato.CorreoDependencia) {
-  //   await ContratoAnulado( ... );
-  // }
 
   return contrato;
 };

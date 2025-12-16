@@ -182,22 +182,24 @@ const anularContrato = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await anularContratoService(id);
+    const result = await anularContratoService(id, req.user);
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: 'Anulación de contrato exitosa ✅',
-      data: result|| null,
+      data: result,
     });
 
   } catch (error) {
     console.error("Error anulando contrato:", error);
-    return res.status(500).json({
+
+    return res.status(error.status || 500).json({
       success: false,
-      message: "Error interno del servidor ❌",
+      message: error.message || "Error interno del servidor ❌",
     });
   }
 };
+
 
 module.exports = {
   crearContrato,
