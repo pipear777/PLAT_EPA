@@ -67,28 +67,56 @@ const getNextNumero = (modificaciones, sequenceFieldName) => {
   return next;
 };
 
-// Crear modificación
 const crearModificacion = async (data) => {
-  const { contratoId, adicion, prorroga, valorAdicion, fechaFinalProrroga, tiempoProrroga, usuarioModifico, TipoModificacion } = data;
+  const {
+    contratoId,
+    adicion,
+    prorroga,
+    valorAdicion,
+    fechaFinalProrroga,
+    tiempoProrroga,
+    usuarioModifico,
+    TipoModificacion
+  } = data;
 
-  if (!adicion && !prorroga) throw new Error("Debe ser adición o prórroga o ambas.");
+  if (!adicion && !prorroga) {
+    const error = new Error("Debe ser adición o prórroga o ambas.");
+    error.status = 400;
+    throw error;
+  }
 
+  // 🔹 BUSCAR CONTRATO PRIMERO
   const contrato = await Contrato.findById(contratoId);
-  if (!contrato) throw new Error("Contrato no encontrado.");
+  if (!contrato) {
+    const error = new Error("Contrato no encontrado.");
+    error.status = 404;
+    throw error;
+  }
+
+ 
+  if (prorroga && fechaFinalProrroga) {
+    if (new Date(fechaFinalProrroga) <= new Date(contrato.FechaFinalizacion)) {
+      const error = new Error(
+        "La fecha final de la prórroga debe ser posterior a la fecha de finalización actual del contrato."
+      );
+      error.status = 400;
+      throw error;
+    }
+  }
 
   const modsPrevias = await Modificacion.find({ contrato: contratoId }).sort({ createdAt: "asc" });
 
   let numeroAdicion = adicion ? getNextNumero(modsPrevias, "numeroSecuenciaAdicion") : 0;
   let numeroProrroga = prorroga ? getNextNumero(modsPrevias, "numeroSecuenciaProrroga") : 0;
 
-  let tipoSecuencia = [];
+  const tipoSecuencia = [];
   if (adicion) tipoSecuencia.push(`Adición ${numeroAdicion}`);
   if (prorroga) tipoSecuencia.push(`Prórroga ${numeroProrroga}`);
 
   const nueva = new Modificacion({
     contrato: contratoId,
-    adicion: adicion || false,
-    prorroga: prorroga || false,
+    adicion: !!adicion,
+    prorroga: !!prorroga,
     numeroSecuenciaAdicion: numeroAdicion,
     numeroSecuenciaProrroga: numeroProrroga,
     tipoSecuencia: tipoSecuencia.join(" + "),
@@ -107,6 +135,7 @@ const crearModificacion = async (data) => {
 
   return nueva;
 };
+
 
 // Actualizar modificación
 const actualizarModificacionService = async (id, data) => {

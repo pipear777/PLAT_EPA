@@ -4,21 +4,42 @@ const {
   anularModificacion,
   listarModificacionesService
 } = require("../services/modificacion.service");
+const contratoModel = require("../models/model.contratos");
 
  const addModificacion = async (req, res) => {
   try {
     const { contratoId } = req.params;
-     const usuario = {
+
+    const usuario = {
       uid: req.uid,
       name: req.name,
       rol: req.rol
     };
-   
-    const usuarioModifico = usuario?.name || 'UsuarioDesconocido';
-    console.log(usuario);
-    
 
-    const modificationData = { ...req.body, contratoId, usuarioModifico };
+    // 🔹 BUSCAR CONTRATO
+    const contrato = await contratoModel.findById(contratoId);
+
+    if (!contrato) {
+      return res.status(404).json({
+        ok: false,
+        message: "Contrato no encontrado",
+      });
+    }
+
+    if (contrato.EstadoContrato === 'Anulado') {
+      return res.status(400).json({
+        ok: false,
+        message: "No se pueden agregar modificaciones a un contrato ANULADO.",
+      });
+    }
+
+    const usuarioModifico = usuario?.name || 'UsuarioDesconocido';
+
+    const modificationData = {
+      ...req.body,
+      contratoId,
+      usuarioModifico
+    };
 
     const nueva = await crearModificacion(modificationData);
 
@@ -27,11 +48,13 @@ const {
       message: "Modificación creada correctamente",
       data: nueva,
     });
+
   } catch (error) {
+    console.error("Error al crear modificación:", error);
+
     return res.status(500).json({
       ok: false,
-      message: "Error al crear modificación",
-      error: error.message,
+      message: error.message || "Error interno del servidor",
     });
   }
 };
@@ -39,8 +62,7 @@ const {
  const  actualizarModificacion = async (req, res) => {
   try {
     const { id } = req.params;
-    // Assuming req.user is populated by authentication middleware
-    // and contains user information like 'id' or 'nombre'.
+
      const usuario = {
       uid: req.uid,
       name: req.name,
