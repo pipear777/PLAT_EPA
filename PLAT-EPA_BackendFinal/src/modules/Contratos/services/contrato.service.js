@@ -444,6 +444,8 @@ const anularContratoService = async (id, usuario = {}) => {
   }
 
   if (contrato.EstadoContrato === 'Anulado') {
+    console.log('Entró a anulados!!!');
+    
     throw new Error("El contrato ya está anulado ❗");
   }
 

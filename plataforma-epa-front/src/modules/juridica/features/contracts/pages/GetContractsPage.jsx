@@ -237,7 +237,7 @@ export const GetContractsPage = () => {
                           </>
                         )}
                       </td>
-                      <td className="pl-2">{c.ValorContrato}</td>
+                      <td className="pl-2">{c.valorActual}</td>
                       <td className="pl-2">{c.FechaInicio}</td>
                       <td className="pl-2">
                         {c.AbogadoAsignado?.nombreAbogado || 'No asignado'}

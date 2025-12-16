@@ -258,7 +258,7 @@ export const useGetContracts = () => {
   const handleReset = () => {
     getAllContracts();
     setFilterValue('');
-  };  
+  };
 
   return {
     //Properties
