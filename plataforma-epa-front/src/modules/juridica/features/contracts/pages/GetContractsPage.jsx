@@ -40,6 +40,7 @@ export const GetContractsPage = () => {
     lawyers,
     loading,
     loadingFilter,
+    loadingModifications,
     modificationsContractModal,
     objetoExpandido,
     process,
@@ -61,7 +62,6 @@ export const GetContractsPage = () => {
     handleSubmitModifications,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
-    watchModifications,
     openConfirmModal,
     openDetailsContractModal,
     openEye,
@@ -71,6 +71,7 @@ export const GetContractsPage = () => {
     registerModifications,
     setFilterValue,
     setObjetoExpandido,
+    watchModifications,
   } = useGetContracts();
   const { onClickBack } = useBackNavigation();
 
@@ -80,6 +81,9 @@ export const GetContractsPage = () => {
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
       )}
       {loadingFilter && (
+        <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
+      )}
+      {loadingModifications && (
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
       )}
       <GlobalButton
@@ -233,10 +237,10 @@ export const GetContractsPage = () => {
                           </>
                         )}
                       </td>
-                      <td className="pl-2">{c.ValorContrato}</td>
+                      <td className="pl-2">{c.valorActual}</td>
                       <td className="pl-2">{c.FechaInicio}</td>
                       <td className="pl-2">
-                        {c.AbogadoAsignado?.nombreCompletoAbogado || 'No asignado'}
+                        {c.AbogadoAsignado?.nombreAbogado || 'No asignado'}
                       </td>
                       <td>
                         <span
@@ -395,7 +399,7 @@ export const GetContractsPage = () => {
           <ModificationsContractModal
             register={registerModifications}
             errors={errorsModifications}
-            watch={watchModifications}
+            watchModifications={watchModifications}
           />
         </UpdateModal>
 

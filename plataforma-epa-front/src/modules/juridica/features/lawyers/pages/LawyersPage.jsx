@@ -12,6 +12,7 @@ import {
 import { FilePlus, IdCardLanyard, Pencil } from 'lucide-react';
 import { useLawyer } from '../hooks';
 import { useJuridica } from '@/modules/juridica/context/JuridicaContext';
+import { ROLES } from '@/constants';
 
 export const LawyersPage = () => {
   const { lawyers } = useJuridica();
@@ -24,6 +25,7 @@ export const LawyersPage = () => {
     modal,
     selectedNameLawyer,
     updateModal,
+    rol,
 
     // Methods
     closeModals,
@@ -43,14 +45,16 @@ export const LawyersPage = () => {
         <h2 className="text-4xl text-center font-extrabold text-epaColor1">
           Abogados
         </h2>
-        <GlobalButton
-          variant="third"
-          className="flex w-50 ml-3 items-center gap-3 px-5 py-1.5"
-          onClick={openModal}
-        >
-          <FilePlus />
-          Crear Abogado
-        </GlobalButton>
+        {(rol === ROLES.SUPER_ADMIN || rol === ROLES.ADMIN_JURIDICA) && (
+          <GlobalButton
+            variant="third"
+            className="flex w-50 ml-3 items-center gap-3 px-5 py-1.5"
+            onClick={openModal}
+          >
+            <FilePlus />
+            Crear Abogado
+          </GlobalButton>
+        )}
         <div className="bg-white p-4 rounded-lg shadow-md">
           <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
             <thead className="bg-epaColor1 text-white uppercase">
@@ -99,7 +103,7 @@ export const LawyersPage = () => {
         <div className="fixed inset-0 bg-epaColor1/50 flex items-center justify-center">
           <div className="flex flex-col gap-4 w-[500px] p-6 bg-white rounded-2xl">
             <h3 className="text-4xl font-extrabold text-epaColor1 text-center">
-              Crear Abogado 
+              Crear Abogado
             </h3>
 
             <form

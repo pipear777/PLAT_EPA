@@ -67,9 +67,9 @@ export const contractsServices = {
   },
 
   // MODIFICACIONES
-  addModifications: async (id) => {
+  addModifications: async (id, modificationsData) => {
     try {
-      const response = await apiClient.post(`/modificaciones/${id}`);
+      const response = await apiClient.post(`/modificaciones/${id}`, modificationsData);
       return response.data;
     } catch (error) {
       throw new Error(handleAxiosError(error, 'Error creando modificacion ❌'));
