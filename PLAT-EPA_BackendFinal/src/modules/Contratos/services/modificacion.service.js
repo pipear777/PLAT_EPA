@@ -1,5 +1,6 @@
 const Modificacion = require("../models/model.modificacion");
 const Contrato = require("../models/model.contratos");
+const mongoose = require('mongoose');
 
 // Recalcular valores del contrato
 const recalcularYGuardarContrato = async (contrato) => {
@@ -198,18 +199,53 @@ const anularModificacion = async (id) => {
 };
 
 const listarModificacionesService = async (contratoId) => {
-  const contrato = await Contrato.findById(contratoId).populate({
-    path: 'modificaciones',
-    options: { sort: { 'createdAt': 'asc' } }
-  });
-
-  if (!contrato) {
-    return [];
+  // 🔹 LIMPIAR el contratoId
+  const cleanId = contratoId?.toString().trim();
+  
+  // Validar que existe
+  if (!cleanId) {
+    const error = new Error("El contratoId es requerido");
+    error.status = 400;
+    throw error;
   }
 
-  // Populate returns null for refs that don't exist. Filter them out.
-  return contrato.modificaciones.filter(m => m !== null);
+  // Validar longitud (debe ser 24 caracteres)
+  if (cleanId.length !== 24) {
+    const error = new Error(`El contratoId debe tener 24 caracteres. Recibido: ${cleanId.length} caracteres`);
+    error.status = 400;
+    throw error;
+  }
+
+  // Validar formato de ObjectId
+  if (!mongoose.Types.ObjectId.isValid(cleanId)) {
+    const error = new Error("El contratoId no tiene un formato válido de ObjectId");
+    error.status = 400;
+    throw error;
+  }
+
+  // Verificar que el contrato existe
+  const contrato = await Contrato.findById(cleanId);
+  if (!contrato) {
+    const error = new Error("Contrato no encontrado");
+    error.status = 404;
+    throw error;
+  }
+
+  // Buscar modificaciones del contrato
+  const modificaciones = await Modificacion.find({ 
+    contrato: cleanId 
+  }).sort({ createdAt: 1 });
+
+  // Retornar info del contrato y modificaciones
+  return {
+    contrato: {
+      _id: contrato._id,
+      NumeroContrato: contrato.NumeroContrato,
+    },
+    modificaciones
+  };
 };
+
 
 module.exports = {
   crearModificacion,
