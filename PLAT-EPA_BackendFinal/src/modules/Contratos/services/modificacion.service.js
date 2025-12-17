@@ -209,7 +209,6 @@ const listarModificacionesService = async (contratoId) => {
     throw error;
   }
 
-  // Validar longitud (debe ser 24 caracteres)
   if (cleanId.length !== 24) {
     const error = new Error(`El contratoId debe tener 24 caracteres. Recibido: ${cleanId.length} caracteres`);
     error.status = 400;
