@@ -136,8 +136,8 @@ export const HistoricalPage = () => {
 
       {/* Tabla de Contratos */}
       <section className="">
-        <div className="bg-white  shadow-md rounded-lg p-6 mx-auto mt-6">
-          <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
+        <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-6 mx-auto mt-6">
+          <table className="table-fixed w-full min-w-[1200px] text-sm">
             <thead className="bg-epaColor1 text-white">
               <tr>
                 <th className="text-center border">Tipo de Contrato</th>
@@ -151,12 +151,12 @@ export const HistoricalPage = () => {
                 <th className="text-center border">Estado</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-300">
               {(isFiltering ? filteredContracts : cleanContracts)?.map(
                 (c, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gray-100 transition-colors"
+                    className="hover:bg-gray-200 transition-colors"
                   >
                     <td className="pl-2 whitespace-normal break-words max-w-[200px]">
                       {c.TipoContrato}
