@@ -168,8 +168,8 @@ export const GetContractsPage = () => {
 
         {/*Tabla de Contratos*/}
         <section className="">
-          <div className="bg-white  shadow-md rounded-lg p-6 mx-auto mt-6">
-            <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
+          <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-4 mx-auto">
+            <table className="table-fixed w-full min-w-[1200px] text-sm border-collapse">
               <thead className="bg-epaColor1 text-white">
                 <tr>
                   <th className="py-4 text-center border border-white">
@@ -198,18 +198,18 @@ export const GetContractsPage = () => {
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="divide-y divide-gray-300">
                 {filteredContracts?.length > 0 ? (
                   filteredContracts.map((c, index) => (
                     <tr
                       key={c._id}
                       className="hover:bg-gray-100 transition-colors my-2"
                     >
-                      <td className="pl-2">{c.proceso.nombreProceso}</td>
-                      <td className="pl-2">{c.tipoContrato.nombre}</td>
-                      <td className="pl-2">{c.consecutivo}</td>
-                      <td className="pl-2">{c.NombreContratista}</td>
-                      <td className="pl-2 whitespace-normal break-words max-w-[200px]">
+                      <td className="p-2">{c.proceso.nombreProceso}</td>
+                      <td className="p-2">{c.tipoContrato.nombre}</td>
+                      <td className="p-2">{c.consecutivo}</td>
+                      <td className="p-2">{c.NombreContratista}</td>
+                      <td className="p-2 whitespace-normal break-words max-w-[200px]">
                         {objetoExpandido === index ? (
                           <>
                             {c.objeto}
@@ -238,12 +238,12 @@ export const GetContractsPage = () => {
                           </>
                         )}
                       </td>
-                      <td className="pl-2">{c.valorActual}</td>
-                      <td className="pl-2">{c.FechaInicio}</td>
-                      <td className="pl-2">
+                      <td className="p-2">{c.valorActual}</td>
+                      <td className="p-2">{c.FechaInicio}</td>
+                      <td className="p-2">
                         {c.AbogadoAsignado?.nombreAbogado || 'No asignado'}
                       </td>
-                      <td>
+                      <td className="text-center truncate">
                         <span
                           className={`ml-3 px-3 py-1 rounded-full text-sm font-semibold
                             ${
@@ -271,47 +271,44 @@ export const GetContractsPage = () => {
                           {c.EstadoContrato}
                         </span>
                       </td>
+                      <td className="p-2 space-x-1 space-y-1 text-center">
+                        <button
+                          onMouseEnter={() => openEye(c._id)}
+                          onMouseLeave={() => openEye(null)}
+                          className="p-2 bg-sky-200 rounded-full hover:bg-sky-400 hover:scale-110 transition-transform"
+                          title="Ver detalles"
+                          onClick={() => openDetailsContractModal(c._id)}
+                        >
+                          {hoverEye === c._id ? (
+                            <Eye size={18} />
+                          ) : (
+                            <EyeClosed size={18} />
+                          )}
+                        </button>
 
-                      <td>
-                        <div className="pl-2 grid grid-cols-2 gap-2 xl:gird xl:grid-cols-2 xl:gap-2 2xl:flex 2xl:flex-row 2xl:gap-2">
-                          <button
-                            onMouseEnter={() => openEye(c._id)}
-                            onMouseLeave={() => openEye(null)}
-                            className="flex items-center justify-center p-2 bg-sky-200 rounded-full hover:bg-sky-400 hover:scale-110 transition-transform"
-                            title="Ver detalles"
-                            onClick={() => openDetailsContractModal(c._id)}
-                          >
-                            {hoverEye === c._id ? (
-                              <Eye size={18} />
-                            ) : (
-                              <EyeClosed size={18} />
-                            )}
-                          </button>
+                        <button
+                          className="p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-transform"
+                          title="Editar"
+                          onClick={() => openUpdateModal(c._id)}
+                        >
+                          <Pencil size={18} />
+                        </button>
 
-                          <button
-                            className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-transform"
-                            title="Editar"
-                            onClick={() => openUpdateModal(c._id)}
-                          >
-                            <Pencil size={18} />
-                          </button>
+                        <button
+                          className="p-2 bg-green-200 rounded-full hover:bg-green-300 hover:scale-110 transition-transform"
+                          title="Agregar Modificaciones"
+                          onClick={() => openModificationsModal(c._id)}
+                        >
+                          <CirclePlus size={18} />
+                        </button>
 
-                          <button
-                            className="flex items-center justify-center p-2 bg-green-200 rounded-full hover:bg-green-300 hover:scale-110 transition-transform"
-                            title="Agregar Modificaciones"
-                            onClick={() => openModificationsModal(c._id)}
-                          >
-                            <CirclePlus size={18} />
-                          </button>
-
-                          <button
-                            className="flex items-center justify-center p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
-                            title="Eliminar"
-                            onClick={() => openConfirmModal(c._id)}
-                          >
-                            <Ban size={18} />
-                          </button>
-                        </div>
+                        <button
+                          className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
+                          title="Eliminar"
+                          onClick={() => openConfirmModal(c._id)}
+                        >
+                          <Ban size={18} />
+                        </button>
                       </td>
                     </tr>
                   ))

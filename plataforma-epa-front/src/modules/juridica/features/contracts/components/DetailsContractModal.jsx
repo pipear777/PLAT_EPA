@@ -167,7 +167,7 @@ export const DetailsContractModal = ({
                   </tr>
                 </thead>
                 <tbody className="text-gray-800">
-                  <tr className="hover:bg-gray-50 transition-colors">
+                  <tr className="hover:bg-gray-200 transition-colors">
                     <td className="px-6 py-3 border-b">
                       {
                         new Date(contractData.fechaCreacion)
