@@ -1,57 +1,56 @@
 #!/bin/bash
 set -e
 
+# --- CONFIGURACIÓN ---
 PROJECT_DIR="/home/maria/PLAT_EPA"
-LOG="$PROJECT_DIR/update.log"
+LOG_FILE="$PROJECT_DIR/update.log"
+LOCK_FILE="/tmp/deploy_epa.lock"
 
-# Colores para consola
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-YELLOW="\033[1;33m"
-NC="\033[0m" # Sin color
-
-cd "$PROJECT_DIR" || exit 1
-
-echo -e "${YELLOW}==============================${NC}" | tee -a "$LOG"
-echo -e "${YELLOW}Inicio: $(date)${NC}" | tee -a "$LOG"
-
-# 🔐 Verificar Docker
-if ! docker info >/dev/null 2>&1; then
-  echo -e "${RED}Docker no está activo${NC}" | tee -a "$LOG"
+# --- LÓGICA DE BLOQUEO ---
+# Si el archivo de bloqueo existe, otra actualización está en curso.
+if [ -e "$LOCK_FILE" ]; then
+  echo "INFO: Despliegue ya en progreso. Omitiendo ejecución. $(date)" >> "$LOG_FILE"
   exit 1
 fi
 
-# 🔍 Advertencia de puertos ocupados (no aborta)
-for PORT in 5000 5500; do
-  if ss -lnt | grep -q ":$PORT "; then
-    echo -e "${YELLOW}⚠ Advertencia: Puerto $PORT ocupado.${NC}" | tee -a "$LOG"
-  fi
-done
+# Crea el archivo de bloqueo y asegura su eliminación al final.
+touch "$LOCK_FILE"
+trap 'rm -f "$LOCK_FILE"' EXIT
 
-# 📥 Git pull
-echo -e "${YELLOW}Actualizando repositorio Git...${NC}" | tee -a "$LOG"
-git pull | tee -a "$LOG"
+# --- LÓGICA DE DESPLIEGUE ---
+cd "$PROJECT_DIR" || exit 1
 
-# 📦 Pull de imágenes Docker
-echo -e "${YELLOW}Actualizando imágenes Docker...${NC}" | tee -a "$LOG"
-docker compose pull | tee -a "$LOG"
+# 1. Obtiene la última versión del repositorio remoto
+git fetch
 
-# 🔴 Bajar servicios
-echo -e "${YELLOW}Deteniendo servicios existentes...${NC}" | tee -a "$LOG"
-docker compose down | tee -a "$LOG"
+# 2. Compara la versión local (HEAD) con la remota (origin/main)
+LOCAL=$(git rev-parse HEAD)
+REMOTE=$(git rev-parse origin/main)
 
-# 🧹 Limpieza defensiva
-echo -e "${YELLOW}Limpiando contenedores y redes antiguas...${NC}" | tee -a "$LOG"
-docker container prune -f | tee -a "$LOG"
-docker network prune -f | tee -a "$LOG"
+if [ "$LOCAL" = "$REMOTE" ]; then
+  # No hay cambios, no hacemos nada.
+  # echo "INFO: Sin cambios nuevos. $(date)" >> $LOG_FILE
+  exit 0
+else
+  # ¡Hay cambios! Iniciamos el despliegue.
+  echo "==================================================" >> "$LOG_FILE"
+  echo "🚀 Detectados nuevos cambios. Iniciando despliegue en $(date)" >> "$LOG_FILE"
 
-# 🟢 Levantar servicios
-echo -e "${GREEN}Levantando servicios...${NC}" | tee -a "$LOG"
-docker compose up -d | tee -a "$LOG"
+  # 3. Trae los cambios (actualiza docker-compose.yml, etc.)
+  echo "📥 Actualizando repositorio con git pull..." >> "$LOG_FILE"
+  git pull origin main >> "$LOG_FILE" 2>&1
 
-# 📊 Estado final
-echo -e "${GREEN}Estado actual de los servicios:${NC}" | tee -a "$LOG"
-docker compose ps | tee -a "$LOG"
+  # 4. Descarga las nuevas imágenes de Docker Hub
+  echo "🐳 Descargando nuevas imágenes de Docker..." >> "$LOG_FILE"
+  docker compose pull >> "$LOG_FILE" 2>&1
 
-echo -e "${YELLOW}Completado: $(date)${NC}" | tee -a "$LOG"
+  # 5. Reinicia los servicios con las nuevas imágenes (CERO DOWNTIME)
+  echo "🔄 Reiniciando los contenedores..." >> "$LOG_FILE"
+  docker compose up -d --remove-orphans >> "$LOG_FILE" 2>&1
 
+  # 6. Limpieza de imágenes antiguas no utilizadas
+  docker image prune -f >> "$LOG_FILE" 2>&1
+
+  echo "✅ Despliegue completado." >> "$LOG_FILE"
+  echo "--------------------------------------------------" >> "$LOG_FILE"
+fi
