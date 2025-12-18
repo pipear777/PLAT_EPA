@@ -38,7 +38,7 @@ const modificacionSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    // Estado para la lógica de anulación
+    
     estado: {
       type: String,
       required: true,
