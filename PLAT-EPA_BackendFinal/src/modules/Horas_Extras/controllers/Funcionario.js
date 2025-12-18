@@ -26,7 +26,6 @@ const crearFuncionario = async (req, res) => {
         const proceso = await Proceso.findById(procesoId);
         if (!proceso) return res.status(404).json({ success: false, message: 'Proceso no encontrado' });
 
-        // **Validación: no permitir identificaciones duplicadas**
         const existente = await Funcionario.findOne({ identificacion });
         if (existente) return res.status(400).json({
             success: false,
@@ -65,9 +64,8 @@ const crearFuncionario = async (req, res) => {
 const actualizarFuncionario = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre_completo, identificacion, tipoOperario, Cargo: cargoId, estado, SedeAsignada: sedeId, ProcesoAsignado: procesoId} = req.body;
+        const { nombre_completo, identificacion, tipoOperario, Cargo: cargoId, estado, SedeAsignada: sedeId, ProcesoAsignado: procesoId } = req.body;
 
-        // Validación enums
         const tiposValidos = ['Planta', 'Temporal'];
         const estadosValidos = ['Activo', 'Inactivo'];
 
@@ -84,54 +82,64 @@ const actualizarFuncionario = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Funcionario no encontrado' });
         }
 
-        // Validar identificación única (excepto el propio funcionario)
+        // Validar identificación única
         if (identificacion && identificacion !== funcionario.identificacion) {
-            const existente = await Funcionario.findOne({ identificacion });
+            const existente = await Funcionario.findOne({ identificacion, _id: { $ne: id } });
             if (existente) {
                 return res.status(400).json({ success: false, message: 'Ya existe un funcionario con esta identificación' });
             }
         }
 
-        // Validar cargo si se envía
+        const updateData = {};
+
+        if (nombre_completo) updateData.nombre_completo = nombre_completo;
+        if (identificacion) updateData.identificacion = identificacion;
+        if (tipoOperario) updateData.tipoOperario = tipoOperario;
+        if (estado) updateData.estado = estado;
+
+        // Validar y asignar referencias
         if (cargoId) {
             const cargo = await Cargo.findById(cargoId);
             if (!cargo) return res.status(404).json({ success: false, message: 'Cargo no encontrado' });
-            funcionario.Cargo = cargo._id;
+            updateData.Cargo = cargo._id;
         }
 
-        // Actualizar campos
-        if (nombre_completo) funcionario.nombre_completo = nombre_completo;
-        if (identificacion) funcionario.identificacion = identificacion;
-        if (tipoOperario) funcionario.tipoOperario = tipoOperario;
-        if (estado) funcionario.estado = estado;
-        if(sedeId) funcionario.SedeAsignada = sedeId;
-        if(procesoId) funcionario.ProcesoAsignado = procesoId;
+        if (sedeId) {
+            const sede = await Sede.findById(sedeId);
+            if (!sede) return res.status(404).json({ success: false, message: 'Sede no encontrada' });
+            updateData.SedeAsignada = sede._id;
+        }
 
-        await funcionario.save();
+        if (procesoId) {
+            const proceso = await Proceso.findById(procesoId);
+            if (!proceso) return res.status(404).json({ success: false, message: 'Proceso no encontrado' });
+            updateData.ProcesoAsignado = proceso._id;
+        }
 
-        res.json({ success: true, data: funcionario });
+        const funcionarioActualizado = await Funcionario.findByIdAndUpdate(id, { $set: updateData }, { new: true, runValidators: true })
+            .populate('Cargo', 'nombreCargo')
+            .populate('SedeAsignada', 'name')
+            .populate('ProcesoAsignado', 'nombreProceso');
+
+        res.json({ success: true, data: funcionarioActualizado });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Error actualizando el funcionario' });
     }
 };
 
+
 // Listar todos los funcionarios
 const listarFuncionarios = async (req, res) => {
-  try {
-    // Populamos los campos de referencia según tu esquema
-    const funcionarios = await Funcionario.find()
-      .populate('cargo', 'name')         
-      .populate('sede', 'name')           
-      .populate('proceso', 'nombreProceso'); 
-
-    res.status(200).json({ success: true, data: funcionarios });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: 'Error al listar los funcionarios' });
-  }
+    try {
+        const funcionarios = await Funcionario.find().populate('Cargo', 'name');
+        res.status(200).json({ success: true, data: funcionarios });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al listar los funcionarios' });
+    }
 };
-
 
 const listarFuncionariosActivos = async (req, res) => {
     try {

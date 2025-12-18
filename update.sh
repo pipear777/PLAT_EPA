@@ -28,8 +28,7 @@ LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 
 if [ "$LOCAL" = "$REMOTE" ]; then
-  # No hay cambios, no hacemos nada.
-  # echo "INFO: Sin cambios nuevos. $(date)" >> $LOG_FILE
+
   exit 0
 else
   # ¡Hay cambios! Iniciamos el despliegue.

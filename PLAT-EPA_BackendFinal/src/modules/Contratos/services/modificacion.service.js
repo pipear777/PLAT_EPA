@@ -138,46 +138,129 @@ const crearModificacion = async (data) => {
 };
 
 
-// Actualizar modificación
 const actualizarModificacionService = async (id, data) => {
   const mod = await Modificacion.findById(id);
   if (!mod) throw new Error("Modificación no encontrada.");
   if (mod.estado === "Anulada") throw new Error("No se puede actualizar una modificación anulada.");
 
+  const camposPermitidos = [
+    "adicion",
+    "prorroga",
+    "valorAdicion",
+    "fechaFinalProrroga",
+    "tiempoProrroga",
+    "usuarioModifico",
+  ];
+
+  Object.keys(data).forEach((key) => {
+    if (!camposPermitidos.includes(key)) {
+      throw new Error(
+        `Campo inválido enviado: "${key}". Campos permitidos: ${camposPermitidos.join(", ")}`
+      );
+    }
+  });
+
+  if (data.adicion !== undefined && typeof data.adicion !== "boolean") {
+    throw new Error(`Campo "adicion" debe ser booleano`);
+  }
+  if (data.prorroga !== undefined && typeof data.prorroga !== "boolean") {
+    throw new Error(`Campo "prorroga" debe ser booleano`);
+  }
+
   const todas = await Modificacion.find({ contrato: mod.contrato }).sort({ createdAt: "asc" });
+  const ultima = todas[todas.length - 1];
+  const esUltima = ultima._id.equals(mod._id);
 
-  // Recalcular números de secuencia si aplica
-  let numeroAdicion = mod.numeroSecuenciaAdicion;
-  let numeroProrroga = mod.numeroSecuenciaProrroga;
+  const updateData = { usuarioModifico: data.usuarioModifico ?? mod.usuarioModifico };
 
-  if (data.adicion && !numeroAdicion) numeroAdicion = getNextNumero(todas, 'numeroSecuenciaAdicion');
-  if (data.prorroga && !numeroProrroga) numeroProrroga = getNextNumero(todas, 'numeroSecuenciaProrroga');
+  if (esUltima) {
+    const finalAdicion = data.adicion ?? mod.adicion;
+    const finalProrroga = data.prorroga ?? mod.prorroga;
 
-  // Actualizar campos
-  mod.adicion = data.adicion || false;
-  mod.prorroga = data.prorroga || false;
-  mod.numeroSecuenciaAdicion = numeroAdicion || null;
-  mod.numeroSecuenciaProrroga = numeroProrroga || null;
-  mod.valorAdicion = data.adicion ? data.valorAdicion : 0;
-  mod.fechaFinalProrroga = data.prorroga ? data.fechaFinalProrroga : null;
-  mod.tiempoProrroga = data.prorroga ? data.tiempoProrroga : null;
-  mod.usuarioModifico = data.usuarioModifico;
-  mod.TipoModificacion = true;
+    updateData.adicion = finalAdicion;
+    updateData.prorroga = finalProrroga;
 
-  // Concatenar tipoSecuencia
+    if (finalAdicion) {
+      if (!data.valorAdicion && data.valorAdicion !== 0) {
+        throw new Error("Para adición, 'valorAdicion' es obligatorio y debe ser mayor que cero.");
+      }
+      if (data.valorAdicion <= 0) {
+        throw new Error("Para adición, 'valorAdicion' debe ser mayor que cero.");
+      }
+      updateData.valorAdicion = data.valorAdicion;
+    } else {
+      updateData.valorAdicion = 0;
+    }
+
+    if (finalProrroga) {
+      if (!data.fechaFinalProrroga || !data.tiempoProrroga) {
+        throw new Error("Para prórroga, 'fechaFinalProrroga' y 'tiempoProrroga' son obligatorios.");
+      }
+      updateData.fechaFinalProrroga = data.fechaFinalProrroga;
+      updateData.tiempoProrroga = data.tiempoProrroga;
+    } else {
+      updateData.fechaFinalProrroga = null;
+      updateData.tiempoProrroga = null;
+    }
+
+    // Secuencias automáticas
+    if (finalAdicion) {
+      updateData.numeroSecuenciaAdicion = getNextNumero(todas, "numeroSecuenciaAdicion");
+    } else {
+      updateData.numeroSecuenciaAdicion = null;
+    }
+
+    if (finalProrroga) {
+      updateData.numeroSecuenciaProrroga = getNextNumero(todas, "numeroSecuenciaProrroga");
+    } else {
+      updateData.numeroSecuenciaProrroga = null;
+    }
+  } else {
+    // --- NO ÚLTIMA MODIFICACIÓN ---
+    // No se permite cambiar el tipo
+    if (
+      (data.adicion !== undefined && data.adicion !== mod.adicion) ||
+      (data.prorroga !== undefined && data.prorroga !== mod.prorroga)
+    ) {
+      throw new Error(
+        "No se puede cambiar el tipo de modificación porque no es la última. Solo se pueden actualizar los valores permitidos."
+      );
+    }
+
+    updateData.adicion = mod.adicion;
+    updateData.prorroga = mod.prorroga;
+    updateData.numeroSecuenciaAdicion = mod.numeroSecuenciaAdicion;
+    updateData.numeroSecuenciaProrroga = mod.numeroSecuenciaProrroga;
+
+    if (mod.adicion && data.valorAdicion !== undefined) {
+      if (data.valorAdicion <= 0) {
+        throw new Error("Para adición, 'valorAdicion' debe ser mayor que cero.");
+      }
+      updateData.valorAdicion = data.valorAdicion;
+    }
+
+    if (mod.prorroga) {
+      if (data.fechaFinalProrroga) updateData.fechaFinalProrroga = data.fechaFinalProrroga;
+      if (data.tiempoProrroga) updateData.tiempoProrroga = data.tiempoProrroga;
+    }
+  }
+
+  // Reconstruir tipoSecuencia
   const tipoSecuencia = [];
-  if (mod.adicion) tipoSecuencia.push(`Adición ${numeroAdicion}`);
-  if (mod.prorroga) tipoSecuencia.push(`Prórroga ${numeroProrroga}`);
-  mod.tipoSecuencia = tipoSecuencia.join(" + ");
+  if (updateData.adicion) tipoSecuencia.push(`Adición ${updateData.numeroSecuenciaAdicion}`);
+  if (updateData.prorroga) tipoSecuencia.push(`Prórroga ${updateData.numeroSecuenciaProrroga}`);
+  updateData.tipoSecuencia = tipoSecuencia.join(" + ");
 
+  // Guardar
+  Object.assign(mod, updateData);
   await mod.save();
 
+  // Actualizar contrato
   const contrato = await Contrato.findById(mod.contrato);
   await recalcularYGuardarContrato(contrato);
 
   return mod;
 };
-
 
 // Anular modificación (solo última)
 const anularModificacion = async (id) => {
