@@ -55,9 +55,9 @@ export const LawyersPage = () => {
             Crear Abogado 
           </GlobalButton>
         )}
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-epaColor1 text-white uppercase">
+        <div className="w-full overflow-x-auto bg-white p-4 rounded-lg shadow-md">
+          <table className="table-fixed w-full text-sm">
+            <thead className="bg-epaColor1 text-white">
               <tr>
                 <th className="text-center border py-4">Identificación</th>
                 <th className="text-center border">Nombre</th>
@@ -68,11 +68,11 @@ export const LawyersPage = () => {
             <tbody className="divide-y divide-gray-300">
               {lawyers.map((l) => (
                 <tr key={l._id} className="hover:bg-gray-200 transition-colors">
-                  <td className="pl-2">{l.identificacion}</td>
-                  <td className="pl-2">{l.nombreCompletoAbogado}</td>
-                  <td className="pl-2">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold
+                  <td className="p-2">{l.identificacion}</td>
+                  <td className="p-2">{l.nombreCompletoAbogado}</td>
+                  <td className="p-2">
+                    <p
+                      className={`w-[85px] py-0.5 mx-auto text-center rounded-4xl
                         ${
                           l.EstadoAbogado?.toLowerCase() === 'activo'
                             ? 'bg-green-500 text-black'
@@ -81,9 +81,9 @@ export const LawyersPage = () => {
                       `}
                     >
                       {l.EstadoAbogado}
-                    </span>
+                    </p>
                   </td>
-                  <td className="py-1 flex justify-center">
+                  <td className="py-2 flex justify-center">
                     <button
                       title="Editar"
                       className="bg-cyan-300/50 rounded-4xl p-2 hover:bg-cyan-400 transition-colors"

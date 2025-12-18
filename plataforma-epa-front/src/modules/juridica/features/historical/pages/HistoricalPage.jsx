@@ -136,8 +136,8 @@ export const HistoricalPage = () => {
 
       {/* Tabla de Contratos */}
       <section className="">
-        <div className="bg-white  shadow-md rounded-lg p-6 mx-auto mt-6">
-          <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
+        <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-6 mx-auto mt-6">
+          <table className="table-fixed w-full min-w-[1200px] text-sm">
             <thead className="bg-epaColor1 text-white">
               <tr>
                 <th className="text-center border">Tipo de Contrato</th>
