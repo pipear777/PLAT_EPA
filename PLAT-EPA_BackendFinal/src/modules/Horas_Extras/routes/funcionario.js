@@ -151,7 +151,9 @@ router.post('/crearfuncionario',validarJWT,validarRoles('AdminAseo','SuperAdmini
  *                         example: 0
 
 */
-router.get('/',validarJWT,validarRoles('SuperAdministrador'), listarFuncionarios);
+router.get('/',validarJWT, listarFuncionarios);
+
+
 
 /**
  * @swagger
@@ -304,7 +306,7 @@ router.put('/actualizar/:id' , validarJWT,validarRoles('AdminAseo','SuperAdminis
  *       404:
  *         description: Funcionario no encontrado
 */
-router.get('/obtener/:identificacion',validarJWT,validarRoles('AdminAseo','SuperAdministrador'), obtenerFuncionarioPorId);
+router.get('/obtener/:identificacion', obtenerFuncionarioPorId);
 
 /**
  * @swagger
@@ -356,7 +358,7 @@ router.get('/obtener/:identificacion',validarJWT,validarRoles('AdminAseo','Super
  *                         example: "Activo"
  */
 
-router.get('/activos',validarJWT,validarRoles('AdminAseo','SuperAdministrador'), listarFuncionariosActivos)
+router.get('/activos', listarFuncionariosActivos)
 
 
 module.exports = router;
