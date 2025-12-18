@@ -29,8 +29,6 @@ try {
       const result = await listarSede();
 
       if (!result) {
-        console.log('Entró acaaaa!!!');
-        
         return res.status(500).json(result);
       }
 
