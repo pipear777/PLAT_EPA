@@ -65,9 +65,9 @@ export const LawyersPage = () => {
                 <th className="text-center">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-300">
               {lawyers.map((l) => (
-                <tr key={l._id} className="hover:bg-gray-100 transition-colors">
+                <tr key={l._id} className="hover:bg-gray-200 transition-colors">
                   <td className="pl-2">{l.identificacion}</td>
                   <td className="pl-2">{l.nombreCompletoAbogado}</td>
                   <td className="pl-2">

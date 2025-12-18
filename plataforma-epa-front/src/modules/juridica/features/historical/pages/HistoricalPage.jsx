@@ -151,12 +151,12 @@ export const HistoricalPage = () => {
                 <th className="text-center border">Estado</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-300">
               {(isFiltering ? filteredContracts : cleanContracts)?.map(
                 (c, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gray-100 transition-colors"
+                    className="hover:bg-gray-200 transition-colors"
                   >
                     <td className="pl-2 whitespace-normal break-words max-w-[200px]">
                       {c.TipoContrato}

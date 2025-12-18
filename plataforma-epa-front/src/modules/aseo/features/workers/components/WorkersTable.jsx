@@ -1,6 +1,9 @@
 import { GlobalButton } from '@/components';
 
 export const WorkersTable = ({ workers = [], handleOpenForm = () => {} }) => {
+
+  console.log(workers);
+  
   return (
     <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-4 mx-auto">
       <table className="table-fixed w-full min-w-[1200px] text-sm border-collapse">

@@ -203,7 +203,7 @@ export const GetContractsPage = () => {
                   filteredContracts.map((c, index) => (
                     <tr
                       key={c._id}
-                      className="hover:bg-gray-100 transition-colors my-2"
+                      className="hover:bg-gray-200 transition-colors my-2"
                     >
                       <td className="p-2">{c.proceso.nombreProceso}</td>
                       <td className="p-2">{c.tipoContrato.nombre}</td>
