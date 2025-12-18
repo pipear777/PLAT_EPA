@@ -43,8 +43,7 @@ export const useGetLocations = () => {
     setLoading(true);
     try {
       const response = await departamentsService.getAllLocations();
-      console.log(response);
-      setLocations(response.data);
+      setLocations(response);
     } catch (error) {
       console.error(error);
     } finally {

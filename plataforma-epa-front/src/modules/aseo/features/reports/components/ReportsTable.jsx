@@ -17,7 +17,7 @@ export const ReportsTable = ({ reports = [] }) => {
             </thead>
             <tbody className="divide-y divide-gray-300">
               {reports.map((report, index) => (
-                <tr key={index} className="hover:bg-gray-50 transition-colors">
+                <tr key={index} className="hover:bg-gray-200 transition-colors">
                   <td className="py-2">{report.nombre_Funcionario}</td>
                   <td>{report.HEDO_HORA}</td>
                   <td>{report.HENO_HORA}</td>

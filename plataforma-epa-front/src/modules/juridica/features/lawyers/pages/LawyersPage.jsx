@@ -55,9 +55,9 @@ export const LawyersPage = () => {
             Crear Abogado 
           </GlobalButton>
         )}
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <table className="table-fixed w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-epaColor1 text-white uppercase">
+        <div className="w-full overflow-x-auto bg-white p-4 rounded-lg shadow-md">
+          <table className="table-fixed w-full text-sm">
+            <thead className="bg-epaColor1 text-white">
               <tr>
                 <th className="text-center border py-4">Identificación</th>
                 <th className="text-center border">Nombre</th>
@@ -65,14 +65,14 @@ export const LawyersPage = () => {
                 <th className="text-center">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-300">
               {lawyers.map((l) => (
-                <tr key={l._id} className="hover:bg-gray-100 transition-colors">
-                  <td className="pl-2">{l.identificacion}</td>
-                  <td className="pl-2">{l.nombreCompletoAbogado}</td>
-                  <td className="pl-2">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold
+                <tr key={l._id} className="hover:bg-gray-200 transition-colors">
+                  <td className="p-2">{l.identificacion}</td>
+                  <td className="p-2">{l.nombreCompletoAbogado}</td>
+                  <td className="p-2">
+                    <p
+                      className={`w-[85px] py-0.5 mx-auto text-center rounded-4xl
                         ${
                           l.EstadoAbogado?.toLowerCase() === 'activo'
                             ? 'bg-green-500 text-black'
@@ -81,9 +81,9 @@ export const LawyersPage = () => {
                       `}
                     >
                       {l.EstadoAbogado}
-                    </span>
+                    </p>
                   </td>
-                  <td className="py-1 flex justify-center">
+                  <td className="py-2 flex justify-center">
                     <button
                       title="Editar"
                       className="bg-cyan-300/50 rounded-4xl p-2 hover:bg-cyan-400 transition-colors"
@@ -103,7 +103,7 @@ export const LawyersPage = () => {
         <div className="fixed inset-0 bg-epaColor1/50 flex items-center justify-center">
           <div className="flex flex-col gap-4 w-[500px] p-6 bg-white rounded-2xl">
             <h3 className="text-4xl font-extrabold text-epaColor1 text-center">
-              Crear Abogado :V
+              Crear Abogado
             </h3>
 
             <form
@@ -130,16 +130,6 @@ export const LawyersPage = () => {
                   required: 'El nombre completo del Abogado es obligatorio',
                 }}
               />
-              {/* <GlobalInput
-                as="input"
-                label="Estado*"
-                data="EstadoAbogado"
-                register={register}
-                errors={errors}
-                rules={{
-                  required: 'El estado del Abogado es obligatorio',
-                }}
-              /> */}
               <div className="flex gap-2 justify-end ">
                 <GlobalButton
                   variant="modalFour"
