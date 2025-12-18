@@ -28,7 +28,7 @@ const listarSedes = async (req, res) => {
 try {
       const result = await listarSede();
 
-      if (!result.success) {
+      if (!result) {
         return res.status(500).json(result);
       }
 
