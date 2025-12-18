@@ -261,7 +261,6 @@ const actualizarModificacionService = async (id, data) => {
 
   return mod;
 };
-
 // Anular modificación (solo última)
 const anularModificacion = async (id) => {
   const mod = await Modificacion.findById(id);
