@@ -3,9 +3,15 @@ import { authService } from '@/modules/auth/services/authService';
 import { apiClient, setupInterceptors } from '@/api';
 
 const AuthContext = createContext({
-  auth: null,
+  auth: {
+    accessToken: null,
+    user: null,
+  },
   loading: true,
-  accessErrorMessages: null,
+  accessErrorMessages: {
+    type: '',
+    text: '',
+  },
   email: '',
   login: () => {},
   logout: () => {},
@@ -14,10 +20,16 @@ const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [accessErrorMessages, setAccessErrorMessages] = useState(null);
-  const [auth, setAuth] = useState(null); // { user, accessToken }
-  const [email, setEmail] = useState('');
+  const [auth, setAuth] = useState({
+    accessToken: null,
+    user: null,
+  });
   const [loading, setLoading] = useState(true);
+  const [accessErrorMessages, setAccessErrorMessages] = useState({
+    type: '',
+    text: '',
+  });
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     setupInterceptors(logout, setAuth);
@@ -39,18 +51,23 @@ export const AuthProvider = ({ children }) => {
           accessToken,
           user,
         });
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        apiClient.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${accessToken}`;
         return;
       }
 
-      const { token: newAccessToken, user: newUser } = await authService.renewToken();
+      const { token: newAccessToken, user: newUser } =
+        await authService.renewToken();
       setAuth({
         accessToken: newAccessToken,
         user: newUser,
       });
       localStorage.setItem('accessToken', newAccessToken);
       localStorage.setItem('user', JSON.stringify(newUser));
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+      apiClient.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${newAccessToken}`;
     } catch (error) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('user');
@@ -69,7 +86,9 @@ export const AuthProvider = ({ children }) => {
       });
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      apiClient.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${accessToken}`;
     } catch (error) {
       console.error('No se pudo iniciar la sesión correctamente', error);
     }
@@ -90,13 +109,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  console.log(accessErrorMessages);
+  console.log(email);
+  
+  
+
   const contextValue = useMemo(
     () => ({
       // Properties
-      accessErrorMessages,
       auth,
-      email,
       loading,
+      accessErrorMessages,
+      email,
 
       // Methods
       login,
