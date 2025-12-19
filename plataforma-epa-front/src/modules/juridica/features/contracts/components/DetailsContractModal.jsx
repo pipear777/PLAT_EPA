@@ -126,7 +126,7 @@ export const DetailsContractModal = ({
               </h4>
 
               {/* Verificación condicional */}
-              {modifications ? (
+              {modifications.length !== 0 ? (
                 modifications.map((mod) => (
                   <div className='flex flex-col' key={mod._id}>
                     <h4>{mod.adicion ? 'Adición' : 'Prorroga'}</h4>

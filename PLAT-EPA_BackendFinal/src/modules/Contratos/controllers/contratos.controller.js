@@ -43,7 +43,8 @@ const obtenerContratosPorFiltros = async (req, res) => {
       data: result.data,
       total: result.total,
       page: result.page,
-      limit: result.limit
+      limit: result.limit,
+      totalPages: result.totalPages
     });
 
   } catch (error) {

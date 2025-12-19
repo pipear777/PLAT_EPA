@@ -134,34 +134,40 @@ export const GetContractsPage = () => {
 
           <div className="flex gap-2">
             <GlobalButton
-              className="p-2"
+              className="p-1"
               onClick={() => handleSearch('NombreContratista')}
             >
-              Buscar por Nombre
+              Buscar por Nombre de Contratista o La Empresa
             </GlobalButton>
             <GlobalButton
-              className="p-2"
+              className="p-1"
               onClick={() => handleSearch('consecutivo')}
             >
               Buscar por Consecutivo
             </GlobalButton>
             <GlobalButton
-              className="p-2"
+              className="p-1"
               onClick={() => handleSearch('identificacionOnit')}
             >
-              Buscar por Identificacion
+              Buscar por Identificacion del Contratista o La empresa
             </GlobalButton>
             <GlobalButton
-              className="p-2"
+              className="p-1"
               onClick={() => handleSearch('tipoContrato')}
             >
               Buscar por Tipo de Contrato
             </GlobalButton>
             <GlobalButton
-              className="p-2"
+              className="p-1"
               onClick={() => handleSearch('vigencia')}
             >
               Buscar por Vigencia
+            </GlobalButton>
+            <GlobalButton
+              className="p-1"
+              onClick={() => handleSearch('nombreAbogado')}
+            >
+              Buscar por Abogado
             </GlobalButton>
           </div>
         </div>

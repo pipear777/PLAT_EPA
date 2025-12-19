@@ -24,8 +24,7 @@ export const useGetContracts = () => {
   const [hoverEye, setHoverEye] = useState(false);
   const [detailsContractModal, setDetailsContractModal] = useState(false);
   const [loadingFilter, setLoadingFilter] = useState(false);
-  const [modificationsContractModal, setModificationsContractModal] =
-    useState(false);
+  const [modificationsContractModal, setModificationsContractModal] = useState(false);
   const [loadingModifications, setLoadingModifications] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
