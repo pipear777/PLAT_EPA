@@ -100,7 +100,7 @@ export const useLawyer = () => {
       setSelectedNameLawyer(selectedLawyer.nombreAbogado);
       resetUpdate({
         identificacion: selectedLawyer.identificacion || '',
-        nombreAbogado: selectedLawyer.nombreAbogado || '',
+        nombreCompletoAbogado: selectedLawyer.nombreCompletoAbogado || '',
         EstadoAbogado: selectedLawyer.EstadoAbogado || '',
       });
     }

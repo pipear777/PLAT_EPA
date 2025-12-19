@@ -4,17 +4,12 @@ import { authService } from '../services/authService';
 import { useAuth } from '@/context/AuthContext';
 import { authRoutesList } from '@/routes';
 
-
 export const useRecoverPassword = () => {
   const navigate = useNavigate();
 
-  const {
-    accessErrorMessages,
-    setAccessErrorMessages,
-    email,
-    setEmail,
-  } = useAuth();
-  
+  const { accessErrorMessages, setAccessErrorMessages, email, setEmail } =
+    useAuth();
+
   const {
     register,
     handleSubmit,
@@ -22,11 +17,11 @@ export const useRecoverPassword = () => {
     reset,
   } = useForm();
 
-  const onSubmitRecoverPassword = async (data) => {    
+  const onSubmitRecoverPassword = async (data) => {
     try {
       const response = await authService.solicitarResetPassword(data);
       setAccessErrorMessages({ type: 'success', text: response.msg });
-      setEmail(data.email)
+      setEmail(data.email);
       navigate(authRoutesList.code);
     } catch (error) {
       console.error(error);
@@ -49,25 +44,21 @@ export const useRecoverPassword = () => {
     }
   };
 
-  const onSubmitResetPassword = async(data) => {
+  const onSubmitResetPassword = async (data) => {
     try {
       const response = await authService.resetPassword(data);
       setAccessErrorMessages({ type: 'success', text: response.msg });
-      setTimeout(() => {
-        navigate(authRoutesList.login);
-        setAccessErrorMessages('');
-      }, 2000);
-    } catch(error) {
+      navigate(authRoutesList.login);
+      reset();
+    } catch (error) {
       setAccessErrorMessages({ type: 'error', text: error.message });
     }
-  }
+  };
 
   const onClickBack = () => {
     navigate(-1);
-    setAccessErrorMessages(null);
-  }
-
-  console.log(accessErrorMessages?.text);
+    setAccessErrorMessages({ type: '', text: '' });
+  };
 
   return {
     // Properties

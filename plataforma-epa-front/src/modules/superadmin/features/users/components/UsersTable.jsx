@@ -6,8 +6,8 @@ export const UsersTable = ({
   handleOpenUpdateModal = () => {},
 }) => {
   return (
-    <div className="w-full bg-white shadow-md rounded-lg p-4 mx-auto">
-      <table className="w-full divide-y divide-gray-200 text-sm">
+    <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-4 mx-auto">
+      <table className="table-fixed w-full min-w-[1200px] text-sm border-collapse">
         <thead className="bg-epaColor1 text-white">
           <tr>
             <th className="py-4 text-center border border-white">
@@ -22,14 +22,14 @@ export const UsersTable = ({
         </thead>
         <tbody className="divide-y divide-gray-300">
           {users.map((user) => (
-            <tr key={user._id} className="hover:bg-gray-50 transition-colors">
-              <td className="py-2">{user.identificacion}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.rol}</td>
-              <td>
+            <tr key={user._id} className="hover:bg-gray-200 transition-colors">
+              <td className="p-2">{user.identificacion}</td>
+              <td className="p-2">{user.name}</td>
+              <td className="p-2">{user.email}</td>
+              <td className="p-2">{user.rol}</td>
+              <td className="p-2">
                 <p
-                  className={`w-4/5 mx-auto text-center rounded-4xl ${
+                  className={`w-[85px] py-0.5 mx-auto text-center rounded-4xl ${
                     user.estadoUsuario === 'Activo'
                       ? 'bg-green-500'
                       : 'bg-gray-400'
@@ -38,11 +38,11 @@ export const UsersTable = ({
                   {user.estadoUsuario}
                 </p>
               </td>
-              <td>
+              <td className="p-2 text-center">
                 <GlobalButton
                   variant="modalTwo"
                   onClick={() => handleOpenUpdateModal(user)}
-                  className="block mx-auto px-3 py-0.5"
+                  className="w-[85px] py-0.5"
                 >
                   Actualizar
                 </GlobalButton>

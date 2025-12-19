@@ -6,11 +6,16 @@ import { authService } from '../services/authService';
 import { aseoRoutesList } from '@/routes';
 
 export const useLogin = () => {
-  const [apiError, setApiError] = useState('');
-  const [loading, setLoading] = useState(false);
-  
+  const {
+    login,
+    accessErrorMessages,
+    setAccessErrorMessages,
+    email,
+    setEmail,
+  } = useAuth();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -23,10 +28,12 @@ export const useLogin = () => {
     try {
       const response = await authService.login(data);
       login(response.token, response.user);
+      setAccessErrorMessages({ type: '', text: '' });
+      setEmail('');
       navigate(aseoRoutesList.aseoDashboard);
     } catch (error) {
       console.error(error);
-      setApiError(error.message);
+      setAccessErrorMessages({ type: 'error', text: error.message });
     } finally {
       setLoading(false);
     }
@@ -34,13 +41,14 @@ export const useLogin = () => {
 
   return {
     // Properties
-    apiError,
-    errors,
     loading,
+    errors,
+    accessErrorMessages,
+    email,
 
     // Methods
+    register,
     handleSubmit,
     onSubmit,
-    register,
   };
 };

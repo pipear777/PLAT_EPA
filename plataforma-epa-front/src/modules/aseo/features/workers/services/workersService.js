@@ -106,7 +106,7 @@ export const workersService = {
   getAllLocations: async () => {
     try {
       const response = await apiClient.get('/sede/listar');
-      return response.data;
+      return response;
     } catch (error) {
       console.log(error);
       throw new Error(

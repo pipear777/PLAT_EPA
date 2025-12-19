@@ -5,6 +5,7 @@ export const DetailsContractModal = ({
   contractData,
   isOpen,
   closeDetailsContractModal,
+  modifications,
 }) => {
   return (
     <AnimatePresence>
@@ -81,15 +82,35 @@ export const DetailsContractModal = ({
                 <strong>Objeto:</strong> {contractData.objeto}
               </span>
               <span>
-                <strong>Valor del Contrato:</strong>
+                <strong>Valor inicial del Contrato:</strong>
                 {contractData.ValorContrato}
+              </span>
+              <span>
+                <strong>Valor actual del Contrato:</strong>
+                {contractData.valorActual}
               </span>
               <span
                 className={`px-1 py-1 rounded-lg text-black font-semibold
-                  ${contractData.EstadoContrato === 'Activo' ? 'bg-green-400' : ''}
-                  ${contractData.EstadoContrato === 'Anulado' ? 'bg-gray-400' : ''}
-                  ${contractData.EstadoContrato === 'Finalizado' ? 'bg-red-400' : ''}
-                  ${contractData.EstadoContrato === 'ProximoVencer' ? 'bg-yellow-300' : ''}
+                  ${
+                    contractData.EstadoContrato === 'Activo'
+                      ? 'bg-green-400'
+                      : ''
+                  }
+                  ${
+                    contractData.EstadoContrato === 'Anulado'
+                      ? 'bg-gray-400'
+                      : ''
+                  }
+                  ${
+                    contractData.EstadoContrato === 'Finalizado'
+                      ? 'bg-red-400'
+                      : ''
+                  }
+                  ${
+                    contractData.EstadoContrato === 'ProximoVencer'
+                      ? 'bg-yellow-300'
+                      : ''
+                  }
                 `}
               >
                 <strong>Estado: </strong>
@@ -105,27 +126,20 @@ export const DetailsContractModal = ({
               </h4>
 
               {/* Verificación condicional */}
-              {contractData.modificaciones?.TipoModificacion ||
-              contractData.modificaciones?.adicion ||
-              contractData.modificaciones?.prorroga ? (
-                <>
-                  {/* Mostrar Tipo de Modificación si existe
-                  {contractData.modificaciones?.TipoModificacion && (
-                    <p className="text-gray-700 mb-3">
-                      <strong>Tipo de Modificación:</strong>{' '}
-                      {contractData.modificaciones.TipoModificacion}
-                    </p>
-                  )} */}
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <span>
-                <strong>Valor del Contrato:</strong>
-                {contractData.modificaciones.valo}
-              </span>
-                    </div>
-                  </div> 
-                </>
+              {modifications ? (
+                modifications.map((mod) => (
+                  <div className='flex flex-col' key={mod._id}>
+                    <h4>{mod.adicion ? 'Adición' : 'Prorroga'}</h4>
+                    <span>
+                      <strong>Secuencia:</strong>
+                      {mod.tipoSecuencia}
+                    </span>
+                    <span>
+                      <strong>{mod.valorAdicion ? 'Valor adición' : 'Fecha final de la prorroga'}:</strong>
+                      {mod.valorAdicion ? mod.valorAdicion : mod.fechaFinalProrroga}
+                    </span>
+                  </div>
+                ))
               ) : (
                 <p className="text-gray-600 italic text-center py-4">
                   Este contrato no tiene prórroga ni adición.
@@ -153,7 +167,7 @@ export const DetailsContractModal = ({
                   </tr>
                 </thead>
                 <tbody className="text-gray-800">
-                  <tr className="hover:bg-gray-50 transition-colors">
+                  <tr className="hover:bg-gray-200 transition-colors">
                     <td className="px-6 py-3 border-b">
                       {
                         new Date(contractData.fechaCreacion)

@@ -47,9 +47,11 @@ export const useGetWorkers = () => {
         selectedWorker._id,
         data
       );
+      console.log(response);
+      
       setAlertModal({
         open: true,
-        message: response.message,
+        message: `La actualización del funcionario ${response?.data?.nombre_completo} ha sido exitosa`,
         status: 'Actualización Exitosa',
       });
       getAllWorkers();
