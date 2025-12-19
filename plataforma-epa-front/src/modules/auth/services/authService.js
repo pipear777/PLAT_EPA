@@ -49,9 +49,7 @@ export const authService = {
     }
   },
 
-  resetPassword: async(data) => {
-    console.log(data);
-    
+  resetPassword: async(data) => {    
     try {
       const response = await authClient.post('/auth/resetPassword', data);
       console.log(response.data.msg);
