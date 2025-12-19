@@ -1,16 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useLogin } from '../hooks/useLogin';
 import { GlobalButton, GlobalInput, LoadSpinner } from '@/components';
-import { AuthLayout } from '../components';
+import { AuthLayout, SuccessErrorMessage } from '../components';
 import { authRoutesList } from '@/routes';
 // import { Profiler } from 'react';
 // import { onRenderCallback } from '@/profiler';
 
 export const LoginPage = () => {
   const { 
-    apiError,
+     // Properties
+    accessErrorMessages,
+    email,
     errors,
     loading,
+
+    // Methods
     handleSubmit,
     onSubmit,
     register,
@@ -24,23 +28,16 @@ export const LoginPage = () => {
 
   return (
     <AuthLayout title="Iniciar Sesión">
+      {accessErrorMessages.type && <SuccessErrorMessage message={accessErrorMessages} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col gap-4'
       >
-        {/* -> 8. Muestra el error de la API si existe */}
-        {apiError && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
-            role="alert"
-          >
-            <span className="block sm:inline">{apiError}</span>
-          </div>
-        )}
-
+        {/* <SuccessErrorMessage message={accessErrorMessages} /> */}
         {/* <Profiler id="MiComponente" onRender={onRenderCallback}> Se utiliza para medir el rendimiento de cada componente */}
           <GlobalInput
             label='Correo Electrónico'
+            defaultValue={email}
             data='email'
             classNameSpan='text-epaColor1 font-medium'
             classNameComponent='w-full p-1 border border-epaColor1 rounded-md'

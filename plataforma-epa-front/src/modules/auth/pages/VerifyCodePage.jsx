@@ -13,7 +13,7 @@ export const VerifyCodePage = () => {
 
   return (
     <AuthLayout title="Recuperar Contraseña">
-      <SuccessErrorMessage message={accessErrorMessages} />
+      {accessErrorMessages.type && <SuccessErrorMessage message={accessErrorMessages} />}
       <form
         onSubmit={handleSubmit(onSubmitVerifyCode)}
         className='flex flex-col gap-4'
