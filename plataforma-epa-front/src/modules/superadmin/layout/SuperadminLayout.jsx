@@ -29,7 +29,7 @@ export const SuperadminLayout = () => {
         <div className="space-y-4 pb-10 text-center">
           <img src={logo} alt="Logo EPA" />
           <h3 className="text-epaColor1 text-lg font-bold">Menu Principal</h3>
-          <h4 className="font-medium">Version 2.0</h4>
+          <h4 className="font-medium">Version 1.0</h4>
         </div>
         <nav className="space-y-4 pb-10">
           <div className="text-epaColor1 font-medium">
