@@ -78,9 +78,9 @@ export const GetContractsPage = () => {
 
   return (
     <>
-      {/* {loading && (
+      {loading && (
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
-      )} */}
+      )}
       {loadingFilter && (
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
       )}

@@ -1,5 +1,10 @@
 import { AppLayout } from '@/layouts';
+import { JuridicaProvider } from '../context';
 
 export const JuridicaLayout = () => {
-  return <AppLayout title={'Modulo Juridica'} />;
+  return (
+    <JuridicaProvider>
+      <AppLayout title={'Modulo Juridica'} />
+    </JuridicaProvider>
+  );
 };
