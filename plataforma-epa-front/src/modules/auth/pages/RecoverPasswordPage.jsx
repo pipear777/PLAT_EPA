@@ -14,7 +14,7 @@ export const RecoverPasswordPage = () => {
 
   return (
     <AuthLayout title="Recuperar Contraseña">
-      {accessErrorMessages.type && <SuccessErrorMessage message={accessErrorMessages} />}
+      {accessErrorMessages.type === 'ERROR' && <SuccessErrorMessage message={accessErrorMessages} />}
       <form
         onSubmit={handleSubmit(onSubmitRecoverPassword)}
         className='flex flex-col gap-4'
