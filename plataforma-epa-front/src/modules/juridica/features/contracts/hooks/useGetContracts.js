@@ -25,6 +25,7 @@ export const useGetContracts = () => {
   const [detailsContractModal, setDetailsContractModal] = useState(false);
   const [loadingFilter, setLoadingFilter] = useState(false);
   const [modificationsContractModal, setModificationsContractModal] = useState(false);
+  const [modificationsUpdateContractModal, setModificationsUpdateContractModal] = useState(false);
   const [loadingModifications, setLoadingModifications] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
@@ -54,9 +55,15 @@ export const useGetContracts = () => {
   const {
     register: registerModifications,
     handleSubmit: handleSubmitModifications,
-    reset: resetModifications,
     watch: watchModifications,
     formState: { errors: errorsModifications },
+  } = useForm();
+
+  const {
+    register: registerModificationsUpdate,
+    handleSubmit: handleSubmitModificationsUpdate,
+    reset: resetModifications,
+    formState: { errors: errorsModificationsUpdate },
   } = useForm();
 
   useEffect(() => {
@@ -176,6 +183,39 @@ export const useGetContracts = () => {
     }
   };
 
+  const openModificationsUpdateModal = (id) => {
+    setSelectedContractId(id);
+    const selectedContract = contracts.find((c) => c._id === id);
+
+    if (selectedContract) {
+      resetModifications({
+        valorAdicion: selectedContract.valorAdicion || '',
+        fechaFinalProrroga: selectedContract.fechaFinalProrroga || '',
+        tiempoProrroga: selectedContract.tiempoProrroga || '',
+      });
+    }
+    setModificationsUpdateContractModal(true);
+  };
+
+  const onSubmitModificationsUpdateContract = async (updateData) => {
+    try {
+      await contractsServices.updateModifications(selectedContractId, updateData);
+      setAlertModal({
+        open: true,
+        message: 'La Modificacion ha sido actualizado con Exito✅',
+        state: 'Modificacion Actualizado',
+      });
+      getAllContracts();
+    } catch (error) {
+      console.log(error);
+      setAlertModal({
+        open: true,
+        message: error.message || 'Error al actualizar la modificacion. ❌',
+        state: 'Error',
+      });
+    }
+  };
+
   // Obtener las modificaciones de cada contrato
   const getModifications = async (id) => {
     try {
@@ -273,6 +313,7 @@ export const useGetContracts = () => {
     detailsContractModal,
     errors,
     errorsModifications,
+    errorsModificationsUpdate,
     filteredContracts,
     filterValue,
     hoverEye,
@@ -282,6 +323,7 @@ export const useGetContracts = () => {
     loadingModifications,
     modifications,
     modificationsContractModal,
+    modificationsUpdateContractModal,
     objetoExpandido,
     process,
     totalPages,
@@ -300,15 +342,19 @@ export const useGetContracts = () => {
     handleSearch,
     handleSubmit,
     handleSubmitModifications,
+    handleSubmitModificationsUpdate,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
+    onSubmitModificationsUpdateContract,
     openConfirmModal,
     openDetailsContractModal,
     openEye,
     openModificationsModal,
+    openModificationsUpdateModal,
     openUpdateModal,
     register,
     registerModifications,
+    registerModificationsUpdate,
     setFilterValue,
     setObjetoExpandido,
     watchModifications,

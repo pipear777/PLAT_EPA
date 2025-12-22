@@ -34,6 +34,7 @@ export const GetContractsPage = () => {
     detailsContractModal,
     errors,
     errorsModifications,
+    errorsModificationsUpdate,
     filteredContracts,
     filterValue,
     hoverEye,
@@ -43,6 +44,7 @@ export const GetContractsPage = () => {
     loadingModifications,
     modifications,
     modificationsContractModal,
+    modificationsUpdateContractModal,
     objetoExpandido,
     process,
     totalPages,
@@ -61,15 +63,19 @@ export const GetContractsPage = () => {
     handleSearch,
     handleSubmit,
     handleSubmitModifications,
+    handleSubmitModificationsUpdate,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
+    onSubmitModificationsUpdateContract,
     openConfirmModal,
     openDetailsContractModal,
     openEye,
     openModificationsModal,
+    openModificationsUpdateModal,
     openUpdateModal,
     register,
     registerModifications,
+    registerModificationsUpdate,
     setFilterValue,
     setObjetoExpandido,
     watchModifications,
@@ -82,10 +88,10 @@ export const GetContractsPage = () => {
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
       )}
       {loadingFilter && (
-        <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
+        <LoadSpinner name="Cargando Filtros" styles="fixed bg-gray-200/95" />
       )}
       {loadingModifications && (
-        <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
+        <LoadSpinner name="Cargando..." styles="fixed bg-gray-200/95" />
       )}
       <GlobalButton
         variant="back"
@@ -165,7 +171,7 @@ export const GetContractsPage = () => {
             </GlobalButton>
             <GlobalButton
               className="p-1"
-              onClick={() => handleSearch('nombreAbogado')}
+              onClick={() => handleSearch('nombreCompletoAbogado')}
             >
               Buscar por Abogado
             </GlobalButton>
@@ -247,7 +253,8 @@ export const GetContractsPage = () => {
                       <td className="p-2">{c.valorActual}</td>
                       <td className="p-2">{c.FechaInicio}</td>
                       <td className="p-2">
-                        {c.AbogadoAsignado?.nombreAbogado || 'No asignado'}
+                        {c.AbogadoAsignado?.nombreCompletoAbogado ||
+                          'No asignado'}
                       </td>
                       <td className="text-center truncate">
                         <span
@@ -369,6 +376,12 @@ export const GetContractsPage = () => {
           closeDetailsContractModal={closeModals}
           contractData={selectedContract}
           modifications={modifications}
+          handleSubmitModificationsUpdate={handleSubmitModificationsUpdate}
+          onSubmitModificationsUpdateContract={onSubmitModificationsUpdateContract}
+          closeModals={closeModals}
+          registerModificationsUpdate={registerModificationsUpdate}
+          errorsModificationsUpdate={errorsModificationsUpdate}
+          openModificationsUpdateModal={openModificationsUpdateModal}
         />
 
         <UpdateModal
