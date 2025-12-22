@@ -1,13 +1,22 @@
 import { useAuth } from '@/context';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { GlobalButton } from '@/components';
 import { SIDEBAR_ITEMS } from './sidebar.config';
+import { getCurrentModule } from './sidebar.utils';
 import logo from '@/assets/logoepa.png';
 
 export const Sidebar = ({ isOpen, onClose }) => {
+  const { pathname } = useLocation();
   const { auth, logout } = useAuth();
+
   const role = auth?.user?.rol;
+  const currentModule = getCurrentModule(pathname);
+
+  const filteredItems = SIDEBAR_ITEMS.filter((item) =>
+    item.roles.includes(role) &&
+    item.module.includes(currentModule)
+  );
 
   return (
     <>
@@ -39,19 +48,17 @@ export const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         <nav className="space-y-4 pb-10">
-          {SIDEBAR_ITEMS.filter((item) => item.roles.includes(role)).map(
-            ({ label, to, icon: Icon }) => (
-              <div key={label + to} className="text-epaColor1 font-medium">
-                <Link
-                  to={to}
-                  className="flex gap-2 items-center transition-transform duration-300 hover:translate-x-4"
-                >
-                  <Icon size={20} />
-                  {label}
-                </Link>
-              </div>
-            )
-          )}
+          {filteredItems.map(({ label, to, icon: Icon }) => (
+            <div key={label + to} className="text-epaColor1 font-medium">
+              <Link
+                to={to}
+                className="flex gap-2 items-center transition-transform duration-300 hover:translate-x-4"
+              >
+                <Icon size={20} />
+                {label}
+              </Link>
+            </div>
+          ))}
         </nav>
 
         <GlobalButton
