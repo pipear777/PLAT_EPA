@@ -23,6 +23,7 @@ import {
   ModificationsContractModal,
   UpdateContractModal,
 } from '../components';
+import { formatCOP } from '@/utils';
 
 export const GetContractsPage = () => {
   const {
@@ -250,7 +251,7 @@ export const GetContractsPage = () => {
                           </>
                         )}
                       </td>
-                      <td className="p-2">{c.valorActual}</td>
+                      <td className="p-2">{formatCOP(c.valorActual)}</td>
                       <td className="p-2">{c.FechaInicio}</td>
                       <td className="p-2">
                         {c.AbogadoAsignado?.nombreCompletoAbogado ||

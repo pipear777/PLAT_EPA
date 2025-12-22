@@ -172,6 +172,7 @@ export const useGetContracts = () => {
       });
 
       resetModifications();
+      getAllContracts();
     } catch (error) {
       setAlertModal({
         open: true,

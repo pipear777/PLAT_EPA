@@ -105,7 +105,7 @@ export const UpdateContractModal = ({
           <option value="">Selecciona una opcion</option>
           {lawyers.map((l) => (
             <option key={l._id} value={l._id}>
-              {l.nombreAbogado}
+              {l.nombreCompletoAbogado}
             </option>
           ))}
         </GlobalInput>

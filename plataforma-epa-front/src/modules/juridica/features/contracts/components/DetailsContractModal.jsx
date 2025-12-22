@@ -1,4 +1,5 @@
 import { GlobalButton, GlobalInput, UpdateModal } from '@/components';
+import { formatCOP } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Pencil } from 'lucide-react';
 
@@ -48,15 +49,15 @@ export const DetailsContractModal = ({
                   Datos del Contratista
                 </h4>
                 <span>
-                  <strong>Nombre Completo:</strong>{' '}
+                  <strong>Nombre Completo: </strong>{' '}
                   {contractData.NombreContratista}
                 </span>
                 <span>
-                  <strong>Identificación:</strong>{' '}
+                  <strong>Identificación: </strong>{' '}
                   {contractData.identificacionOnit}
                 </span>
                 <span>
-                  <strong>Teléfono:</strong> {contractData.TelefonoContratista}
+                  <strong>Teléfono: </strong> {contractData.TelefonoContratista}
                 </span>
               </div>
 
@@ -66,37 +67,37 @@ export const DetailsContractModal = ({
                   Datos del Contrato
                 </h4>
                 <span>
-                  <strong>Consecutivo:</strong> {contractData.consecutivo}
+                  <strong>Consecutivo: </strong> {contractData.consecutivo}
                 </span>
                 <span>
-                  <strong>Dependencia o Proceso:</strong>
+                  <strong>Dependencia o Proceso: </strong>
                   {contractData.proceso.nombreProceso}
                 </span>
                 <span>
-                  <strong>Correo Dependencia:</strong>
+                  <strong>Correo Dependencia: </strong>
                   {contractData.CorreoDependencia}
                 </span>
                 <span>
-                  <strong>Tipo de Contrato:</strong>
+                  <strong>Tipo de Contrato: </strong>
                   {contractData.tipoContrato.tipoContrato}
                 </span>
                 <span>
-                  <strong>Fecha de Inicio:</strong> {contractData.FechaInicio}
+                  <strong>Fecha de Inicio: </strong> {contractData.FechaInicio}
                 </span>
                 <span>
-                  <strong>Fecha de Finalización:</strong>
+                  <strong>Fecha de Finalización: </strong>
                   {contractData.FechaFinalizacion}
                 </span>
                 <span>
                   <strong>Objeto:</strong> {contractData.objeto}
                 </span>
                 <span>
-                  <strong>Valor inicial del Contrato:</strong>
-                  {contractData.ValorContrato}
+                  <strong>Valor inicial del Contrato: </strong>
+                  {formatCOP(contractData.ValorContrato)}
                 </span>
                 <span>
-                  <strong>Valor actual del Contrato:</strong>
-                  {contractData.valorActual}
+                  <strong>Valor actual del Contrato: </strong>
+                  {formatCOP(contractData.valorActual)}
                 </span>
                 <span
                   className={`px-1 py-1 rounded-lg text-black font-semibold
@@ -137,23 +138,39 @@ export const DetailsContractModal = ({
                 {/* Verificación condicional */}
                 {modifications.length !== 0 ? (
                   modifications.map((mod) => (
-                    <div className="flex flex-col" key={mod._id}>
-                      <h4>{mod.adicion ? 'Adición' : 'Prorroga'}</h4>
-                      <span>
-                        <strong>Secuencia:</strong>
-                        {mod.tipoSecuencia}
-                      </span>
-                      <span>
-                        <strong>
+                    <div className="flex items-center justify-between p-4 mb-3 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                      {/* Información */}
+                      <div className="flex flex-col gap-1" key={mod._id}>
+                        <h4 className="text-base font-semibold text-gray-800">
+                          {mod.adicion ? 'Adición' : 'Prórroga'}
+                        </h4>
+
+                        <span className="text-sm text-gray-600">
+                          <strong className="text-gray-700">Secuencia:</strong>{' '}
+                          {mod.tipoSecuencia}
+                        </span>
+
+                        <span className="text-sm text-gray-600">
+                          <strong className="text-gray-700">
+                            {mod.valorAdicion
+                              ? 'Valor adición'
+                              : 'Fecha final de la prórroga'}
+                            :
+                          </strong>{' '}
                           {mod.valorAdicion
-                            ? 'Valor adición'
-                            : 'Fecha final de la prorroga'}
-                          :
-                        </strong>
-                        {mod.valorAdicion
-                          ? mod.valorAdicion
-                          : mod.fechaFinalProrroga}
-                      </span>
+                            ? formatCOP(mod.valorAdicion)
+                            : mod.fechaFinalProrroga}
+                        </span>
+                      </div>
+
+                      {/* Acción */}
+                      <button
+                        className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-all"
+                        title="Editar"
+                        onClick={() => openModificationsUpdateModal(mod._id)}
+                      >
+                        <Pencil size={18} />
+                      </button>
                     </div>
                   ))
                 ) : (
@@ -161,13 +178,6 @@ export const DetailsContractModal = ({
                     Este contrato no tiene prórroga ni adición.
                   </p>
                 )}
-                <button
-                  className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
-                  title="Eliminar"
-                  onClick={() => openModificationsUpdateModal(modifications._id)}
-                >
-                  <Pencil size={18} />
-                </button>
               </div>
 
               {/* Historial de Modificaciones */}
