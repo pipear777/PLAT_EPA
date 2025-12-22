@@ -8,6 +8,7 @@ import {
   ClipboardClock,
   NotebookPen,
   Folders,
+  ShieldUser,
 } from 'lucide-react';
 
 import {
@@ -21,8 +22,8 @@ import { ROLES } from '@/constants';
 export const SIDEBAR_ITEMS = [
   // ===== SUPER ADMIN =====
   {
-    label: 'Inicio Admin',
-    icon: House,
+    label: 'Administrador',
+    icon: ShieldUser,
     to: superadminRoutesList.superadminDashboard,
     roles: [ROLES.SUPER_ADMIN],
     module: ['SUPERADMIN', 'ASEO', 'JURIDICA'],
@@ -58,7 +59,7 @@ export const SIDEBAR_ITEMS = [
 
   // ===== ASEO =====
   {
-    label: 'Inicio Aseo',
+    label: 'Inicio',
     icon: House,
     to: aseoRoutesList.aseoDashboard,
     roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN_ASEO, ROLES.USER_ASEO],
@@ -102,7 +103,7 @@ export const SIDEBAR_ITEMS = [
 
   // ===== JURIDICA =====
   {
-    label: 'Inicio Jurídica',
+    label: 'Inicio',
     icon: House,
     to: juridicaRoutesList.juridicaDashboard,
     roles: [ROLES.USER_JURIDICA, ROLES.ADMIN_JURIDICA, ROLES.SUPER_ADMIN],

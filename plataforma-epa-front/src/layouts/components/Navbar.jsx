@@ -1,7 +1,5 @@
-import { Link } from 'react-router-dom';
 import { Menu, UserCheck, UserStar } from 'lucide-react';
 import { useAuth } from '@/context';
-import { superadminRoutesList } from '@/routes';
 import { ROLES } from '@/constants';
 
 export const Navbar = ({ title, onMenuClick }) => {
@@ -27,16 +25,7 @@ export const Navbar = ({ title, onMenuClick }) => {
       <div className="w-2/10 flex text-white text-sm items-center justify-end gap-2">
         {isSuperAdmin ? <UserStar /> : <UserCheck />}
         <div>
-          <p className="text-center">{auth?.user?.name}</p>
-          {isSuperAdmin ? (
-            <Link to={superadminRoutesList.superadminDashboard}>
-              <p className="bg-white px-2 text-epaColor1 font-semibold underline rounded-sm">
-                {auth?.user?.rol}
-              </p>
-            </Link>
-          ) : (
-            <p>{auth?.user?.rol}</p>
-          )}
+          <p className="text-center">{auth?.user?.name}<br />{auth?.user?.rol}</p>
         </div>
       </div>
     </header>
