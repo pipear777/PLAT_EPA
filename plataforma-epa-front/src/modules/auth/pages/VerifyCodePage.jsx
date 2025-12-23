@@ -29,7 +29,7 @@ export const VerifyCodePage = () => {
             required: 'El código es obligatorio',
           }}
         />
-        <GlobalButton type='submit' className='w-full p-1.5'>
+        <GlobalButton type='submit' className='w-full p-1 mt-1 sm:p-1.5'>
           Verificar código
         </GlobalButton>
       </form>

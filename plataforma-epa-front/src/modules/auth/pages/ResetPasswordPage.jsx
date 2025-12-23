@@ -17,7 +17,7 @@ export const ResetPasswordPage = () => {
       {accessErrorMessages.type && <SuccessErrorMessage message={accessErrorMessages} />}
         <form 
           onSubmit={handleSubmit(onSubmitResetPassword)}
-          className='flex flex-col gap-4'
+          className='flex flex-col gap-2 sm:gap-4'
         >
           <GlobalInput
             label='Correo Electrónico'
@@ -61,7 +61,7 @@ export const ResetPasswordPage = () => {
               minLength: { value: 8, message: 'Minimo 8 caracteres' },
             }}
           />
-          <GlobalButton type='submit' className='w-full p-1.5'>
+          <GlobalButton type='submit' className='w-full p-1 mt-1 sm:p-1.5'>
             Cambiar Contraseña
           </GlobalButton>
         </form>

@@ -66,7 +66,7 @@ export const LoginPage = () => {
             minLength: { value: 8, message: 'Minimo 8 caracteres' },
           }}
         />
-        <GlobalButton type="submit" className="w-full p-1.5 mb-4">
+        <GlobalButton type="submit" className="w-full p-1 mt-1 sm:p-1.5 sm:my-2">
           Iniciar Sesión
         </GlobalButton>
       </form>
