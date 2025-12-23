@@ -85,7 +85,7 @@ export const UpdateContractModal = ({
           <option value="">Seleccione una opcion</option>
           {contractType.map((ct) => (
             <option key={ct._id} value={ct._id}>
-              {ct.tipoContrato}
+              {ct.nombre}
             </option>
           ))}
         </GlobalInput>

@@ -30,6 +30,7 @@ export const GetContractsPage = () => {
     //Properties
     alertModal,
     confirmModal,
+    confirmModalModifications,
     contractType,
     currentPage,
     detailsContractModal,
@@ -59,9 +60,11 @@ export const GetContractsPage = () => {
     //Methods
     closeModals,
     handleOverride,
+    handleOverrideModifications,
     handlePageChange,
     handleReset,
     handleSearch,
+    handleSearchByStatus,
     handleSubmit,
     handleSubmitModifications,
     handleSubmitModificationsUpdate,
@@ -69,6 +72,7 @@ export const GetContractsPage = () => {
     onSubmitModificationsContract,
     onSubmitModificationsUpdateContract,
     openConfirmModal,
+    openConfirmModalModifications,
     openDetailsContractModal,
     openEye,
     openModificationsModal,
@@ -82,6 +86,13 @@ export const GetContractsPage = () => {
     watchModifications,
   } = useGetContracts();
   const { onClickBack } = useBackNavigation();
+
+  const EstadoContrato = {
+  Activo: 'Activo',
+  ProximoVencer: 'ProximoVencer',
+  Finalizado: 'Finalizado',
+  Anulado: 'Anulado',
+};
 
   return (
     <>
@@ -105,22 +116,34 @@ export const GetContractsPage = () => {
       <div className="flex flex-col h-full gap-4">
         {/* Cards */}
         <div className=" h-1/5 flex flex-row justify-around items-center gap-4">
-          <div className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
-            <span> Numero de contratos vigentes </span>
+        <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Activo)}
+            className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
+            <span>Numero de contratos vigentes</span>
             <p className="text-3xl">{summaries?.data?.Activo ?? 0}</p>
-          </div>
-          <div className="bg-yellow-300 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
-            <span>Contratos por vencer en 30 dias</span>
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.ProximoVencer)}
+            className="bg-yellow-300 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
+            <span>Contratos por vencer en 30 días</span>
             <p className="text-3xl">{summaries?.data?.ProximoVencer ?? 0}</p>
-          </div>
-          <div className="bg-red-500 h-25 w-70 p-3  rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Finalizado)}
+            className="bg-red-500 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
             <span>Numero de contratos vencidos</span>
             <p className="text-3xl">{summaries?.data?.Finalizado ?? 0}</p>
-          </div>
-          <div className="bg-gray-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Anulado)}
+            className="bg-gray-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
             <span>Contratos Anulados</span>
             <p className="text-3xl">{summaries?.data?.Anulado ?? 0}</p>
-          </div>
+          </button>
         </div>
 
         {/*Filtros*/}
@@ -141,37 +164,37 @@ export const GetContractsPage = () => {
 
           <div className="flex gap-2">
             <GlobalButton
-              className="p-1"
+              className="p-2"
               onClick={() => handleSearch('NombreContratista')}
             >
               Buscar por Nombre de Contratista o La Empresa
             </GlobalButton>
             <GlobalButton
-              className="p-1"
+              className="p-2"
               onClick={() => handleSearch('consecutivo')}
             >
               Buscar por Consecutivo
             </GlobalButton>
             <GlobalButton
-              className="p-1"
+              className="p-2"
               onClick={() => handleSearch('identificacionOnit')}
             >
               Buscar por Identificacion del Contratista o La empresa
             </GlobalButton>
             <GlobalButton
-              className="p-1"
-              onClick={() => handleSearch('tipoContrato')}
+              className="p-2"
+              onClick={() => handleSearch('nombre')}
             >
               Buscar por Tipo de Contrato
             </GlobalButton>
-            <GlobalButton
-              className="p-1"
+            {/* <GlobalButton
+              className="p-2"
               onClick={() => handleSearch('vigencia')}
             >
               Buscar por Vigencia
-            </GlobalButton>
+            </GlobalButton> */}
             <GlobalButton
-              className="p-1"
+              className="p-2"
               onClick={() => handleSearch('nombreCompletoAbogado')}
             >
               Buscar por Abogado
@@ -318,7 +341,7 @@ export const GetContractsPage = () => {
 
                         <button
                           className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
-                          title="Eliminar"
+                          title="Anular"
                           onClick={() => openConfirmModal(c._id)}
                         >
                           <Ban size={18} />
@@ -377,12 +400,18 @@ export const GetContractsPage = () => {
           closeDetailsContractModal={closeModals}
           contractData={selectedContract}
           modifications={modifications}
+          modificationsUpdateContractModal={modificationsUpdateContractModal}
           handleSubmitModificationsUpdate={handleSubmitModificationsUpdate}
-          onSubmitModificationsUpdateContract={onSubmitModificationsUpdateContract}
+          onSubmitModificationsUpdateContract={
+            onSubmitModificationsUpdateContract
+          }
           closeModals={closeModals}
           registerModificationsUpdate={registerModificationsUpdate}
           errorsModificationsUpdate={errorsModificationsUpdate}
           openModificationsUpdateModal={openModificationsUpdateModal}
+          confirmModalModifications={confirmModalModifications}
+          handleOverride={handleOverrideModifications}
+          openConfirmModalModifications={openConfirmModalModifications}
         />
 
         <UpdateModal

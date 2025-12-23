@@ -1,7 +1,12 @@
-import { GlobalButton, GlobalInput, UpdateModal } from '@/components';
+import {
+  ConfirmModal,
+  GlobalButton,
+  GlobalInput,
+  UpdateModal,
+} from '@/components';
 import { formatCOP } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Pencil } from 'lucide-react';
+import { Ban, Pencil } from 'lucide-react';
 
 export const DetailsContractModal = ({
   contractData,
@@ -15,7 +20,12 @@ export const DetailsContractModal = ({
   registerModificationsUpdate,
   errorsModificationsUpdate,
   openModificationsUpdateModal,
+  confirmModalModifications,
+  handleOverride,
+  openConfirmModalModifications,
 }) => {
+  const mod = modifications?.[0]; // o la que selecciones
+  const lastModification = modifications.at(-1);
   return (
     <>
       <AnimatePresence>
@@ -75,11 +85,11 @@ export const DetailsContractModal = ({
                 </span>
                 <span>
                   <strong>Correo Dependencia: </strong>
-                  {contractData.CorreoDependencia}
+                  {contractData.CorreoDependencia || 'No tiene Correo de Dependencia'}
                 </span>
                 <span>
                   <strong>Tipo de Contrato: </strong>
-                  {contractData.tipoContrato.tipoContrato}
+                  {contractData.tipoContrato.nombre }
                 </span>
                 <span>
                   <strong>Fecha de Inicio: </strong> {contractData.FechaInicio}
@@ -100,7 +110,7 @@ export const DetailsContractModal = ({
                   {formatCOP(contractData.valorActual)}
                 </span>
                 <span
-                  className={`px-1 py-1 rounded-lg text-black font-semibold
+                  className={`px-1 py-1 rounded-full text-black font-semibold
                   ${
                     contractData.EstadoContrato === 'Activo'
                       ? 'bg-green-400'
@@ -129,48 +139,106 @@ export const DetailsContractModal = ({
               </div>
 
               {/* Datos del Abogado */}
+              <div className="flex flex-col p-4 border border-gray-300 rounded-2xl shadow-sm bg-white hover:shadow-md transition-shadow duration-300 mb-4">
+                <h4 className="text-lg font-bold text-black mb-2 border-b pb-1">
+                  Datos del Abogado
+                </h4>
+                <span>
+                  <strong>Identificacion: </strong>{' '}
+                  {contractData.AbogadoAsignado.identificacion}
+                </span>
+                <span>
+                  <strong>Nombre Completo: </strong>{' '}
+                  {contractData.AbogadoAsignado.nombreCompletoAbogado}
+                </span>
+              </div>
+
               {/* ✅ Bloque de Prórroga o Adición */}
               <div className="flex flex-col p-4 border border-gray-300 rounded-2xl shadow-sm bg-white hover:shadow-md transition-shadow duration-300 mb-4">
                 <h4 className="text-lg font-bold text-black mb-3 border-b pb-2">
                   Datos de Prórroga o Adición
                 </h4>
-
                 {/* Verificación condicional */}
                 {modifications.length !== 0 ? (
                   modifications.map((mod) => (
-                    <div className="flex items-center justify-between p-4 mb-3 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                    <div
+                      key={mod._id}
+                      className="flex items-center justify-between p-4 mb-3 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+                    >
                       {/* Información */}
                       <div className="flex flex-col gap-1" key={mod._id}>
                         <h4 className="text-base font-semibold text-gray-800">
-                          {mod.adicion ? 'Adición' : 'Prórroga'}
+                          {mod.adicion && mod.prorroga
+                            ? 'Adición y Prórroga'
+                            : mod.adicion
+                            ? 'Adición'
+                            : 'Prórroga'}
                         </h4>
-
                         <span className="text-sm text-gray-600">
                           <strong className="text-gray-700">Secuencia:</strong>{' '}
                           {mod.tipoSecuencia}
                         </span>
+                        {/* 👉 ADICIÓN */}
+                        {mod.valorAdicion === 0 ? (
+                          <></>
+                        ) : (
+                          <span className="text-sm text-gray-600">
+                            <strong className="text-gray-700">
+                              Valor adición:
+                            </strong>{' '}
+                            {formatCOP(mod.valorAdicion)}
+                          </span>
+                        )}
+                        {/* 👉 PRÓRROGA */}
+                        {mod.fechaFinalProrroga && (
+                          <>
+                            <span className="text-sm text-gray-600">
+                              <strong className="text-gray-700">
+                                Fecha final de la prórroga:
+                              </strong>{' '}
+                              {mod.fechaFinalProrroga}
+                            </span>
+                            <span className="text-sm text-gray-600">
+                              <strong className="text-gray-700">
+                                Tiempo Prorroga:
+                              </strong>{' '}
+                              {mod.tiempoProrroga}
+                            </span>
+                          </>
+                        )}
 
-                        <span className="text-sm text-gray-600">
-                          <strong className="text-gray-700">
-                            {mod.valorAdicion
-                              ? 'Valor adición'
-                              : 'Fecha final de la prórroga'}
-                            :
-                          </strong>{' '}
-                          {mod.valorAdicion
-                            ? formatCOP(mod.valorAdicion)
-                            : mod.fechaFinalProrroga}
+                        <span
+                          className={`px-2 py-1 rounded-full text-sm 
+                            ${mod.estado === 'Activa' ? 'bg-green-400' : ''}
+                            ${mod.estado === 'Anulada' ? 'bg-gray-400' : ''}
+                            
+                          `}
+                        >
+                          <strong>Estado:</strong> {mod.estado}
                         </span>
                       </div>
 
-                      {/* Acción */}
-                      <button
-                        className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-all"
-                        title="Editar"
-                        onClick={() => openModificationsUpdateModal(mod._id)}
-                      >
-                        <Pencil size={18} />
-                      </button>
+                      {/* Acciónes */}
+                      <div className="flex gap-2">
+                        <button
+                          className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-all"
+                          title="Editar"
+                          onClick={() => openModificationsUpdateModal(mod._id)}
+                        >
+                          <Pencil size={18} />
+                        </button>
+                        {mod._id === lastModification?._id && (
+                          <button
+                            className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
+                            title="Anular"
+                            onClick={() =>
+                              openConfirmModalModifications(mod._id)
+                            }
+                          >
+                            <Ban size={18} />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -234,42 +302,62 @@ export const DetailsContractModal = ({
       </AnimatePresence>
       <UpdateModal
         isOpen={modificationsUpdateContractModal}
-        title="Editar Modificacion"
+        title="Editar Modificación"
         handleSubmit={handleSubmitModificationsUpdate}
         onSubmit={onSubmitModificationsUpdateContract}
         closeModal={closeModals}
       >
-        <GlobalInput
-          as="input"
-          label="Identificación"
-          data="identificacion"
-          register={registerModificationsUpdate}
-          errors={errorsModificationsUpdate}
-          rules={{
-            required: 'La identificación del Abogado es obligatoria',
-          }}
-        />
-        <GlobalInput
-          as="input"
-          label="Identificación"
-          data="identificacion"
-          register={registerModificationsUpdate}
-          errors={errorsModificationsUpdate}
-          rules={{
-            required: 'La identificación del Abogado es obligatoria',
-          }}
-        />
-        <GlobalInput
-          as="input"
-          label="Identificación"
-          data="identificacion"
-          register={registerModificationsUpdate}
-          errors={errorsModificationsUpdate}
-          rules={{
-            required: 'La identificación del Abogado es obligatoria',
-          }}
-        />
+        {/* 👉 SI ES ADICIÓN */}
+        {mod?.adicion && (
+          <GlobalInput
+            as="input"
+            label="Valor Adición"
+            data="valorAdicion"
+            register={registerModificationsUpdate}
+            errors={errorsModificationsUpdate}
+            rules={{
+              required: 'El valor de la adición es obligatorio',
+            }}
+          />
+        )}
+
+        {/* 👉 SI ES PRÓRROGA */}
+        {mod?.prorroga && (
+          <>
+            <GlobalInput
+              as="input"
+              type="date"
+              label="Fecha Final Prórroga"
+              data="fechaFinalProrroga"
+              register={registerModificationsUpdate}
+              errors={errorsModificationsUpdate}
+              rules={{
+                required: 'La fecha final es obligatoria',
+              }}
+            />
+
+            <GlobalInput
+              as="input"
+              label="Tiempo Prórroga"
+              data="tiempoProrroga"
+              register={registerModificationsUpdate}
+              errors={errorsModificationsUpdate}
+              rules={{
+                required: 'El tiempo de la prórroga es obligatorio',
+              }}
+            />
+          </>
+        )}
       </UpdateModal>
+      <ConfirmModal
+        isOpen={confirmModalModifications}
+        title="Confirmar Anulacion"
+        content="¿Estás seguro de que  deseas anular este contrato? Esta acción no se puede deshacer."
+        onClickCancel={closeModals}
+        onClickConfirm={() => handleOverride()}
+        buttonConfirmContent="Anular"
+        variant="modalThree"
+      />
     </>
   );
 };
