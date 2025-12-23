@@ -145,7 +145,7 @@ const crearContratoService = async (datosContrato, usuario = {}) => {
       contratoGuardado.CorreoDependencia,
       contratoGuardado.consecutivo,
       contratoGuardado.Vigencia,
-      contratoGuardado.tipoContrato?.nombre, // Cambiado a 'nombre'
+      contratoGuardado.tipoContrato?.nombre,
       contratoGuardado.NombreContratista,
       contratoGuardado.identificacionOnit,
       contratoGuardado.ValorContrato
@@ -382,11 +382,16 @@ const updateContratoService = async (id, nuevosDatos, usuario = {}) => {
 
       const valorInicial = contrato.ValorContrato || 0;
       const totalAdiciones = contrato.modificaciones.reduce((acc, mod) => {
-        return mod.adicion ? acc + (mod.valorAdicion || 0) : acc;
+        if (mod.estado === 'Activa' && mod.adicion) {
+          return acc + (mod.valorAdicion || 0);
+        }
+        return acc;
       }, 0);
       contrato.valorActual = valorInicial + totalAdiciones;
 
-      const prorrogas = contrato.modificaciones.filter(mod => mod.prorroga && mod.fechaFinalProrroga);
+      const prorrogas = contrato.modificaciones.filter(
+        (mod) => mod.estado === "Activa" && mod.prorroga && mod.fechaFinalProrroga
+      );
       if (prorrogas.length > 0) {
         const ultimaProrroga = prorrogas.reduce((ultima, prorroga) => {
           const fechaActual = new Date(prorroga.fechaFinalProrroga);
