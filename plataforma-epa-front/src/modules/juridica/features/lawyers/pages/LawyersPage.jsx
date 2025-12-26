@@ -52,7 +52,7 @@ export const LawyersPage = () => {
             onClick={openModal}
           >
             <FilePlus />
-            Crear Abogado Nuevo
+            Crear Abogado
           </GlobalButton>
         )}
         <div className="w-full overflow-x-auto bg-white p-4 rounded-lg shadow-md">
