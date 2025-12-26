@@ -158,7 +158,7 @@ export const GetContractsPage = () => {
             />
             <GlobalButton className="flex p-2 gap-2" onClick={handleReset}>
               <RotateCcw />
-              Resetear Filtro
+              Eliminar Filtros
             </GlobalButton>
           </div>
 
