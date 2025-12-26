@@ -169,8 +169,6 @@ const updateExtra = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Registro no encontrado.' });
     }
 
-    // 1. Crear un objeto con los datos finales (originales + nuevos)
-    // Se asegura de que todos los campos necesarios para la validación y el cálculo estén presentes.
     const datosFinales = {
       ...extraOriginal.toObject(),
       ...nuevosDatos
@@ -181,7 +179,6 @@ const updateExtra = async (req, res) => {
       return res.status(validacion.status || 400).json({ success: false, message: validacion.message });
     }
 
-    // 3. Recalcular las horas con los datos ya validados
     const calculos = await calcularHorasExtras(datosFinales);
 
     if (!calculos.success) {
@@ -189,14 +186,12 @@ const updateExtra = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: calculos.message || "Error desconocido al calcular horas extras",
-        detalle: calculos // incluir el objeto completo en la respuesta (opcional)
+        detalle: calculos 
       });
     }
 
-    // 4. Actualizar el documento original con los nuevos datos y los nuevos cálculos
     Object.assign(extraOriginal, nuevosDatos, calculos);
 
-    // 5. Guardar el documento actualizado en la base de datos
     await extraOriginal.save();
 
     // Opcional: Volver a popular los datos del funcionario para la respuesta
@@ -239,7 +234,7 @@ const exportarExtrasExcel = async (req, res) => {
 
     if (fechaInicio && fechaFin) {
       const inicio = moment(fechaInicio, "YYYY-MM-DD").startOf('day').toDate();
-      const fin = moment(fechaFin, "YsYYY-MM-DD").endOf('day').toDate();
+      const fin = moment(fechaFin, "YYYY-MM-DD").endOf('day').toDate();
 
       query.fecha_inicio_trabajo = { $lte: fin };
       query.fecha_fin_trabajo = { $gte: inicio };

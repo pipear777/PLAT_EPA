@@ -6,50 +6,52 @@ PROJECT_DIR="/home/maria/PLAT_EPA"
 LOG_FILE="$PROJECT_DIR/update.log"
 LOCK_FILE="/tmp/deploy_epa.lock"
 
-# --- LÓGICA DE BLOQUEO ---
-# Si el archivo de bloqueo existe, otra actualización está en curso.
+# --- BLOQUEO ---
 if [ -e "$LOCK_FILE" ]; then
-  echo "INFO: Despliegue ya en progreso. Omitiendo ejecución. $(date)" >> "$LOG_FILE"
-  exit 1
+  echo "⏳ Script ya en ejecución, saliendo..." >> "$LOG_FILE"
+  exit 0
 fi
 
-# Crea el archivo de bloqueo y asegura su eliminación al final.
 touch "$LOCK_FILE"
 trap 'rm -f "$LOCK_FILE"' EXIT
 
-# --- LÓGICA DE DESPLIEGUE ---
-cd "$PROJECT_DIR" || exit 1
+cd "$PROJECT_DIR"
 
-# 1. Obtiene la última versión del repositorio remoto
-git fetch
+# Crear log
+touch "$LOG_FILE"
+echo "==========================================" >> "$LOG_FILE"
+echo "🚀 Inicio deploy: $(date)" >> "$LOG_FILE"
 
-# 2. Compara la versión local (HEAD) con la remota (origin/main)
+# 🔥 PASO 1: Verificar cambios en Git
+git fetch origin >> "$LOG_FILE" 2>&1
+
 LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 
+echo "📌 Commit local: $LOCAL" >> "$LOG_FILE"
+echo "📌 Commit remoto: $REMOTE" >> "$LOG_FILE"
+
 if [ "$LOCAL" = "$REMOTE" ]; then
-
-  exit 0
+  echo "✅ No hay cambios en Git" >> "$LOG_FILE"
 else
-  # ¡Hay cambios! Iniciamos el despliegue.
-  echo "==================================================" >> "$LOG_FILE"
-  echo "🚀 Detectados nuevos cambios. Iniciando despliegue en $(date)" >> "$LOG_FILE"
-
-  # 3. Trae los cambios (actualiza docker-compose.yml, etc.)
-  echo "📥 Actualizando repositorio con git pull..." >> "$LOG_FILE"
+  echo "🔄 Cambios detectados en Git, actualizando..." >> "$LOG_FILE"
   git pull origin main >> "$LOG_FILE" 2>&1
-
-  # 4. Descarga las nuevas imágenes de Docker Hub
-  echo "🐳 Descargando nuevas imágenes de Docker..." >> "$LOG_FILE"
-  docker compose pull >> "$LOG_FILE" 2>&1
-
-  # 5. Reinicia los servicios con las nuevas imágenes (CERO DOWNTIME)
-  echo "🔄 Reiniciando los contenedores..." >> "$LOG_FILE"
-  docker compose up -d --remove-orphans >> "$LOG_FILE" 2>&1
-
-  # 6. Limpieza de imágenes antiguas no utilizadas
-  docker image prune -f >> "$LOG_FILE" 2>&1
-
-  echo "✅ Despliegue completado." >> "$LOG_FILE"
-  echo "--------------------------------------------------" >> "$LOG_FILE"
 fi
+
+# 🔥 PASO 2: SIEMPRE intentar descargar nuevas imágenes
+echo "🐳 Descargando imágenes de Docker Hub..." >> "$LOG_FILE"
+docker compose pull >> "$LOG_FILE" 2>&1
+
+# 🔥 PASO 3: Recrear contenedores FORZOSAMENTE
+echo "🔄 Recreando contenedores..." >> "$LOG_FILE"
+docker compose up -d --force-recreate --remove-orphans >> "$LOG_FILE" 2>&1
+
+# 🔥 PASO 4: Limpiar imágenes antiguas
+echo "🧹 Limpiando imágenes antiguas..." >> "$LOG_FILE"
+docker image prune -af >> "$LOG_FILE" 2>&1
+
+# 🔥 PASO 5: Verificar que los contenedores estén corriendo
+echo "✅ Verificando contenedores..." >> "$LOG_FILE"
+docker compose ps >> "$LOG_FILE" 2>&1
+
+echo "✅ Deploy finalizado correctamente: $(date)" >> "$LOG_FILE"

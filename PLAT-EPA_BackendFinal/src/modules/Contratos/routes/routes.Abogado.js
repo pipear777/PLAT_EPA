@@ -45,7 +45,7 @@ router.post('/crearAbogado',validarJWT,validarRoles('AdminJuridica','SuperAdmini
  *       201:
  *         description: Lista de Abogados
  */
-router.get('/mostrar', validarJWT,validarRoles('AdminJuridica','SuperAdministrador','UsuarioJuridico'),mostrarAbogado);
+router.get('/mostrar',mostrarAbogado);
 
 /**
  * @swagger

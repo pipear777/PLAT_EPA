@@ -19,7 +19,6 @@ const crearFuncionario = async (req, res) => {
         if (!cargo) return res.status(404).json({ success: false, message: 'Cargo no encontrado' });
 
         const sede = await Sede.findById(sedeId);
-        console.log("Sede"+sede);
         
         if (!sede) return res.status(404).json({ success: false, message: 'Sede no encontrada' });
 
@@ -45,7 +44,7 @@ const crearFuncionario = async (req, res) => {
         await nuevoFuncionario.save();
 
         const funcionarioCreado = await Funcionario.findById(nuevoFuncionario._id)
-            .populate('Cargo', 'nombreCargo')
+            .populate('Cargo', 'name')
             .populate('SedeAsignada', 'name')
             .populate('ProcesoAsignado', 'nombreProceso');
 
@@ -117,7 +116,7 @@ const actualizarFuncionario = async (req, res) => {
         }
 
         const funcionarioActualizado = await Funcionario.findByIdAndUpdate(id, { $set: updateData }, { new: true, runValidators: true })
-            .populate('Cargo', 'nombreCargo')
+            .populate('Cargo', 'name')
             .populate('SedeAsignada', 'name')
             .populate('ProcesoAsignado', 'nombreProceso');
 
@@ -149,7 +148,9 @@ const listarFuncionarios = async (req, res) => {
 const listarFuncionariosActivos = async (req, res) => {
     try {
         const funcionarios = await Funcionario.find({ estado: "Activo" })
-            .populate("Cargo", "name");
+            .populate("Cargo", "name")
+            .populate("SedeAsignada", "name")
+            .populate("ProcesoAsignado", "nombreProceso")
 
         res.status(200).json({ success: true, data: funcionarios });
     } catch (error) {
@@ -162,7 +163,11 @@ const listarFuncionariosActivos = async (req, res) => {
 const obtenerFuncionarioPorId = async (req, res) => {
     try {
         const { identificacion } = req.params;
-        const funcionario = await Funcionario.findOne({ identificacion }).populate('Cargo');
+        const funcionario = await Funcionario.findOne({ identificacion })
+        .populate('Cargo')
+        .populate('SedeAsignada')
+        .populate('ProcesoAsignado');
+
 
         if (!funcionario) {
             return res.status(404).json({ success: false, message: 'Funcionario no encontrado' });

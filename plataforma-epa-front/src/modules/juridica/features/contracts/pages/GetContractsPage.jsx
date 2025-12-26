@@ -23,17 +23,20 @@ import {
   ModificationsContractModal,
   UpdateContractModal,
 } from '../components';
+import { formatCOP } from '@/utils';
 
 export const GetContractsPage = () => {
   const {
     //Properties
     alertModal,
     confirmModal,
+    confirmModalModifications,
     contractType,
     currentPage,
     detailsContractModal,
     errors,
     errorsModifications,
+    errorsModificationsUpdate,
     filteredContracts,
     filterValue,
     hoverEye,
@@ -43,6 +46,7 @@ export const GetContractsPage = () => {
     loadingModifications,
     modifications,
     modificationsContractModal,
+    modificationsUpdateContractModal,
     objetoExpandido,
     process,
     totalPages,
@@ -56,25 +60,39 @@ export const GetContractsPage = () => {
     //Methods
     closeModals,
     handleOverride,
+    handleOverrideModifications,
     handlePageChange,
     handleReset,
     handleSearch,
+    handleSearchByStatus,
     handleSubmit,
     handleSubmitModifications,
+    handleSubmitModificationsUpdate,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
+    onSubmitModificationsUpdateContract,
     openConfirmModal,
+    openConfirmModalModifications,
     openDetailsContractModal,
     openEye,
     openModificationsModal,
+    openModificationsUpdateModal,
     openUpdateModal,
     register,
     registerModifications,
+    registerModificationsUpdate,
     setFilterValue,
     setObjetoExpandido,
     watchModifications,
   } = useGetContracts();
   const { onClickBack } = useBackNavigation();
+
+  const EstadoContrato = {
+  Activo: 'Activo',
+  ProximoVencer: 'ProximoVencer',
+  Finalizado: 'Finalizado',
+  Anulado: 'Anulado',
+};
 
   return (
     <>
@@ -82,10 +100,10 @@ export const GetContractsPage = () => {
         <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
       )}
       {loadingFilter && (
-        <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
+        <LoadSpinner name="Cargando Filtros" styles="fixed bg-gray-200/95" />
       )}
       {loadingModifications && (
-        <LoadSpinner name="Cargando Contratos" styles="fixed bg-gray-200/95" />
+        <LoadSpinner name="Cargando..." styles="fixed bg-gray-200/95" />
       )}
       <GlobalButton
         variant="back"
@@ -98,22 +116,34 @@ export const GetContractsPage = () => {
       <div className="flex flex-col h-full gap-4">
         {/* Cards */}
         <div className=" h-1/5 flex flex-row justify-around items-center gap-4">
-          <div className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
-            <span> Numero de contratos vigentes </span>
+        <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Activo)}
+            className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
+            <span>Numero de contratos vigentes</span>
             <p className="text-3xl">{summaries?.data?.Activo ?? 0}</p>
-          </div>
-          <div className="bg-yellow-300 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
-            <span>Contratos por vencer en 30 dias</span>
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.ProximoVencer)}
+            className="bg-yellow-300 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
+            <span>Contratos por vencer en 30 días</span>
             <p className="text-3xl">{summaries?.data?.ProximoVencer ?? 0}</p>
-          </div>
-          <div className="bg-red-500 h-25 w-70 p-3  rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Finalizado)}
+            className="bg-red-500 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
             <span>Numero de contratos vencidos</span>
             <p className="text-3xl">{summaries?.data?.Finalizado ?? 0}</p>
-          </div>
-          <div className="bg-gray-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300">
+          </button>
+          <button
+            onClick={() => handleSearchByStatus(EstadoContrato.Anulado)}
+            className="bg-gray-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
+          >
             <span>Contratos Anulados</span>
             <p className="text-3xl">{summaries?.data?.Anulado ?? 0}</p>
-          </div>
+          </button>
         </div>
 
         {/*Filtros*/}
@@ -128,7 +158,7 @@ export const GetContractsPage = () => {
             />
             <GlobalButton className="flex p-2 gap-2" onClick={handleReset}>
               <RotateCcw />
-              Resetear Filtro
+              Eliminar Filtros
             </GlobalButton>
           </div>
 
@@ -137,7 +167,7 @@ export const GetContractsPage = () => {
               className="p-2"
               onClick={() => handleSearch('NombreContratista')}
             >
-              Buscar por Nombre
+              Buscar por Nombre de Contratista o La Empresa
             </GlobalButton>
             <GlobalButton
               className="p-2"
@@ -149,19 +179,25 @@ export const GetContractsPage = () => {
               className="p-2"
               onClick={() => handleSearch('identificacionOnit')}
             >
-              Buscar por Identificacion
+              Buscar por Identificacion del Contratista o La empresa
             </GlobalButton>
             <GlobalButton
               className="p-2"
-              onClick={() => handleSearch('tipoContrato')}
+              onClick={() => handleSearch('nombre')}
             >
               Buscar por Tipo de Contrato
             </GlobalButton>
-            <GlobalButton
+            {/* <GlobalButton
               className="p-2"
               onClick={() => handleSearch('vigencia')}
             >
               Buscar por Vigencia
+            </GlobalButton> */}
+            <GlobalButton
+              className="p-2"
+              onClick={() => handleSearch('nombreCompletoAbogado')}
+            >
+              Buscar por Abogado
             </GlobalButton>
           </div>
         </div>
@@ -238,10 +274,11 @@ export const GetContractsPage = () => {
                           </>
                         )}
                       </td>
-                      <td className="p-2">{c.valorActual}</td>
+                      <td className="p-2">{formatCOP(c.valorActual)}</td>
                       <td className="p-2">{c.FechaInicio}</td>
                       <td className="p-2">
-                        {c.AbogadoAsignado?.nombreAbogado || 'No asignado'}
+                        {c.AbogadoAsignado?.nombreCompletoAbogado ||
+                          'No asignado'}
                       </td>
                       <td className="text-center truncate">
                         <span
@@ -304,7 +341,7 @@ export const GetContractsPage = () => {
 
                         <button
                           className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
-                          title="Eliminar"
+                          title="Anular"
                           onClick={() => openConfirmModal(c._id)}
                         >
                           <Ban size={18} />
@@ -363,6 +400,18 @@ export const GetContractsPage = () => {
           closeDetailsContractModal={closeModals}
           contractData={selectedContract}
           modifications={modifications}
+          modificationsUpdateContractModal={modificationsUpdateContractModal}
+          handleSubmitModificationsUpdate={handleSubmitModificationsUpdate}
+          onSubmitModificationsUpdateContract={
+            onSubmitModificationsUpdateContract
+          }
+          closeModals={closeModals}
+          registerModificationsUpdate={registerModificationsUpdate}
+          errorsModificationsUpdate={errorsModificationsUpdate}
+          openModificationsUpdateModal={openModificationsUpdateModal}
+          confirmModalModifications={confirmModalModifications}
+          handleOverride={handleOverrideModifications}
+          openConfirmModalModifications={openConfirmModalModifications}
         />
 
         <UpdateModal

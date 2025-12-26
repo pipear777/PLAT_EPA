@@ -10,6 +10,7 @@ services:
 
   backend:
     image: desarrollo147/plat_epa-backend:latest
+    pull_policy: always 
     container_name: backend-api
     env_file:
       - ./PLAT-EPA_BackendFinal/.env.docker
@@ -23,6 +24,7 @@ services:
 
   frontend:
     image: desarrollo147/plat_epa-front:latest
+    pull_policy: always
     container_name: frontend-app
     env_file:
       - ./plataforma-epa-front/.env.produccion
