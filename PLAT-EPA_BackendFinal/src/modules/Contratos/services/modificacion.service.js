@@ -140,8 +140,16 @@ const crearModificacion = async (data) => {
 
 const actualizarModificacionService = async (id, data) => {
   const mod = await Modificacion.findById(id);
-  if (!mod) throw new Error("Modificación no encontrada.");
-  if (mod.estado === "Anulada") throw new Error("No se puede actualizar una modificación anulada.");
+  if (!mod) {
+    const error = new Error("Modificación no encontrada.");
+    error.status = 404;
+    throw error;
+  }
+  if (mod.estado === "Anulada") {
+    const error = new Error("No se puede editar la modificación porque se encuentra ANULADA.");
+    error.status = 400;
+    throw error;
+  }
 
   const camposPermitidos = [
     "adicion",
