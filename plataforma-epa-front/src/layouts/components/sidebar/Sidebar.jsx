@@ -10,6 +10,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
   const { pathname } = useLocation();
   const { auth, logout } = useAuth();
 
+  const userName = auth?.user?.name;
   const role = auth?.user?.rol;
   const currentModule = getCurrentModule(pathname);
 
@@ -41,10 +42,15 @@ export const Sidebar = ({ isOpen, onClose }) => {
           xl:translate-x-0
         `}
       >
-        <div className="space-y-4 pb-10 text-center">
+        <div className="space-y-4 mb-4 text-center sm:mb-10">
           <img src={logo} alt="Logo EPA" />
           <h3 className="text-epaColor1 text-lg font-bold">Menu Principal</h3>
-          <h4 className="font-medium">Version 1.0</h4>
+          <h4 className="font-medium">Version 2.0</h4>
+        </div>
+
+        <div className='px-3 py-1 bg-epaColor1 rounded-lg text-lg mb-4 sm:hidden'>
+          <p className='text-white'>{userName}</p>
+          <p className='text-white/70'>{role}</p>
         </div>
 
         <nav className="space-y-4 pb-10">
