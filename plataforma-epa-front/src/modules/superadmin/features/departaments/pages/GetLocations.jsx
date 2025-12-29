@@ -46,8 +46,8 @@ export const GetLocations = () => {
         <FilePlus className="w-1/3" />
         Crear Sede
       </GlobalButton>
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-epaColor1 text-4xl font-extrabold">Sedes</h2>
+      <div className="flex flex-col items-center gap-4 mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl">Sedes</h2>
         <LocationsTable loading={loading} locations={locations} handleOpenUpdateModal={handleOpenUpdateModal} />
       </div>
       <UpdateModal

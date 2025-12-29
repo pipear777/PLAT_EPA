@@ -20,7 +20,7 @@ export const Navbar = ({ title, onMenuClick }) => {
       </div>
 
       {/* Center */}
-      <h2 className="text-white text-center font-bold text-xl md:text-4xl">
+      <h2 className="text-white text-center font-bold text-2xl md:text-4xl">
         {title}
       </h2>
 

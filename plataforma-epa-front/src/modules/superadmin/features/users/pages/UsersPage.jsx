@@ -4,7 +4,7 @@ import { useUsersPage } from '../hooks';
 export const UsersPage = () => {
   const { onClickCard } = useUsersPage();
   return (
-    <div className="grid grid-cols-2 gap-10 h-full items-center">
+    <div className="grid content-center gap-8 h-full items-center md:grid-cols-2 md:gap-10">
       <GlobalCards
         title="Registrar Usuarios"
         onClick={() => onClickCard('create')}

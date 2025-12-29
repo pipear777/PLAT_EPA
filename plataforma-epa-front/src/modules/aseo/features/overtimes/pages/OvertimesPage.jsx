@@ -5,7 +5,7 @@ export const OvertimesPage = () => {
   const { onClickCard } = useOvertimes();
 
   return (
-    <div className="grid grid-cols-2 gap-10 p-10 h-full items-center">
+    <div className="grid content-center gap-8 h-full items-center md:grid-cols-2 md:gap-10">
       <GlobalCards
         title="Registrar Horas Extra"
         onClick={() => onClickCard('create')}

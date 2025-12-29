@@ -58,7 +58,7 @@ export const GetOvertimesPage = () => {
         Regresar
       </GlobalButton>
       <div className="flex flex-col gap-4">
-        <h2 className="text-epaColor1 text-center text-4xl font-extrabold">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl text-center">
           Registro Individual de Horas Extra
         </h2>
         <FilterInput
@@ -73,7 +73,7 @@ export const GetOvertimesPage = () => {
           OpenUpdateModal={OpenUpdateModal}
           onOpenConfirmModal={onOpenConfirmModal}
         />
-        <div className="flex justify-between items-center px-4">
+        <div className="flex justify-between items-center px-4 text-xs sm:text-base">
           <span>
             Mostrando {overtimesFilter.length} de {
               showPagination

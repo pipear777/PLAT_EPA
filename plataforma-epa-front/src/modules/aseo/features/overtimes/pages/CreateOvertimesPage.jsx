@@ -57,13 +57,13 @@ export const CreateOvertimesPage = () => {
         <ArrowLeft className="ml-0.5 mr-2 -left-0.5" />
         Regresar
       </GlobalButton>
-      <div className="flex flex-col gap-4 items-center">
-        <h2 className="text-epaColor1 text-4xl font-extrabold">
+      <div className="flex flex-col gap-4 items-center mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl">
           Registrar Horas Extra
         </h2>
         <form
           onSubmit={handleSubmitHoras(onSubmit)}
-          className="flex flex-col gap-4 bg-white p-4 w-1/2 rounded-xl shadow-2xl"
+          className="flex flex-col w-full bg-white p-4 rounded-xl shadow-2xl sm:w-4/5 md:w-3/4 lg:w-1/2 sm:gap-4"
         >
           <GlobalInput
             as="select"
@@ -181,11 +181,11 @@ export const CreateOvertimesPage = () => {
             register={registerHoras}
             errors={errorsHoras}
           />
-          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto">
+          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto mt-5 sm:mt-1">
             Registrar
           </GlobalButton>
         </form>
-        <h3 className="text-epaColor1 text-center text-2xl font-extrabold">
+        <h3 className="text-epaColor1 text-center text-2xl font-extrabold sm:text-3xl">
           Importar Excel de Horas Extra
         </h3>
         <ExcelImportForm

@@ -4,7 +4,7 @@ export const UserForm = ({ roles, handleSubmit, onSubmit, register, errors }) =>
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 bg-white p-4 w-1/2 rounded-xl shadow-2xl"
+      className="flex flex-col w-full gap-1 bg-white p-4 rounded-xl shadow-2xl sm:w-1/2 sm:gap-4"
     >
       <GlobalInput
         label="Nombre"
@@ -65,7 +65,7 @@ export const UserForm = ({ roles, handleSubmit, onSubmit, register, errors }) =>
           </option>
         ))}
       </GlobalInput>
-      <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto">
+      <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto mt-5 sm:mt-1">
         Registrar
       </GlobalButton>
     </form>

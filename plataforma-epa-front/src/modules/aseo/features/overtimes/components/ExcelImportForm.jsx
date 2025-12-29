@@ -12,7 +12,7 @@ export const ExcelImportForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col gap-4 p-4 bg-white w-1/2 rounded-xl shadow-2xl"
+      className="flex flex-col w-full bg-white p-4 rounded-xl shadow-2xl sm:w-4/5 md:w-3/4 lg:w-1/2 sm:gap-4"
     >
       {/* Input de archivo Excel */}
       <label className="flex flex-col">
