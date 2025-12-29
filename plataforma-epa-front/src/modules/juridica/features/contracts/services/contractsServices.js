@@ -85,15 +85,23 @@ export const contractsServices = {
     }
   },
 
-  updateModifications: async (id) => {
+  updateModifications: async (id, modificationsData) => {
     try {
-      const response = await apiClient.put(`/modificaciones/update/${id}`);
+      const response = await apiClient.put(`/modificaciones/update/${id}`, modificationsData);
       return response.data
     } catch (error) {
       throw new Error(handleAxiosError(error, 'Error actualizando modificacion ❌'));
     }
   },
 
+  overrideModifications: async (id) => {
+    try {
+      const response = await apiClient.post(`/modificaciones/anular/${id}`);
+      return response.data
+    } catch (error) {
+      throw new Error(handleAxiosError(error, 'Error anulando modificacion ❌'));
+    }
+  },
 
   //PROCESOS
   getAllProcess: async () => {

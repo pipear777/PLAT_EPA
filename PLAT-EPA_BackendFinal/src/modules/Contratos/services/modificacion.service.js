@@ -216,8 +216,7 @@ const actualizarModificacionService = async (id, data) => {
       updateData.numeroSecuenciaProrroga = null;
     }
   } else {
-    // --- NO ÚLTIMA MODIFICACIÓN ---
-    // No se permite cambiar el tipo
+ 
     if (
       (data.adicion !== undefined && data.adicion !== mod.adicion) ||
       (data.prorroga !== undefined && data.prorroga !== mod.prorroga)
@@ -281,7 +280,6 @@ const anularModificacion = async (id) => {
 };
 
 const listarModificacionesService = async (contratoId) => {
-  // 🔹 LIMPIAR el contratoId
   const cleanId = contratoId?.toString().trim();
   
   // Validar que existe

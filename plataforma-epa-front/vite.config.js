@@ -2,6 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -9,6 +13,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'), // alias @ -> carpeta src
     },
+  },
+  esbuild: {
+    drop: ['console', 'debugger'], // Elimina console.log y debugger en producción
   },
   server: {
     port: 5173, // puerto para tu front

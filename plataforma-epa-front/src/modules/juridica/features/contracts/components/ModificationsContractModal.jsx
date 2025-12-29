@@ -1,3 +1,5 @@
+import { GlobalInput, UpdateModal } from '@/components';
+
 export const ModificationsContractModal = ({
   register,
   errors,
