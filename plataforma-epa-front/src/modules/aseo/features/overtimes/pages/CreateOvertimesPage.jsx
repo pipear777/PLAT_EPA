@@ -63,7 +63,7 @@ export const CreateOvertimesPage = () => {
         </h2>
         <form
           onSubmit={handleSubmitHoras(onSubmit)}
-          className="flex flex-col w-full bg-white p-4 rounded-xl shadow-2xl sm:w-4/5 md:w-3/4 lg:w-1/2 sm:gap-4"
+          className="flex flex-col gap-2 w-full bg-white p-4 rounded-xl shadow-2xl sm:w-3/4 md:w-2/3 lg:w-1/2 sm:gap-4"
         >
           <GlobalInput
             as="select"
@@ -82,7 +82,7 @@ export const CreateOvertimesPage = () => {
               </option>
             ))}
           </GlobalInput>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4">
             <div className="flex justify-between items-center">
               <GlobalInput
                 type="date"
@@ -185,7 +185,7 @@ export const CreateOvertimesPage = () => {
             Registrar
           </GlobalButton>
         </form>
-        <h3 className="text-epaColor1 text-center text-2xl font-extrabold sm:text-3xl">
+        <h3 className="text-epaColor1 text-center text-xl font-extrabold sm:text-2xl">
           Importar Excel de Horas Extra
         </h3>
         <ExcelImportForm

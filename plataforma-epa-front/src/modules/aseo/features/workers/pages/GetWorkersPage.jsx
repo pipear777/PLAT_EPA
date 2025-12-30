@@ -51,20 +51,21 @@ export const GetWorkersPage = () => {
         <ArrowLeft className="ml-0.5 mr-2 -left-0.5" />
         Regresar
       </GlobalButton>
-      <div className="flex flex-col gap-4">
-        <h2 className="text-epaColor1 text-center text-4xl font-extrabold">
+      <div className="flex flex-col gap-4 mt-2">
+        <h2 className="text-epaColor1 text-center text-3xl font-extrabold sm:text-4xl">
           Funcionarios
         </h2>
-        <div className="flex gap-4">
+        <div className="flex gap-1 md:gap-4">
           <FilterInput
             filterValue={filterValue}
             setFilterValue={setFilterValue}
             handleKeyDown={handleKeyDown}
             handleSearch={handleSearch}
             placeholder="Buscar por identificación"
+            inputClassName="bg-white p-1 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3 sm:w-94 md:w-100"
           />
           <button
-            className="bg-green-300 w-30 text-epaColor1 font-semibold rounded-xl cursor-pointer border-2 border-transparent hover:bg-transparent hover:border-green-400"
+            className="bg-green-300 w-24 text-epaColor1 font-semibold rounded-xl cursor-pointer border-2 border-transparent hover:bg-transparent hover:border-green-400 sm:w-30"
             onClick={getActiveWorkers}
           >
             Activos
@@ -80,7 +81,7 @@ export const GetWorkersPage = () => {
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
           closeModal={closeModals}
-          formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+          formClassName="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
         >
           <GlobalInput
             label="Identificación"

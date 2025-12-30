@@ -58,7 +58,7 @@ export const GetDepartaments = () => {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         closeModal={closeModals}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Nombre Proceso"
@@ -76,7 +76,7 @@ export const GetDepartaments = () => {
         handleSubmit={handleSubmitUpdate}
         onSubmit={onUpdateSubmit}
         closeModal={closeModals}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Nombre Proceso"

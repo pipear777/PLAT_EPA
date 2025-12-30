@@ -4,7 +4,7 @@ export const UserForm = ({ roles, handleSubmit, onSubmit, register, errors }) =>
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col w-full gap-1 bg-white p-4 rounded-xl shadow-2xl sm:w-1/2 sm:gap-4"
+      className="flex flex-col gap-2 w-full bg-white p-4 rounded-xl shadow-2xl sm:w-3/4 md:w-2/3 lg:w-1/2 sm:gap-4"
     >
       <GlobalInput
         label="Nombre"

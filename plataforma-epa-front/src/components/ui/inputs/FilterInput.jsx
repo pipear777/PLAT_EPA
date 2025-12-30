@@ -9,7 +9,7 @@ export const FilterInput = ({
   handleSearch = () => {},
 }) => {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-1 md:gap-4">
       <input
         type="text"
         value={filterValue}
@@ -18,7 +18,7 @@ export const FilterInput = ({
         placeholder={placeholder}
         className={inputClassName}
       />
-      <GlobalButton className="w-30" onClick={handleSearch}>
+      <GlobalButton className="w-24 sm:w-30" onClick={handleSearch}>
         Buscar
       </GlobalButton>
     </div>
