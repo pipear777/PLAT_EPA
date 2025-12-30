@@ -4,6 +4,7 @@ import {
   contractTypeServices,
 } from '../features/contracts/services';
 import { lawyersServices } from '../features/lawyers/services';
+import { historicalServices } from '../features/historical/services';
 
 const JuridicaContext = createContext({
   contracts: [],
@@ -14,6 +15,8 @@ const JuridicaContext = createContext({
   currentPage: null,
   totalPages: null,
   totalRecords: null,
+  totalRecords: null,
+  totalHistoricalRecords: null,
 
   getAllContracts: () => {},
   getAllLawyers: () => {},
@@ -33,6 +36,7 @@ export const JuridicaProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [totalHistoricalRecords, setTotalHistoricalRecords] = useState(0);
 
   const limit = 15;
 
@@ -66,7 +70,11 @@ export const JuridicaProvider = ({ children }) => {
   const getAllContracts = async (page, filters) => {
     setLoading(true);
     try {
-      const response = await contractsServices.getAllContracts(page, limit, filters);
+      const response = await contractsServices.getAllContracts(
+        page,
+        limit,
+        filters
+      );
       setContracts(response.data);
       setCurrentPage(response.page);
       setTotalPages(response.totalPages || 1);
@@ -75,6 +83,15 @@ export const JuridicaProvider = ({ children }) => {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getTotalHistoricalRecords = async () => {
+    try {
+      const response = await historicalServices.getCleanContracts();
+      setTotalHistoricalRecords(response.total);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -101,6 +118,7 @@ export const JuridicaProvider = ({ children }) => {
           getAllLawyers(),
           getAllProcess(),
           getAllContractType(),
+          getTotalHistoricalRecords(),
         ]);
       } catch (error) {
         console.error(error);
@@ -122,6 +140,7 @@ export const JuridicaProvider = ({ children }) => {
       currentPage,
       totalPages,
       totalRecords,
+      totalHistoricalRecords,
 
       getAllLawyers,
       getAllProcess,
@@ -141,6 +160,7 @@ export const JuridicaProvider = ({ children }) => {
       currentPage,
       totalPages,
       totalRecords,
+      totalHistoricalRecords,
     ]
   );
 

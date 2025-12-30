@@ -1,10 +1,5 @@
 import {
   AlertModal,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   GlobalButton,
   GlobalInput,
   LoadSpinner,
@@ -51,23 +46,21 @@ export const CreateContractsPage = () => {
         <ArrowLeft className="ml-0.5 mr-2 -left-0.5" />
         Regresar
       </GlobalButton>
-      <div className="flex mt-5">
-        <GlobalButton
-          variant="third"
-          className="flex items-center gap-3 px-5 py-1.5"
-          onClick={openContractTypeModal}
-        >
-          <FilePlus />
-          Crear Tipo de Contrato
-        </GlobalButton>
-      </div>
-      <div className="flex flex-col gap-4 items-center">
-        <h2 className="font-extrabold text-4xl text-epaColor1">
+      <GlobalButton
+        variant="third"
+        className="flex items-center gap-3 px-5 py-1.5"
+        onClick={openContractTypeModal}
+      >
+        <FilePlus />
+        Crear Tipo de Contrato
+      </GlobalButton>
+      <div className="flex flex-col gap-4 items-center mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl">
           Crear Contrato
         </h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 shadow-2xl bg-white w-1/2  rounded-2xl p-4"
+          className="flex flex-col gap-2 w-full bg-white p-4 rounded-xl shadow-2xl sm:w-3/4 md:w-2/3 lg:w-1/2"
         >
           <GlobalInput
             type="text"
@@ -129,13 +122,13 @@ export const CreateContractsPage = () => {
             errors={errors}
           />
 
-          <div className="flex justify-between gap-4">
+          <div className="flex justify-between gap-2 sm:gap-4">
             <GlobalInput
               as="select"
               type="text"
               label="Tipo de Contrato"
               data="tipoContrato"
-              classNameLabel='flex flex-col w-full'
+              classNameLabel='flex flex-col w-[49%] sm:w-full'
               register={register}
               errors={errors}
               rules={{
@@ -155,7 +148,7 @@ export const CreateContractsPage = () => {
               type="text"
               label="Abogado"
               data="AbogadoAsignado"
-              classNameLabel='flex flex-col w-full'
+              classNameLabel='flex flex-col w-[49%] sm:w-full'
               register={register}
               errors={errors}
               rules={{
@@ -195,7 +188,7 @@ export const CreateContractsPage = () => {
             }}
           />
 
-          <div className="flex justify-between gap-4">
+          <div className="flex justify-between gap-2 sm:gap-4">
             <GlobalInput
               type="date"
               label="Fecha de Inicio"
@@ -221,7 +214,7 @@ export const CreateContractsPage = () => {
             />
           </div>
 
-          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto">
+          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto mt-2">
             Registrar
           </GlobalButton>
         </form>
@@ -233,7 +226,7 @@ export const CreateContractsPage = () => {
         closeModal={closeModals}
         handleSubmit={handleSubmitContractType}
         onSubmit={onSubmitContractType}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Nombre del Tipo de Contrato"

@@ -6,7 +6,7 @@ export const ContractsPage = () => {
   const { onClickCard } = useContracts();
 
   return (
-    <div className="grid grid-cols-2 gap-10 p-10 h-full items-center">
+    <div className="grid content-center gap-8 h-full items-center md:grid-cols-2 px-5 sm:px-20 md:px-10 md:gap-10">
       <GlobalCards 
         title="Crear Contrato" 
         onClick={() => onClickCard('create')} 
