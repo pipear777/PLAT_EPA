@@ -169,7 +169,7 @@ export const CreateContractsPage = () => {
             type="text"
             label="Objeto*"
             data="objeto"
-            classNameComponent="border border-gray-500 rounded-md p-1 resize-none h-25"
+            classNameComponent="border border-gray-500 rounded-md p-1 resize-none h-20"
             register={register}
             errors={errors}
             rules={{
@@ -181,6 +181,19 @@ export const CreateContractsPage = () => {
             type="text"
             label="Valor del Contrato*"
             data="ValorContrato"
+            register={register}
+            errors={errors}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+          />
+
+          <GlobalInput
+            as="textarea"
+            type="text"
+            label="Plazo de Ejecución*"
+            data="plazoEjecucion"
+            classNameComponent="border border-gray-500 rounded-md p-1 resize-none h-20"
             register={register}
             errors={errors}
             rules={{

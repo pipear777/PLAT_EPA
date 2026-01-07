@@ -22,7 +22,7 @@ export const UpdateModal = ({
           className="fixed inset-0 bg-epaColor1/50 flex items-center justify-center z-50"
           role="dialog"
           aria-modal="true"
-          onClick={closeModal} // cierra al hacer click fuera
+          // onClick={closeModal} // cierra al hacer click fuera
         >
           <motion.form
             onClick={(e) => e.stopPropagation()} // evita que el click interior cierre el modal

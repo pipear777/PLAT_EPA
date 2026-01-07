@@ -125,6 +125,7 @@ export const useGetContracts = () => {
         AbogadoAsignado: selectedContract.AbogadoAsignado._id || '',
         objeto: selectedContract.objeto || '',
         ValorContrato: selectedContract.ValorContrato || '',
+        plazoEjecucion: selectedContract.plazoEjecucion || '',
         FechaInicio: formatDate(selectedContract.FechaInicio),
         FechaFinalizacion: formatDate(selectedContract.FechaFinalizacion),
       });
