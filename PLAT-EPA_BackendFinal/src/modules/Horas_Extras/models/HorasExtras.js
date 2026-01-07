@@ -7,7 +7,16 @@ const horasExtrasSchema = new mongoose.Schema({
     required: true
   },
   fecha_inicio_trabajo: { type: Date, required: true },
-  fecha_fin_trabajo: { type: Date, required: true },
+  fecha_fin_trabajo: { 
+    type: Date, 
+    required: true,
+    validate: {
+      validator: function(v) {
+        return this.fecha_inicio_trabajo <= v;
+      },
+      message: 'La fecha de inicio debe ser menor o igual a la fecha de fin.'
+    }
+  },
   hora_inicio_trabajo: { type: String, required: true }, 
   hora_fin_trabajo: { type: String, required: true }, 
 
