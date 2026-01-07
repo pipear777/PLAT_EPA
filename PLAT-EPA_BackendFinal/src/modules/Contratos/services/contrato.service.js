@@ -10,7 +10,7 @@ const { validarCorreo, noNumeros, validarFecha, limpiarTexto } = require('../mid
 const obtenerDiasDeAlerta = () => [30, 15, 10, 5];
 
 const crearContratoService = async (datosContrato, usuario = {}) => {
-  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto } = datosContrato;
+  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto, tiempoEjecucion } = datosContrato;
 
   if (!proceso) {
     throw new Error('El proceso es obligatorio');
@@ -80,6 +80,10 @@ const crearContratoService = async (datosContrato, usuario = {}) => {
     if (abogado.estado === 'Inactivo') {
       throw new Error(`No se puede asignar al abogado "${abogado.nombreCompletoAbogado}"porque está FINALIZADO`);
     }
+  }
+
+  if (!tiempoEjecucion) {
+    throw new Error('El tiempo de ejecución es obligatorio');
   }
 
   const nuevoContrato = new Contrato({

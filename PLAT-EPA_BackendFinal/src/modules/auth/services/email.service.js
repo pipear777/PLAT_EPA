@@ -161,7 +161,7 @@ async function enviarBienvenidaUsuario(destinatario, nombreUsuario) {
       html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
         <div style="background-color: #002d72; color: white; padding: 15px; text-align: center;">
-          <h2 style="margin: 0;">Registro de Usuario Exitoso !!</h2>
+          <h2 style="margin: 0;">Registro de Usuario Exitoso</h2>
         </div>
         <div style="background-color: #ffffff; padding: 30px;">
           <p style="font-size: 16px; color: #333;">Hola, ${nombreUsuario},</p>
