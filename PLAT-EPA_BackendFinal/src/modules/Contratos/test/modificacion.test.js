@@ -47,6 +47,7 @@ beforeAll(async () => {
     FechaInicio: "2025-01-01",
     FechaFinalizacion: "2025-12-31",
     Vigencia: 2025,
+    plazoEjecucion: "3 meses"
   });
   const savedContrato = await contrato.save();
   contratoId = savedContrato._id;
@@ -96,6 +97,7 @@ describe('Modificaciones Endpoints', () => {
         FechaInicio: "2025-01-01",
         FechaFinalizacion: "2025-12-31",
         Vigencia: 2025,
+        plazoEjecucion: "3 meses"
       });
     const savedContrato = await newContrato.save();
     const newContratoId = savedContrato._id;

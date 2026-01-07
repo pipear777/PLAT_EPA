@@ -1,5 +1,8 @@
 const nodemailer = require('nodemailer');
 const config = require('../../../config/index');
+const { formatCOP } = require('../../../utils/formatNumber');
+
+const currentYear = new Date().getFullYear();
 
 const transporter = nodemailer.createTransport({
   host: '142.250.150.108',
@@ -45,7 +48,7 @@ async function enviarCodigoCorreo(destinatario, codigo) {
         
         <!-- Footer -->
         <div style="background-color: #002d72; color: white; text-align: center; padding: 10px;">
-          <small>&copy; 2025 epa.gov.co. Todos los derechos reservados.</small>
+          <small>&copy; ${currentYear} epa.gov.co. Todos los derechos reservados.</small>
         </div>
       </div>
     `,
@@ -114,12 +117,12 @@ async function ContratoCreado(destinatario, proceso, CorreoDependencia, consecut
             <li><strong>Tipo Contrato :</strong> ${tipoContrato}</li>
             <li><strong>Nombre Contratista:</strong> ${nombreContratista}</li>
             <li><strong>Identificación o NIT :</strong> ${identificacionOnit}</li>
-            <li><strong>Valor Contrato :</strong> ${valorContrato}</li>
+            <li><strong>Valor Contrato :</strong> ${formatCOP(valorContrato)}</li>
           </ul>
         </div>        
         <!-- Footer -->
         <div style="background-color: #004aad; color: white; text-align: center; padding: 10px;">
-          <small>&copy; 2025 EPA DTIC. Todos los derechos reservados.</small>
+          <small>&copy; ${currentYear} EPA DTIC. Todos los derechos reservados.</small>
         </div>
       </div>
       `
@@ -173,7 +176,7 @@ async function enviarBienvenidaUsuario(destinatario, nombreUsuario) {
           </p>
         </div>
         <div style="background-color: #002d72; color: white; text-align: center; padding: 10px;">
-          <small>&copy; 2025 epa.gov.co. Todos los derechos reservados.</small>
+          <small>&copy; ${currentYear} epa.gov.co. Todos los derechos reservados.</small>
         </div>
       </div>
       `,

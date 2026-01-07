@@ -1,4 +1,4 @@
-export const formatCOP = (value) => {
+const formatCOP = (value) => {
   if (!value) return '$0';
   return new Intl.NumberFormat('es-CO', {
     style: 'currency',
@@ -8,3 +8,5 @@ export const formatCOP = (value) => {
     .format(value)
     .replace(/\s/g, '');
 };
+
+module.exports = { formatCOP };
