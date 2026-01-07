@@ -22,6 +22,7 @@ touch "$LOG_FILE"
 echo "==========================================" >> "$LOG_FILE"
 echo "🚀 Inicio deploy: $(date)" >> "$LOG_FILE"
 
+# 🔥 PASO 1: Verificar cambios en Git
 git fetch origin >> "$LOG_FILE" 2>&1
 
 LOCAL=$(git rev-parse HEAD)
