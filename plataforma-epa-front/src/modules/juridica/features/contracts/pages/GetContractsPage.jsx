@@ -1,7 +1,6 @@
 import {
   AlertModal,
   ConfirmModal,
-  FilterInput,
   GlobalButton,
   LoadSpinner,
   UpdateModal,
@@ -115,7 +114,7 @@ export const GetContractsPage = () => {
       </GlobalButton>
       <div className="flex flex-col h-full gap-4">
         {/* Cards */}
-        <div className=" h-1/5 flex flex-row justify-around items-center gap-4">
+        <div className="h-1/5 flex flex-row justify-around items-center gap-4 text-xs md:text-base">
         <button
             onClick={() => handleSearchByStatus(EstadoContrato.Activo)}
             className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
@@ -147,22 +146,22 @@ export const GetContractsPage = () => {
         </div>
 
         {/*Filtros*/}
-        <div className="flex flex-col gap-3 p-4">
-          <div className="flex gap-2 ">
+        <div className="flex flex-col gap-1 md:gap-3 text-xs lg:text-sm xl:text-base">
+          <div className="flex gap-2">
             <input
               type="text"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
               placeholder="Escribe aquí…"
-              className="bg-white w-180 p-1 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3"
+              className="bg-white w-[60%] sm:w-[70%] md:w-[80%] lg:w-180 p-1 border-2 border-epaColor1 rounded-md text-epaColor1 text-base focus:outline-none focus:ring focus:ring-epaColor3"
             />
             <GlobalButton className="flex p-2 gap-2" onClick={handleReset}>
-              <RotateCcw />
+              <RotateCcw className='w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6'/>
               Eliminar Filtros
             </GlobalButton>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row gap-1 md:gap-2">
             <GlobalButton
               className="p-2"
               onClick={() => handleSearch('NombreContratista')}
@@ -187,12 +186,6 @@ export const GetContractsPage = () => {
             >
               Buscar por Tipo de Contrato
             </GlobalButton>
-            {/* <GlobalButton
-              className="p-2"
-              onClick={() => handleSearch('vigencia')}
-            >
-              Buscar por Vigencia
-            </GlobalButton> */}
             <GlobalButton
               className="p-2"
               onClick={() => handleSearch('nombreCompletoAbogado')}
@@ -360,7 +353,7 @@ export const GetContractsPage = () => {
             </table>
           </div>
           {/* PAGINACIÓN */}
-          <div className="flex justify-between items-center px-4 py-3">
+          <div className="flex justify-between items-center px-4 py-3 text-xs sm:text-base">
             <span>
               Mostrando {filteredContracts.length} de {totalRecords} registros.
             </span>

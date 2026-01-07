@@ -64,7 +64,7 @@ export const CreateContractsPage = () => {
         >
           <GlobalInput
             type="text"
-            label="Identidad O Nit"
+            label="Identificacion del contratista O Nit de la Empresa*"
             data="identificacionOnit"
             register={register}
             errors={errors}
@@ -75,7 +75,7 @@ export const CreateContractsPage = () => {
 
           <GlobalInput
             type="text"
-            label="Nombre del Contratista"
+            label="Nombre del Contratista o Empresa*"
             data="NombreContratista"
             register={register}
             errors={errors}
@@ -86,7 +86,7 @@ export const CreateContractsPage = () => {
 
           <GlobalInput
             type="text"
-            label="Telefono del Contratista"
+            label="Telefono del Contratista o Empresa*"
             data="TelefonoContratista"
             register={register}
             errors={errors}
@@ -98,7 +98,7 @@ export const CreateContractsPage = () => {
           <GlobalInput
             as="select"
             type="text"
-            label="Proceso"
+            label="Proceso*"
             data="proceso"
             register={register}
             errors={errors}
@@ -126,7 +126,7 @@ export const CreateContractsPage = () => {
             <GlobalInput
               as="select"
               type="text"
-              label="Tipo de Contrato"
+              label="Tipo de Contrato*"
               data="tipoContrato"
               classNameLabel='flex flex-col w-[49%] sm:w-full'
               register={register}
@@ -146,7 +146,7 @@ export const CreateContractsPage = () => {
             <GlobalInput
               as="select"
               type="text"
-              label="Abogado"
+              label="Abogado*"
               data="AbogadoAsignado"
               classNameLabel='flex flex-col w-[49%] sm:w-full'
               register={register}
@@ -167,7 +167,7 @@ export const CreateContractsPage = () => {
           <GlobalInput
             as="textarea"
             type="text"
-            label="Objeto"
+            label="Objeto*"
             data="objeto"
             classNameComponent="border border-gray-500 rounded-md p-1 resize-none h-25"
             register={register}
@@ -179,7 +179,7 @@ export const CreateContractsPage = () => {
 
           <GlobalInput
             type="text"
-            label="Valor del Contrato"
+            label="Valor del Contrato*"
             data="ValorContrato"
             register={register}
             errors={errors}
@@ -191,7 +191,7 @@ export const CreateContractsPage = () => {
           <div className="flex justify-between gap-2 sm:gap-4">
             <GlobalInput
               type="date"
-              label="Fecha de Inicio"
+              label="Fecha de Inicio*"
               data="FechaInicio"
               classNameLabel='flex flex-col w-full'
               register={register}
@@ -203,7 +203,7 @@ export const CreateContractsPage = () => {
 
             <GlobalInput
               type="date"
-              label="Fecha de Finalizacion"
+              label="Fecha de Finalizacion*"
               data="FechaFinalizacion"
               classNameLabel='flex flex-col w-full'
               register={register}
