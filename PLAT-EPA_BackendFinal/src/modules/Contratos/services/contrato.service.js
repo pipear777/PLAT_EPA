@@ -10,7 +10,7 @@ const { validarCorreo, noNumeros, validarFecha, limpiarTexto } = require('../mid
 const obtenerDiasDeAlerta = () => [30, 15, 10, 5];
 
 const crearContratoService = async (datosContrato, usuario = {}) => {
-  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto, tiempoEjecucion } = datosContrato;
+  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto, plazoEjecucion } = datosContrato;
 
   if (!proceso) {
     throw new Error('El proceso es obligatorio');
@@ -82,7 +82,7 @@ const crearContratoService = async (datosContrato, usuario = {}) => {
     }
   }
 
-  if (!tiempoEjecucion) {
+  if (!plazoEjecucion) {
     throw new Error('El tiempo de ejecución es obligatorio');
   }
 
