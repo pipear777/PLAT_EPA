@@ -50,7 +50,7 @@ app.use('/api/sede', require('./modules/auth/routes/routes.sede'));
 app.use('/api/abogados', require('./modules/Contratos/routes/routes.Abogado'));
 app.use('/api/procesos', require('./modules/auth/routes/routes.procesos'));
 app.use('/api/tipoContrato', require('./modules/Contratos/routes/routes.TipoContrato'));
-app.use('/api/contrato', require('./modules/Contratos/routes/routes.contratos'));
+app.use('/api/contrato', require('./modules/Contratos/routes/contratos.routes'));
 app.use('/api/datos', require('./modules/Contratos/routes/routes.leerArchivo'));
 app.use('/api/modificaciones', require('./modules/Contratos/routes/modificacion.routes'));
 
