@@ -125,6 +125,7 @@ export const useGetContracts = () => {
         AbogadoAsignado: selectedContract.AbogadoAsignado._id || '',
         objeto: selectedContract.objeto || '',
         ValorContrato: selectedContract.ValorContrato || '',
+        plazoEjecucion: selectedContract.plazoEjecucion || '',
         FechaInicio: formatDate(selectedContract.FechaInicio),
         FechaFinalizacion: formatDate(selectedContract.FechaFinalizacion),
       });
@@ -233,6 +234,7 @@ export const useGetContracts = () => {
         message: 'La modificacion ha sido anulado con Exito✅',
         state: 'Modificacion Anulada',
       });
+      getAllContracts();
     } catch (error) {
       console.log(error);
       setAlertModal({

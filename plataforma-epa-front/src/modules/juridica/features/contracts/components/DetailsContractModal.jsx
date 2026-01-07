@@ -92,6 +92,10 @@ export const DetailsContractModal = ({
                   {contractData.tipoContrato.nombre }
                 </span>
                 <span>
+                  <strong>Plazo de Ejecución: </strong>
+                  {contractData.plazoEjecucion}
+                </span>
+                <span>
                   <strong>Fecha de Inicio: </strong> {contractData.FechaInicio}
                 </span>
                 <span>
@@ -102,11 +106,11 @@ export const DetailsContractModal = ({
                   <strong>Objeto:</strong> {contractData.objeto}
                 </span>
                 <span>
-                  <strong>Valor inicial del Contrato: </strong>
+                  <strong>Valor Inicial del Contrato: </strong>
                   {formatCOP(contractData.ValorContrato)}
                 </span>
                 <span>
-                  <strong>Valor actual del Contrato: </strong>
+                  <strong>Valor Actual del Contrato: </strong>
                   {formatCOP(contractData.valorActual)}
                 </span>
                 <span
