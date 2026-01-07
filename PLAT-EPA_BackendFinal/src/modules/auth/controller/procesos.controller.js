@@ -1,5 +1,5 @@
 
-const { listarProcesos, obtenerProcesoPorIdService } = require('../services/Proceso.service');
+const { listarProcesos, obtenerProcesoPorIdService, actualizarProcesoService } = require('../services/Proceso.service');
 const Proceso = require('../models/model.procesos');
 
 
@@ -57,9 +57,36 @@ const mostrarProcesos = async (req, res) => {
   }
 };
 
+const actualizarProceso = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { nombreProceso } = req.body;
+      if (!nombreProceso) return res.status(400).json({ success: false, message: 'El nombre del proceso es obligatorio.' });
+
+      const existente = await Proceso.findOne({ 
+        nombreProceso: new RegExp(`^${nombreProceso}$`, "i"), 
+        _id: { $ne: id } 
+      });
+
+      if (existente) {
+        return res.status(400).json({
+          success: false,
+          message: "Ya existe otro proceso con ese nombre."
+        });
+      }
+
+      const proceso = await actualizarProcesoService(id, { nombreProceso });
+      if (!proceso) return res.status(404).json({ success: false, message: 'No encontrado' });
+      res.status(200).json({ success: true, message: 'Registro actualizado', data: proceso });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
   module.exports = {
     nuevoProceso,
     mostrarProcesos,
     unProceso,
-    eliminarProceso
+    eliminarProceso,
+    actualizarProceso
   };

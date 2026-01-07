@@ -24,7 +24,8 @@ export const RegisteredOvertimeTable = ({
 
   return (
     <>
-      <table className="w-1/2 border border-gray-300 shadow-2xl rounded-xl overflow-hidden">
+    {/* flex flex-col gap-2 w-full bg-white p-4 rounded-xl shadow-2xl sm:w-3/4 md:w-2/3 lg:w-1/2 sm:gap-4 */}
+      <table className="w-full shadow-2xl rounded-xl overflow-hidden sm:w-3/4 md:w-2/3 lg:w-1/2">
         <thead className="bg-epaColor1 text-white">
           <tr>
             <th className="px-4 py-2 text-left">Campo</th>

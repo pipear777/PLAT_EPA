@@ -9,7 +9,12 @@ const obtenerProcesoPorIdService = async (id) => {
   return await Proceso.findById(id);
 };
 
+const actualizarProcesoService = async (id, data) => {
+  return await Proceso.findByIdAndUpdate(id, data, { new: true });
+}
+
 module.exports = {
   listarProcesos,
-  obtenerProcesoPorIdService
+  obtenerProcesoPorIdService, 
+  actualizarProcesoService
 };

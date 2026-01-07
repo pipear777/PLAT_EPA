@@ -12,7 +12,8 @@ const contratoSchema = new mongoose.Schema({
   TelefonoContratista: { type: String, required: true, trim: true },
   objeto: { type: String, required: true, trim: true },
   NombreContratista: { type: String, required: true, trim: true },
-  ValorContrato: { type: Number, required: false }, 
+  ValorContrato: { type: Number, required: false },
+  plazoEjecucion : { type: String, required: true, trim: true },
   FechaInicio: { type: String },     
   FechaFinalizacion: { type: String }, 
    contadorAdiciones:{

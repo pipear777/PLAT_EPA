@@ -10,7 +10,7 @@ const { validarCorreo, noNumeros, validarFecha, limpiarTexto } = require('../mid
 const obtenerDiasDeAlerta = () => [30, 15, 10, 5];
 
 const crearContratoService = async (datosContrato, usuario = {}) => {
-  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto } = datosContrato;
+  const { proceso, tipoContrato, TelefonoContratista, CorreoDependencia, ValorContrato, NombreContratista, identificacionOnit, FechaInicio, FechaFinalizacion, AbogadoAsignado, objeto, plazoEjecucion } = datosContrato;
 
   if (!proceso) {
     throw new Error('El proceso es obligatorio');
@@ -82,6 +82,10 @@ const crearContratoService = async (datosContrato, usuario = {}) => {
     }
   }
 
+  if (!plazoEjecucion) {
+    throw new Error('El tiempo de ejecución es obligatorio');
+  }
+
   const nuevoContrato = new Contrato({
     ...datosContrato,
     usuarioModifico: usuario.name || 'Sistema',
@@ -145,7 +149,7 @@ const crearContratoService = async (datosContrato, usuario = {}) => {
       contratoGuardado.CorreoDependencia,
       contratoGuardado.consecutivo,
       contratoGuardado.Vigencia,
-      contratoGuardado.tipoContrato?.nombre, // Cambiado a 'nombre'
+      contratoGuardado.tipoContrato?.nombre,
       contratoGuardado.NombreContratista,
       contratoGuardado.identificacionOnit,
       contratoGuardado.ValorContrato
@@ -185,9 +189,6 @@ const obtenerContratosPorFiltrosService = async (filtros = {}, page = 1, limit =
 
   if (filtros.identificacionOnit)
     matchNormal.identificacionOnit = { $regex: `^${filtros.identificacionOnit.trim()}`, $options: "i" };
-
-  if (filtros.tipoContrato)
-    matchNormal.tipoContrato = { $regex: `^${filtros.tipoContrato.trim()}`, $options: "i" };
 
   const pipeline = [
     {
@@ -246,6 +247,14 @@ const obtenerContratosPorFiltrosService = async (filtros = {}, page = 1, limit =
     },
     { $unwind: { path: "$AbogadoAsignado", preserveNullAndEmptyArrays: true } }
   );
+
+  if (filtros.tipoContrato) {
+    pipeline.push({
+      $match: {
+        "tipoContrato.nombre": { $regex: filtros.tipoContrato.trim(), $options: "i" }
+      }
+    });
+  }
 
   if(filtros.nombreCompletoAbogado){
     pipeline.push({
@@ -334,6 +343,7 @@ const updateContratoService = async (id, nuevosDatos, usuario = {}) => {
       throw new Error('Contrato no encontrado');
     }
 
+    // Validar que no se permitan ediciones si el contrato ya se encuentra anulado
     if (contrato.EstadoContrato === 'Anulado') {
       throw new Error('❌ Este contrato está anulado y no se puede modificar.');
     }
@@ -374,28 +384,50 @@ const updateContratoService = async (id, nuevosDatos, usuario = {}) => {
 
     contrato.usuarioModifico = usuarioNombre;
 
-    if (historialNuevasEntradas.length > 0) {
-      if (!Array.isArray(contrato.historial)) contrato.historial = [];
-      contrato.historial.push(...historialNuevasEntradas);
+    const valorInicial = contrato.ValorContrato || 0;
+    const totalAdiciones = (contrato.modificaciones || []).reduce((acc, mod) => {
+      if (mod.estado === 'Activa' && mod.adicion) {
+        return acc + (Number(mod.valorAdicion) || 0);
+      }
+      return acc;
+    }, 0);
 
-      await contrato.populate('modificaciones');
+    const nuevoValorActual = valorInicial + totalAdiciones;
+    let huboRecalculo = false;
 
-      const valorInicial = contrato.ValorContrato || 0;
-      const totalAdiciones = contrato.modificaciones.reduce((acc, mod) => {
-        return mod.adicion ? acc + (mod.valorAdicion || 0) : acc;
-      }, 0);
-      contrato.valorActual = valorInicial + totalAdiciones;
+    if (contrato.valorActual !== nuevoValorActual) {
+      contrato.valorActual = nuevoValorActual;
+      huboRecalculo = true;
+    }
 
-      const prorrogas = contrato.modificaciones.filter(mod => mod.prorroga && mod.fechaFinalProrroga);
-      if (prorrogas.length > 0) {
-        const ultimaProrroga = prorrogas.reduce((ultima, prorroga) => {
-          const fechaActual = new Date(prorroga.fechaFinalProrroga);
-          const fechaUltima = new Date(ultima.fechaFinalProrroga);
-          return fechaActual > fechaUltima ? prorroga : ultima;
-        });
-        contrato.fechaVigente = ultimaProrroga.fechaFinalProrroga;
-      } else {
-        contrato.fechaVigente = contrato.FechaFinalizacion;
+    const prorrogas = contrato.modificaciones.filter(
+      (mod) => mod.estado === "Activa" && mod.prorroga && mod.fechaFinalProrroga
+    );
+
+    let nuevaFechaVigente;
+    if (prorrogas.length > 0) {
+      const ultimaProrroga = prorrogas.reduce((ultima, prorroga) => {
+        const fechaActual = new Date(prorroga.fechaFinalProrroga);
+        const fechaUltima = new Date(ultima.fechaFinalProrroga);
+        return fechaActual > fechaUltima ? prorroga : ultima;
+      });
+      nuevaFechaVigente = ultimaProrroga.fechaFinalProrroga;
+    } else {
+      nuevaFechaVigente = contrato.FechaFinalizacion;
+    }
+
+    const fechaVigenteActualTime = contrato.fechaVigente ? new Date(contrato.fechaVigente).getTime() : 0;
+    const nuevaFechaVigenteTime = nuevaFechaVigente ? new Date(nuevaFechaVigente).getTime() : 0;
+
+    if (fechaVigenteActualTime !== nuevaFechaVigenteTime) {
+      contrato.fechaVigente = nuevaFechaVigente;
+      huboRecalculo = true;
+    }
+
+    if (historialNuevasEntradas.length > 0 || huboRecalculo) {
+      if (historialNuevasEntradas.length > 0) {
+        if (!Array.isArray(contrato.historial)) contrato.historial = [];
+        contrato.historial.push(...historialNuevasEntradas);
       }
 
       await contrato.save();
@@ -473,11 +505,68 @@ const anularContratoService = async (id, usuario = {}) => {
   return contrato;
 };
 
+const verificarAlertasDiariasService = async () => {
+  console.log('🔄 Ejecutando verificación diaria de alertas de contratos...');
+  const hoy = dayjs().startOf('day');
+  const diasDeAlerta = obtenerDiasDeAlerta();
+
+  // Buscar contratos activos (no anulados) que tengan correo configurado
+  const contratos = await Contrato.find({
+    EstadoContrato: { $ne: 'Anulado' },
+    CorreoDependencia: { $exists: true, $ne: null }
+  }).populate('tipoContrato').populate('proceso').populate('AbogadoAsignado');
+
+  let alertasEnviadasCount = 0;
+
+  for (const contrato of contratos) {
+    try {
+      // Determinar fecha de referencia (Vigente o Finalización)
+      const fechaReferencia = contrato.fechaVigente ? dayjs(contrato.fechaVigente) : dayjs(contrato.FechaFinalizacion);
+      const diasRestantes = fechaReferencia.diff(hoy, 'day');
+
+      // Inicializar array si no existe
+      if (!Array.isArray(contrato.alertasEnviadas)) {
+        contrato.alertasEnviadas = [];
+      }
+
+      // Verificar si corresponde alerta y no se ha enviado ya para este día
+      if (diasDeAlerta.includes(diasRestantes) && !contrato.alertasEnviadas.includes(diasRestantes)) {
+        console.log(`📨 Enviando alerta para contrato ${contrato.consecutivo}. Días restantes: ${diasRestantes}`);
+
+        await enviarCorreo(
+          contrato.CorreoDependencia,
+          `🔔 Recordatorio: El contrato ${contrato.consecutivo} vence en ${diasRestantes} días`,
+          `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <h2 style="color: #E67E22;">⏳ Recordatorio de Vencimiento</h2>
+            <p>El contrato <strong>${contrato.NombreContratista}</strong> está próximo a vencer.</p>
+            <ul>
+              <li><strong>Consecutivo:</strong> ${contrato.consecutivo}</li>
+              <li><strong>Días restantes:</strong> ${diasRestantes}</li>
+              <li><strong>Fecha Vencimiento:</strong> ${fechaReferencia.format('YYYY-MM-DD')}</li>
+            </ul>
+            <p>Por favor, tome las acciones necesarias.</p>
+          </div>
+          `
+        );
+
+        contrato.alertasEnviadas.push(diasRestantes);
+        await contrato.save();
+        alertasEnviadasCount++;
+      }
+    } catch (error) {
+      console.error(`❌ Error verificando contrato ${contrato.consecutivo}:`, error.message);
+    }
+  }
+  return { message: `Verificación completada. Alertas enviadas: ${alertasEnviadasCount}` };
+};
+
 module.exports = {
   crearContratoService,
   obtenerContratosPorFiltrosService,
   obtenerContratoPorIdService,
   updateContratoService,
   obtenerVigenciasService,
-  anularContratoService
+  anularContratoService,
+  verificarAlertasDiariasService
 };

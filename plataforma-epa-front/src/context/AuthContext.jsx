@@ -107,12 +107,7 @@ export const AuthProvider = ({ children }) => {
       setAuth(null);
       setLoading(false);
     }
-  };
-
-  console.log(accessErrorMessages);
-  console.log(email);
-  
-  
+  };  
 
   const contextValue = useMemo(
     () => ({

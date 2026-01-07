@@ -1,5 +1,5 @@
 const sede = require('../models/sede.model');
-const { listarSede } = require('../services/sede.service');
+const { listarSede, actualizarSedeService } = require('../services/sede.service');
 
 const crearsede = async (req, res) => {
   try {
@@ -52,9 +52,36 @@ const eliminarSede = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+ const actualizarSede = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+      if (!name) return res.status(400).json({ success: false, message: 'El nombre de la sede es obligatorio.' });
+      
+      const existente = await sede.findOne({
+        name: new RegExp(`^${name}$`, "i"),
+        _id: { $ne: id }
+      });
+
+      if (existente) {
+        return res.status(400).json({
+          success: false,
+          message: "Ya existe otra sede con ese nombre."
+        });
+      }
+
+      const updatedSede = await actualizarSedeService(id, { name });
+      if (!updatedSede) return res.status(404).json({ success: false, message: 'No encontrado' });
+      res.status(200).json({ success: true, message: 'Registro actualizado', data: updatedSede });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
 
 module.exports = {
   crearsede,
   listarSedes,
-  eliminarSede
+  eliminarSede,
+  actualizarSede
 };

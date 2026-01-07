@@ -5,6 +5,11 @@ const listarSede = async () => {
   return sedes;
 };
 
+const actualizarSedeService = async (id, data) => {
+  return await Sede.findByIdAndUpdate(id, data, { new: true });
+};
+
 module.exports = {
-  listarSede
+  listarSede,
+  actualizarSedeService
 };

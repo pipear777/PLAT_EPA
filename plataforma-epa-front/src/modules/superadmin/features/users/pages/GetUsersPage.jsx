@@ -40,8 +40,8 @@ export const GetUsersPage = () => {
         <ArrowLeft className="ml-0.5 mr-2 -left-0.5" />
         Regresar
       </GlobalButton>
-      <div className="flex flex-col gap-4">
-        <h2 className="text-epaColor1 text-center text-4xl font-extrabold">
+      <div className="flex flex-col gap-4 mt-2">
+        <h2 className="text-epaColor1 text-center text-3xl font-extrabold sm:text-4xl">
           Usuarios
         </h2>
         <FilterInput

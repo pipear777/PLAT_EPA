@@ -46,8 +46,8 @@ export const GetLocations = () => {
         <FilePlus className="w-1/3" />
         Crear Sede
       </GlobalButton>
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-epaColor1 text-4xl font-extrabold">Sedes</h2>
+      <div className="flex flex-col items-center gap-4 mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl">Sedes</h2>
         <LocationsTable loading={loading} locations={locations} handleOpenUpdateModal={handleOpenUpdateModal} />
       </div>
       <UpdateModal
@@ -56,7 +56,7 @@ export const GetLocations = () => {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         closeModal={closeModals}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Nombre Sede"
@@ -74,7 +74,7 @@ export const GetLocations = () => {
         handleSubmit={handleSubmitUpdate}
         onSubmit={onUpdateSubmit}
         closeModal={closeModals}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Nombre Sede"

@@ -6,6 +6,7 @@ import { authService } from '../services/authService';
 import { aseoRoutesList } from '@/routes';
 
 export const useLogin = () => {
+  const navigate = useNavigate();
   const {
     login,
     accessErrorMessages,
@@ -13,7 +14,6 @@ export const useLogin = () => {
     email,
     setEmail,
   } = useAuth();
-  const navigate = useNavigate();
   
   const [loading, setLoading] = useState(false);
 

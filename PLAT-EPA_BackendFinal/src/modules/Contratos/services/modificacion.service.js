@@ -140,8 +140,16 @@ const crearModificacion = async (data) => {
 
 const actualizarModificacionService = async (id, data) => {
   const mod = await Modificacion.findById(id);
-  if (!mod) throw new Error("Modificación no encontrada.");
-  if (mod.estado === "Anulada") throw new Error("No se puede actualizar una modificación anulada.");
+  if (!mod) {
+    const error = new Error("Modificación no encontrada.");
+    error.status = 404;
+    throw error;
+  }
+  if (mod.estado === "Anulada") {
+    const error = new Error("No se puede editar la modificación porque se encuentra ANULADA.");
+    error.status = 400;
+    throw error;
+  }
 
   const camposPermitidos = [
     "adicion",
@@ -216,8 +224,7 @@ const actualizarModificacionService = async (id, data) => {
       updateData.numeroSecuenciaProrroga = null;
     }
   } else {
-    // --- NO ÚLTIMA MODIFICACIÓN ---
-    // No se permite cambiar el tipo
+ 
     if (
       (data.adicion !== undefined && data.adicion !== mod.adicion) ||
       (data.prorroga !== undefined && data.prorroga !== mod.prorroga)
@@ -281,7 +288,6 @@ const anularModificacion = async (id) => {
 };
 
 const listarModificacionesService = async (contratoId) => {
-  // 🔹 LIMPIAR el contratoId
   const cleanId = contratoId?.toString().trim();
   
   // Validar que existe

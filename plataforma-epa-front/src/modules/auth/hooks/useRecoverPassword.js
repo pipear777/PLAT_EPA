@@ -25,7 +25,7 @@ export const useRecoverPassword = () => {
       navigate(authRoutesList.code);
     } catch (error) {
       console.error(error);
-      setAccessErrorMessages({ type: 'error', text: error.message });
+      setAccessErrorMessages({ type: 'ERROR', text: error.message });
       reset();
     }
   };

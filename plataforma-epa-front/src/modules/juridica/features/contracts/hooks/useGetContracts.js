@@ -24,11 +24,12 @@ export const useGetContracts = () => {
   const [hoverEye, setHoverEye] = useState(false);
   const [detailsContractModal, setDetailsContractModal] = useState(false);
   const [loadingFilter, setLoadingFilter] = useState(false);
-  const [modificationsContractModal, setModificationsContractModal] =
-    useState(false);
+  const [modificationsContractModal, setModificationsContractModal] = useState(false);
+  const [modificationsUpdateContractModal, setModificationsUpdateContractModal] = useState(false);
   const [loadingModifications, setLoadingModifications] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
+  const [confirmModalModifications, setConfirmModalModifications] = useState(false);
 
   const [objetoExpandido, setObjetoExpandido] = useState(null);
   const [selectedContract, setSelectedContract] = useState(null);
@@ -55,9 +56,15 @@ export const useGetContracts = () => {
   const {
     register: registerModifications,
     handleSubmit: handleSubmitModifications,
-    reset: resetModifications,
     watch: watchModifications,
     formState: { errors: errorsModifications },
+  } = useForm();
+
+  const {
+    register: registerModificationsUpdate,
+    handleSubmit: handleSubmitModificationsUpdate,
+    reset: resetModifications,
+    formState: { errors: errorsModificationsUpdate },
   } = useForm();
 
   useEffect(() => {
@@ -76,7 +83,9 @@ export const useGetContracts = () => {
     setDetailsContractModal(false);
     setUpdateModal(false);
     setConfirmModal(false);
+    setConfirmModalModifications(false);
     setModificationsContractModal(false);
+    setModificationsUpdateContractModal(false);
     setAlertModal({
       open: false,
       message: '',
@@ -166,6 +175,7 @@ export const useGetContracts = () => {
       });
 
       resetModifications();
+      getAllContracts();
     } catch (error) {
       setAlertModal({
         open: true,
@@ -176,6 +186,62 @@ export const useGetContracts = () => {
       setLoadingModifications(false);
     }
   };
+
+  const openModificationsUpdateModal = (id) => {
+    setSelectedContractId(id);
+    const selectedContract = modifications.find((c) => c._id === id);
+
+    if (selectedContract) {
+      resetModifications({
+        valorAdicion: selectedContract.valorAdicion || '',
+        fechaFinalProrroga: selectedContract.fechaFinalProrroga || '',
+        tiempoProrroga: selectedContract.tiempoProrroga || '',
+      });
+    }
+    setModificationsUpdateContractModal(true);
+  };
+
+  const onSubmitModificationsUpdateContract = async (updateData) => {
+    try {
+      await contractsServices.updateModifications(selectedContractId, updateData);
+      setAlertModal({
+        open: true,
+        message: 'La Modificacion ha sido actualizado con Exito✅',
+        state: 'Modificacion Actualizado',
+      });
+      getAllContracts();
+    } catch (error) {
+      console.log(error);
+      setAlertModal({
+        open: true,
+        message: error.message || 'Error al actualizar la modificacion. ❌',
+        state: 'Error',
+      });
+    }
+  };
+
+  const openConfirmModalModifications = (id) => {
+    setSelectedContractId(id);
+    setConfirmModalModifications(true);
+  };
+
+  const handleOverrideModifications = async () => {
+    try {
+      await contractsServices.overrideModifications(selectedContractId);
+      setAlertModal({
+        open: true,
+        message: 'La modificacion ha sido anulado con Exito✅',
+        state: 'Modificacion Anulada',
+      });
+    } catch (error) {
+      console.log(error);
+      setAlertModal({
+        open: true,
+        message: error.message || 'Error al anular la modificacion. ❌',
+        state: 'Error',
+      });
+    }
+  }
 
   // Obtener las modificaciones de cada contrato
   const getModifications = async (id) => {
@@ -260,6 +326,27 @@ export const useGetContracts = () => {
     }, 600);
   };
 
+  const handleSearchByStatus = async (estado) => {
+  setLoadingFilter(true);
+
+  try {
+    const filtros = {
+      EstadoContrato: estado,
+      page: currentPage,
+      limit: 15,
+    };
+
+    const response = await contractsServices.getFilteredContracts(filtros);
+    setFilteredContracts(response.data);
+  } catch (error) {
+    console.error(error);
+    setFilteredContracts([]);
+  } finally {
+    setLoadingFilter(false);
+  }
+};
+
+
   const handleReset = () => {
     getAllContracts();
     setFilterValue('');
@@ -269,11 +356,13 @@ export const useGetContracts = () => {
     //Properties
     alertModal,
     confirmModal,
+    confirmModalModifications,
     contractType,
     currentPage,
     detailsContractModal,
     errors,
     errorsModifications,
+    errorsModificationsUpdate,
     filteredContracts,
     filterValue,
     hoverEye,
@@ -283,6 +372,7 @@ export const useGetContracts = () => {
     loadingModifications,
     modifications,
     modificationsContractModal,
+    modificationsUpdateContractModal,
     objetoExpandido,
     process,
     totalPages,
@@ -296,20 +386,27 @@ export const useGetContracts = () => {
     //Methods
     closeModals,
     handleOverride,
+    handleOverrideModifications,
     handlePageChange,
     handleReset,
     handleSearch,
+    handleSearchByStatus,
     handleSubmit,
     handleSubmitModifications,
+    handleSubmitModificationsUpdate,
     onSubmitUpdateContract,
     onSubmitModificationsContract,
+    onSubmitModificationsUpdateContract,
     openConfirmModal,
+    openConfirmModalModifications,
     openDetailsContractModal,
     openEye,
     openModificationsModal,
+    openModificationsUpdateModal,
     openUpdateModal,
     register,
     registerModifications,
+    registerModificationsUpdate,
     setFilterValue,
     setObjetoExpandido,
     watchModifications,

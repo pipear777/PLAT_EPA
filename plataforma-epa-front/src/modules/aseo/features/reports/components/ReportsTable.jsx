@@ -1,7 +1,7 @@
 export const ReportsTable = ({ reports = [] }) => {
   return (
-    <div className="w-full bg-white shadow-md rounded-lg p-4 mx-auto">
-          <table className="w-full divide-y divide-gray-200 text-sm text-center">
+    <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-4 mx-auto">
+          <table className="table-fixed w-full min-w-[800px] text-sm text-center">
             <thead className="bg-epaColor1 text-white">
               <tr>
                 <th className="py-4 text-center border border-white">Nombre Funcionario</th>
