@@ -57,8 +57,8 @@ export const GetOvertimesPage = () => {
         <ArrowLeft className="ml-0.5 mr-2 -left-0.5" />
         Regresar
       </GlobalButton>
-      <div className="flex flex-col gap-4">
-        <h2 className="text-epaColor1 text-center text-4xl font-extrabold">
+      <div className="flex flex-col gap-4 mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl text-center">
           Registro Individual de Horas Extra
         </h2>
         <FilterInput
@@ -66,20 +66,18 @@ export const GetOvertimesPage = () => {
           setFilterValue={setFilterValue}
           handleKeyDown={handleKeyDown}
           handleSearch={handleSearch}
-          placeholder='Buscar por identificación'
+          placeholder="Buscar por identificación"
+          inputClassName="bg-white w-72 p-1 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3 sm:w-100"
         />
         <OvertimesRecordsSection
           overtimesFilter={overtimesFilter}
           OpenUpdateModal={OpenUpdateModal}
           onOpenConfirmModal={onOpenConfirmModal}
         />
-        <div className="flex justify-between items-center px-4">
+        <div className="flex justify-between items-center px-4 text-xs sm:text-base">
           <span>
-            Mostrando {overtimesFilter.length} de {
-              showPagination
-                ? totalRecords
-                : overtimesFilter.length
-            } registros.
+            Mostrando {overtimesFilter.length} de{' '}
+            {showPagination ? totalRecords : overtimesFilter.length} registros.
           </span>
           {showPagination && (
             <div className="flex items-center gap-2">

@@ -1,32 +1,28 @@
-import { DashboardCards } from "@/components"
+import { DashboardCards } from '@/components';
+import { useJuridica } from '@/modules/juridica/context';
 
 export const JuridicaDashboardPage = () => {
+  const { totalRecords, totalHistoricalRecords } = useJuridica();
+
   return (
-   <>
-    <div className="flex flex-col justify-center items-center h-full">
-          <h2 className="text-epaColor1 text-center text-4xl font-extrabold mt-15">
-            Pagina de Inicio Juridica
-          </h2>
-          <div className="flex flex-col gap-20 justify-center items-center h-full">
-            <div className="grid grid-cols-2 gap-12">
-              <div className="flex flex-col bg-white w-96 h-64 p-8 rounded-2xl shadow-2xl shadow-epaColor2">
-                <h4 className="text-xl text-epaColor1 font-semibold">
-                  Contratos Historico Registrados
-                </h4>
-                <div className="flex flex-col justify-center h-full">
-                  <p className="text-5xl text-epaColor1 text-center font-extrabold">
-                    5834 
-                  </p>
-                </div>
-              </div>
-              <DashboardCards title="Contratos Registrados">
-                <p className="text-5xl text-epaColor1 text-center font-extrabold">
-                 16 
-                </p>
-              </DashboardCards>
-            </div>
-          </div>
-        </div>              
-   </> 
-  )
-}
+    <div className="flex flex-col gap-6 items-center lg:h-full">
+      <h2 className="text-epaColor1 mt-4 text-center text-3xl font-extrabold lg:mt-15 lg:text-4xl">
+        Pagina de Inicio Juridica
+      </h2>
+      <div className="flex flex-col justify-center items-center h-full">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
+          <DashboardCards title="Contratos Historico Registrados">
+            <p className="text-5xl text-epaColor1 text-center font-extrabold">
+              {totalHistoricalRecords}
+            </p>
+          </DashboardCards>
+          <DashboardCards title="Contratos Registrados">
+            <p className="text-5xl text-epaColor1 text-center font-extrabold">
+              {totalRecords}
+            </p>
+          </DashboardCards>
+        </div>
+      </div>
+    </div>
+  );
+};

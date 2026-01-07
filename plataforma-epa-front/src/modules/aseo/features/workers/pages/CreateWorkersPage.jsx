@@ -51,13 +51,13 @@ export const CreateWorkersPage = () => {
         <FilePlus className="w-1/3" />
         Crear Cargo
       </GlobalButton>
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-epaColor1 text-4xl font-extrabold">
+      <div className="flex flex-col items-center gap-4 mt-2">
+        <h2 className="text-epaColor1 text-3xl font-extrabold sm:text-4xl">
           Registrar Funcionario
         </h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 bg-white p-4 w-1/2 rounded-xl shadow-2xl"
+          className="flex flex-col gap-2 w-full bg-white p-4 rounded-xl shadow-2xl sm:w-3/4 md:w-2/3 lg:w-1/2"
         >
           <GlobalInput
             label="Nombre Completo"
@@ -145,7 +145,7 @@ export const CreateWorkersPage = () => {
               </option>
             ))}
           </GlobalInput>
-          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto">
+          <GlobalButton type="submit" className="p-1.5 w-1/2 block mx-auto mt-5">
             Registrar
           </GlobalButton>
         </form>
@@ -156,7 +156,7 @@ export const CreateWorkersPage = () => {
         handleSubmit={handleSubmitJobPosition}
         onSubmit={onSubmitJobPosition}
         closeModal={closeModals}
-        formClassName="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[500px]"
+        formClassName="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[500px] sm:p-6"
       >
         <GlobalInput
           label="Cargo"

@@ -4,30 +4,35 @@ import { ROLES } from '@/constants';
 
 export const Navbar = ({ title, onMenuClick }) => {
   const { auth } = useAuth();
-
   const isSuperAdmin = auth?.user?.rol === ROLES.SUPER_ADMIN;
 
   return (
-    <header className="bg-epaColor1 flex p-6">
-      <div className="flex w-2/10">
+    <header className="bg-epaColor1 flex items-center p-4">
+
+      {/* Left */}
+      <div className="flex flex-1">
         <button
           onClick={onMenuClick}
-          className="xl:hidden text-white cursor-pointer"
+          className="text-white xl:hidden"
         >
           <Menu size={28} />
         </button>
       </div>
 
-      <h2 className="w-full text-white text-center font-bold text-3xl">
+      {/* Center */}
+      <h2 className="text-white text-center font-bold text-2xl md:text-4xl">
         {title}
       </h2>
 
-      <div className="w-2/10 flex text-white text-sm items-center justify-end gap-2">
-        {isSuperAdmin ? <UserStar /> : <UserCheck />}
-        <div>
-          <p className="text-center">{auth?.user?.name}<br />{auth?.user?.rol}</p>
+      {/* Right */}
+      <div className="flex-1 flex justify-end items-center gap-2 text-white text-sm">
+        {isSuperAdmin ? <UserStar size={18} /> : <UserCheck size={18} />}
+        <div className="hidden leading-tight text-right sm:block">
+          <p>{auth?.user?.name}</p>
+          <p className="text-xs opacity-80">{auth?.user?.rol}</p>
         </div>
       </div>
+
     </header>
   );
 };

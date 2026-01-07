@@ -145,11 +145,11 @@ export const DetailsContractModal = ({
                 </h4>
                 <span>
                   <strong>Identificacion: </strong>{' '}
-                  {contractData.AbogadoAsignado.identificacion}
+                  {contractData?.AbogadoAsignado?.identificacion}
                 </span>
                 <span>
                   <strong>Nombre Completo: </strong>{' '}
-                  {contractData.AbogadoAsignado.nombreCompletoAbogado}
+                  {contractData?.AbogadoAsignado?.nombreCompletoAbogado}
                 </span>
               </div>
 

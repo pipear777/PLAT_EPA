@@ -8,7 +8,7 @@ export const UpdateModal = ({
   onSubmit,
   closeModal,
   isOpen,
-  formClassName = 'flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[800px]',
+  formClassName = 'flex flex-col gap-2 p-4 bg-white rounded-lg shadow-lg w-[90%] max-w-[800px] sm:p-6',
 }) => {
   return (
     <AnimatePresence>
@@ -37,7 +37,7 @@ export const UpdateModal = ({
               {title}
             </h3>
             {children}
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-4 mt-4">
               <GlobalButton
                 variant="modalFour"
                 onClick={closeModal}

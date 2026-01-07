@@ -36,13 +36,13 @@ export const RecoverPasswordPage = () => {
         />
         <GlobalButton
           type="submit"
-          className="w-full p-1.5"
+          className="w-full p-1 sm:p-1.5"
         >
           Enviar Código
         </GlobalButton>
         <GlobalButton
           variant="secondary"
-          onClick={onClickBack} className="w-full p-1.5"
+          onClick={onClickBack} className="w-full p-1 sm:p-1.5"
         >
           Regresar
         </GlobalButton>

@@ -6,8 +6,8 @@ export const DepartamentsTable = ({
   handleOpenUpdateModal = () => {},
 }) => {
   return (
-    <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-4 mx-auto">
-      <table className="w-full min-w-[1200px] text-sm border-collapse">
+    <div className="w-full max-w-[1280px] bg-white shadow-md rounded-lg p-4 mx-auto">
+      <table className="w-full max-w-[1280px] text-sm border-collapse">
         <thead className="bg-epaColor1 text-white">
           <tr>
             <th className="w-7/10 py-4 text-center border border-white">
