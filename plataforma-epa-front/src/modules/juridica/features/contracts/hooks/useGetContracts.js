@@ -234,6 +234,7 @@ export const useGetContracts = () => {
         message: 'La modificacion ha sido anulado con Exito✅',
         state: 'Modificacion Anulada',
       });
+      getAllContracts();
     } catch (error) {
       console.log(error);
       setAlertModal({

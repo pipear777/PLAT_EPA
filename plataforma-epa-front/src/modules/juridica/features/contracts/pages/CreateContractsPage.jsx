@@ -156,11 +156,13 @@ export const CreateContractsPage = () => {
               }}
             >
               <option value="">Selecciona una opcion</option>
-              {lawyers.map((l) => (
-                <option key={l._id} value={l._id}>
-                  {l.nombreCompletoAbogado}
-                </option>
-              ))}
+              {lawyers
+                .filter((l) => l.EstadoAbogado === 'Activo')
+                .map((l) => (
+                  <option key={l._id} value={l._id}>
+                    {l.nombreCompletoAbogado}
+                  </option>
+                ))}
             </GlobalInput>
           </div>
 
