@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { crearsede,listarSedes, eliminarSede} = require('../controller/sede.controller');
+const { crearsede,listarSedes, eliminarSede, actualizarSede} = require('../controller/sede.controller');
 const { validarJWT } = require('../middleware/auth.validarjwt.js');
 const {validarRoles} = require('../middleware/auth.validarRol.js');
 
@@ -65,5 +65,40 @@ router.delete('/delete/:id', validarJWT,validarRoles('SuperAdministrador'), elim
  *         description: Lista Sedes
  */
 router.get('/listar', validarJWT,validarRoles('AdminJuridica','SuperAdministrador','AdminAseo','UsuarioAseo','UsuarioJuridica'), listarSedes);
+
+/**
+ * @swagger
+ * /api/sede/actualizarSede/{id}:
+ *   put:
+ *     summary: Actualizar una Sede
+ *     tags:
+ *       - Sedes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del registro a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nuevo nombre de la sede
+ *                 example: "Nueva Sede"
+ *     responses:
+ *       200:
+ *         description: Actualizado correctamente
+ *       404:
+ *         description: Registro no encontrado
+ */
+router.put('/actualizarSede/:id', validarJWT,validarRoles('SuperAdministrador'), actualizarSede);
 
 module.exports = router;
