@@ -24,7 +24,7 @@ export const DetailsContractModal = ({
   handleOverride,
   openConfirmModalModifications,
 }) => {
-  const mod = modifications?.[0]; // o la que selecciones
+  const mod = modifications?.[0]; // o la que selecciones  
   const lastModification = modifications.at(-1);
   return (
     <>
@@ -324,7 +324,6 @@ export const DetailsContractModal = ({
             }}
           />
         )}
-
         {/* 👉 SI ES PRÓRROGA */}
         {mod?.prorroga && (
           <>

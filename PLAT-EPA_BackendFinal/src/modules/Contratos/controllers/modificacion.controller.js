@@ -83,8 +83,8 @@ const mongoose = require('mongoose');
   } catch (error) {
     return res.status(500).json({
       ok: false,
-      message: "Error al actualizar modificación",
-      error: error.message,
+      message: error.message,
+      error: "Error al actualizar modificación",
     });
   }
 };

@@ -9,7 +9,6 @@ export const useGetContracts = () => {
     process,
     contractType,
     contracts,
-    loading,
     currentPage,
     totalPages,
     totalRecords,
@@ -84,11 +83,11 @@ export const useGetContracts = () => {
     setUpdateModal(false);
     setConfirmModal(false);
     setModificationsContractModal(false);
-    setModificationsUpdateContractModal(false);
   };
 
   const closeConfirmModalModifications = () => {
     setConfirmModalModifications(false);
+    setModificationsUpdateContractModal(false);
     setAlertModal({
       open: false,
       message: '',
@@ -372,7 +371,6 @@ export const useGetContracts = () => {
     filterValue,
     hoverEye,
     lawyers,
-    loading,
     loadingFilter,
     loadingModifications,
     modifications,
