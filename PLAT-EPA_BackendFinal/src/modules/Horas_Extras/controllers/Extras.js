@@ -42,6 +42,10 @@ async function validarTurnoYHoras(data, idParaExcluir = null) {
 
   let avisoCambio = null;
 
+  if (moment(data.fecha_inicio_trabajo).isAfter(data.fecha_fin_trabajo, 'day')) {
+    return { success: false, status: 400, message: 'La fecha de inicio del trabajo no puede ser posterior a la fecha de fin.' };
+  }
+
   // --- Ajustar automáticamente si cruza medianoche ---
   if (finNuevo.isBefore(inicioNuevo)) {
     finNuevo.add(1, 'day');

@@ -97,7 +97,7 @@ export const useLawyer = () => {
     const selectedLawyer = lawyers.find((l) => l._id === id);
 
     if (selectedLawyer) {
-      setSelectedNameLawyer(selectedLawyer.nombreAbogado);
+      setSelectedNameLawyer(selectedLawyer.nombreCompletoAbogado);
       resetUpdate({
         identificacion: selectedLawyer.identificacion || '',
         nombreCompletoAbogado: selectedLawyer.nombreCompletoAbogado || '',

@@ -1,4 +1,4 @@
-import { FilterInput, GlobalButton, LoadSpinner } from '@/components';
+import { GlobalButton, LoadSpinner } from '@/components';
 import { useHistorical } from '../hooks';
 import { RotateCcw } from 'lucide-react';
 
@@ -6,11 +6,9 @@ export const HistoricalPage = () => {
   const {
     //Properties
     anios,
-    cleanContracts,
     filterValue,
     filterValueAnio,
     filteredContracts,
-    isFiltering,
     loading,
     loadingFilter,
     modal,
@@ -20,7 +18,6 @@ export const HistoricalPage = () => {
     totalRecords,
 
     //Methods
-    handleKeyDown,
     handleReset,
     handlePageChange,
     handleSearchAnio,
@@ -29,7 +26,6 @@ export const HistoricalPage = () => {
     setObjetoExpandido,
     setFilterValueAnio,
     setFilterValue,
-    setActiveFilter,
   } = useHistorical();
   return (
     <>
@@ -45,15 +41,12 @@ export const HistoricalPage = () => {
       {modal && (
         <div className="fixed inset-0 bg-epaColor1/50 flex items-center justify-center z-50">
           <div className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[800px] justify-center items-center">
-            <h2 className="text-2xl font-bold mb-4 text-epaColor1">
+            <h2 className="text-2xl font-bold text-epaColor1">
               FILTRAR POR AÑO
             </h2>
-
-            <label className="font-semibold">Buscar contrato:</label>
             <select
               value={filterValueAnio}
               onChange={(e) => setFilterValueAnio(e.target.value)}
-              onKeyDown={handleKeyDown}
               className="border border-gray-500 rounded-md p-1"
             >
               <option value="">Seleccione un año</option>
@@ -78,7 +71,7 @@ export const HistoricalPage = () => {
           <select
             value={filterValueAnio}
             onChange={(e) => setFilterValueAnio(e.target.value)}
-            className="bg-white w-50 p-1 mb-2 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3"
+            className="bg-white w-50 p-1 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3"
           >
             <option value="">Seleccione un año</option>
             {anios.map((anio, index) => (
@@ -90,42 +83,40 @@ export const HistoricalPage = () => {
         </div>
 
         {/* FILTRO POR NOMBRE Y TIPO */}
-        <div className="flex ">
-          <div className="flex flex-col">
+        <div className="flex flex-col">
             <label className="font-semibold text-sm">
               Buscar por Nombre o Tipo:
             </label>
+          <div className="flex gap-2">
             <input
               type="text"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
               placeholder="Escribe aquí…"
-              className="bg-white w-180 p-1 mb-2 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3"
+              className="bg-white w-180 p-1 border-2 border-epaColor1 rounded-md text-epaColor1 focus:outline-none focus:ring focus:ring-epaColor3"
             />
-          </div>
           <GlobalButton
-            className="flex p-2 items-center gap-2 mx-2"
+            className="flex items-center gap-2 px-2"
             onClick={handleReset}
           >
             <RotateCcw />
-            Resetear Filtro
+            Borrar Filtro
           </GlobalButton>
+          </div>
         </div>
 
         {/* BOTONES */}
         <div className="flex gap-2 items-center">
-          <GlobalButton className='p-2'
+          <GlobalButton className='p-1'
             onClick={() => {
-              setActiveFilter('name');
               handleSearchName();
             }}
           >
             Buscar por Nombre Contratista
           </GlobalButton>
 
-          <GlobalButton className='p-2'
+          <GlobalButton className='p-1'
             onClick={() => {
-              setActiveFilter('type');
               handleSearchType();
             }}
           >
@@ -136,7 +127,7 @@ export const HistoricalPage = () => {
 
       {/* Tabla de Contratos */}
       <section className="">
-        <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-6 mx-auto mt-6">
+        <div className="w-full overflow-x-auto bg-white shadow-md rounded-lg p-6 mx-auto mt-2">
           <table className="table-fixed w-full min-w-[1200px] text-sm">
             <thead className="bg-epaColor1 text-white">
               <tr>
@@ -152,7 +143,7 @@ export const HistoricalPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-300">
-              {(isFiltering ? filteredContracts : cleanContracts)?.map(
+              {filteredContracts?.map(
                 (c, index) => (
                   <tr
                     key={index}
