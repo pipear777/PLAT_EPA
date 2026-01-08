@@ -23,8 +23,8 @@ export const DetailsContractModal = ({
   confirmModalModifications,
   handleOverride,
   openConfirmModalModifications,
-}) => {
-  const mod = modifications?.[0]; // o la que selecciones  
+  mod,
+}) => { 
   const lastModification = modifications.at(-1);
   return (
     <>

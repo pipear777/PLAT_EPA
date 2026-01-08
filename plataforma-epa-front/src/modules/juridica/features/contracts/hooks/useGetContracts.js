@@ -36,6 +36,7 @@ export const useGetContracts = () => {
   const [selectedContractId, setSelectedContractId] = useState('');
   const [selectedConsecutive, setSelectedConsecutive] = useState('');
   const [selectedContractType, setSelectedContractType] = useState('');
+  const [selectedModificationId, setSelectedModificationId] = useState('');
   const [summaries, setSummaries] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [modifications, setModifications] = useState([]);
@@ -192,13 +193,14 @@ export const useGetContracts = () => {
 
   const openModificationsUpdateModal = (id) => {
     setSelectedContractId(id);
-    const selectedContract = modifications.find((c) => c._id === id);
+    const modificationId = modifications.find((c) => c._id === id);
 
-    if (selectedContract) {
+    if (modificationId) {
+      setSelectedModificationId(modificationId)
       resetModifications({
-        valorAdicion: selectedContract.valorAdicion || '',
-        fechaFinalProrroga: selectedContract.fechaFinalProrroga || '',
-        tiempoProrroga: selectedContract.tiempoProrroga || '',
+        valorAdicion: modificationId.valorAdicion || '',
+        fechaFinalProrroga: modificationId.fechaFinalProrroga || '',
+        tiempoProrroga: modificationId.tiempoProrroga || '',
       });
     }
     setModificationsUpdateContractModal(true);
@@ -383,6 +385,7 @@ export const useGetContracts = () => {
     selectedConsecutive,
     selectedContract,
     selectedContractType,
+    selectedModificationId,
     summaries,
     updateModal,
 

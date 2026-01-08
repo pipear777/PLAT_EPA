@@ -53,6 +53,7 @@ export const GetContractsPage = () => {
     selectedConsecutive,
     selectedContract,
     selectedContractType,
+    selectedModificationId,
     summaries,
     updateModal,
 
@@ -406,6 +407,7 @@ export const GetContractsPage = () => {
           confirmModalModifications={confirmModalModifications}
           handleOverride={handleOverrideModifications}
           openConfirmModalModifications={openConfirmModalModifications}
+          mod={selectedModificationId}
         />
 
         <UpdateModal
