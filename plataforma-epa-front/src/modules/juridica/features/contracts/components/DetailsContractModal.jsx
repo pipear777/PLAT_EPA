@@ -7,6 +7,7 @@ import {
 import { formatCOP } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Ban, Pencil } from 'lucide-react';
+import { useEffect } from 'react';
 
 export const DetailsContractModal = ({
   contractData,
@@ -25,6 +26,10 @@ export const DetailsContractModal = ({
   openConfirmModalModifications,
   mod,
 }) => { 
+  useEffect(() => {
+    
+  }, [])
+
   const lastModification = modifications.at(-1);
   return (
     <>
@@ -224,13 +229,15 @@ export const DetailsContractModal = ({
 
                       {/* Acciónes */}
                       <div className="flex gap-2">
-                        <button
-                          className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-all"
-                          title="Editar"
-                          onClick={() => openModificationsUpdateModal(mod._id)}
-                        >
-                          <Pencil size={18} />
-                        </button>
+                        {mod.estado === 'Activa' && (
+                          <button
+                            className="flex items-center justify-center p-2 bg-yellow-200 rounded-full hover:bg-yellow-300 hover:scale-110 transition-all"
+                            title="Editar"
+                            onClick={() => openModificationsUpdateModal(mod._id)}
+                          >
+                            <Pencil size={18} />
+                          </button>
+                        )}
                         {(mod._id === lastModification?._id && mod.estado === 'Activa' ) && (
                           <button
                             className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"

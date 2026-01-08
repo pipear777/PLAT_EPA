@@ -84,11 +84,19 @@ export const useGetContracts = () => {
     setUpdateModal(false);
     setConfirmModal(false);
     setModificationsContractModal(false);
+    setModificationsUpdateContractModal(false);
+    setConfirmModalModifications(false);
+    setAlertModal({
+      open: false,
+      message: '',
+      status: '',
+    });
   };
 
   const closeConfirmModalModifications = () => {
     setConfirmModalModifications(false);
     setModificationsUpdateContractModal(false);
+    setConfirmModal(false);
     setAlertModal({
       open: false,
       message: '',

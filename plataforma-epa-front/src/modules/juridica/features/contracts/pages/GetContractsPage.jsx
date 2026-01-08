@@ -385,7 +385,11 @@ export const GetContractsPage = () => {
         {/* AlertModal */}
         <AlertModal
           openAlertModal={alertModal.open}
-          closeAlertModal={closeConfirmModalModifications}
+          closeAlertModal={
+            alertModal.state === 'Error'
+              ? closeConfirmModalModifications
+              : closeModals
+          }
           modalTitle={alertModal.state}
           modalDescription={alertModal.message}
         />
