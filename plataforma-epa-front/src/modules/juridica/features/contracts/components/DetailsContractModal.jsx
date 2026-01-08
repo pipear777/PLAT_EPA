@@ -231,10 +231,10 @@ export const DetailsContractModal = ({
                         >
                           <Pencil size={18} />
                         </button>
-                        {mod._id === lastModification?._id && (
+                        {(mod._id === lastModification?._id && mod.estado === 'Activa' ) && (
                           <button
                             className="p-2 bg-red-200 rounded-full hover:bg-red-300 hover:scale-110 transition-transform"
-                            title="Anular"
+                            title="Anular Modificación"
                             onClick={() =>
                               openConfirmModalModifications(mod._id)
                             }

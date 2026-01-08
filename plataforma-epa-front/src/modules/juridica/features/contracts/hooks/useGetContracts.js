@@ -83,15 +83,18 @@ export const useGetContracts = () => {
     setDetailsContractModal(false);
     setUpdateModal(false);
     setConfirmModal(false);
-    setConfirmModalModifications(false);
     setModificationsContractModal(false);
     setModificationsUpdateContractModal(false);
+  };
+
+  const closeConfirmModalModifications = () => {
+    setConfirmModalModifications(false);
     setAlertModal({
       open: false,
       message: '',
       status: '',
     });
-  };
+  }
 
   // Detalles del Contrato
   const openEye = (id) => {
@@ -386,6 +389,7 @@ export const useGetContracts = () => {
     updateModal,
 
     //Methods
+    closeConfirmModalModifications,
     closeModals,
     handleOverride,
     handleOverrideModifications,

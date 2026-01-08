@@ -57,6 +57,7 @@ export const GetContractsPage = () => {
     updateModal,
 
     //Methods
+    closeConfirmModalModifications,
     closeModals,
     handleOverride,
     handleOverrideModifications,
@@ -383,7 +384,7 @@ export const GetContractsPage = () => {
         {/* AlertModal */}
         <AlertModal
           openAlertModal={alertModal.open}
-          closeAlertModal={closeModals}
+          closeAlertModal={closeConfirmModalModifications}
           modalTitle={alertModal.state}
           modalDescription={alertModal.message}
         />
@@ -398,7 +399,7 @@ export const GetContractsPage = () => {
           onSubmitModificationsUpdateContract={
             onSubmitModificationsUpdateContract
           }
-          closeModals={closeModals}
+          closeModals={closeConfirmModalModifications}
           registerModificationsUpdate={registerModificationsUpdate}
           errorsModificationsUpdate={errorsModificationsUpdate}
           openModificationsUpdateModal={openModificationsUpdateModal}
