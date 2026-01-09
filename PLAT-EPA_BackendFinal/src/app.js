@@ -29,9 +29,12 @@ const PORT =  process.env.PORT || 5000;
 
 
 app.use(cors({
-  origin: true,
-  exposedHeaders: ["Content-Disposition"],
-  credentials: true,              
+  origin: [
+    'http://plat.epa.local:5500',
+    'http://localhost:5173',
+  ],
+  credentials: true,
+  exposedHeaders: ['Content-Disposition'],            
 }));
 
 app.use( express.static('public') );

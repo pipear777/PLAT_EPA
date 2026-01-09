@@ -116,9 +116,11 @@ const loginUsuario = async (req, res = response) => {
     // Aqui mando el refreshToken en una cookie
     res.cookie('refreshToken', refreshtoken, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'None',
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      secure: false,                     // En dev true
+      sameSite: 'lax',                   // En dev none
+      domain: '.epa.local',              // En dev no se necesita... En logout debe quedar igual la config!!!
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -149,8 +151,10 @@ const logoutUsuario = async (req, res = response) => {
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: 'lax',
+      domain: '.epa.local',
+      path: '/',
     });
 
     res.status(200).json({ ok: true, msg: 'Sesión cerrada exitosamente.' });
