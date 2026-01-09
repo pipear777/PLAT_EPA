@@ -62,9 +62,9 @@ router.post('/crearCargo',validarJWT,validarRoles('AdminAseo','SuperAdministrado
  *                     example: "Operario"
  *             
  */
-router.get('/listar', listarCargos);
+router.get('/listar', validarJWT, listarCargos);
 
 
-router.delete('/delete/:id', eliminarCargo)
+router.delete('/delete/:id', validarJWT, eliminarCargo);
 
 module.exports = router;

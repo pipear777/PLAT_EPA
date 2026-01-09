@@ -11,7 +11,7 @@ export const JuridicaDashboardPage = () => {
       </h2>
       <div className="flex flex-col justify-center items-center h-full">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-          <DashboardCards title="Contratos Historico Registrados">
+          <DashboardCards title="Contratos Historico Registrados (2015 - 2025)">
             <p className="text-5xl text-epaColor1 text-center font-extrabold">
               {totalHistoricalRecords}
             </p>
