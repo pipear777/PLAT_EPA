@@ -116,8 +116,8 @@ const loginUsuario = async (req, res = response) => {
     // Aqui mando el refreshToken en una cookie
     res.cookie('refreshToken', refreshtoken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'None',
       maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
@@ -149,8 +149,8 @@ const logoutUsuario = async (req, res = response) => {
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "None",
     });
 
     res.status(200).json({ ok: true, msg: 'Sesión cerrada exitosamente.' });
