@@ -121,21 +121,21 @@ export const GetContractsPage = () => {
             onClick={() => handleSearchByStatus(EstadoContrato.Activo)}
             className="bg-green-400 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
           >
-            <span>Numero de contratos vigentes</span>
+            <span>Contratos Vigentes</span>
             <p className="text-3xl">{summaries?.data?.Activo ?? 0}</p>
           </button>
           <button
             onClick={() => handleSearchByStatus(EstadoContrato.ProximoVencer)}
             className="bg-yellow-300 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
           >
-            <span>Contratos por vencer en 30 días</span>
+            <span>30 Días Para Vencer</span>
             <p className="text-3xl">{summaries?.data?.ProximoVencer ?? 0}</p>
           </button>
           <button
             onClick={() => handleSearchByStatus(EstadoContrato.Finalizado)}
             className="bg-red-500 h-25 w-70 p-3 rounded-2xl font-semibold text-center shadow-lg shadow-gray-300 hover:scale-105 transition"
           >
-            <span>Numero de contratos vencidos</span>
+            <span>Contratos Vencidos</span>
             <p className="text-3xl">{summaries?.data?.Finalizado ?? 0}</p>
           </button>
           <button
